@@ -3,8 +3,8 @@ mod core;
 use crate::core::Server;
 
 fn main() {
-    println!("STORYHUNTER GAMESERVER {}", env!("CARGO_PKG_VERSION"));
+    println!("Storyhunter Gameserver {}", env!("CARGO_PKG_VERSION"));
 
-    let server = Server::new();
+    let mut server = Server::new();
     server.run();
 }
