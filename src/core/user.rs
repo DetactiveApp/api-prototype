@@ -6,7 +6,8 @@ pub struct User {
 }
 
 impl User {
-    pub fn new(stream: TcpStream) -> User {
-        return User { stream: stream };
+    pub fn new(_stream: TcpStream) -> User {
+        let session = User { stream: _stream };
+        return session;
     }
 }

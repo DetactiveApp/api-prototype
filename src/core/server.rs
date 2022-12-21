@@ -1,39 +1,37 @@
-use std::net::{TcpListener, TcpStream};
-use std::sync::mpsc::channel;
-use std::{thread, vec};
-
 use crate::core::Session;
+use std::net::{TcpListener, TcpStream};
+
+const PORT: u8 = 80;
+const MAX_SESSIONS: usize = 10;
+const MAX_CONNECTIONS_PER_SESSION: usize = 10;
 
 pub struct Server {
-    max_sessions: usize,
-    max_connections_per_session: usize,
+    sessions: Vec<Session>,
 }
 
 impl Server {
     pub fn new() -> Server {
         let mut server = Server {
-            max_sessions: 5,
-            max_connections_per_session: 10,
+            sessions: Vec::with_capacity(MAX_SESSIONS),
         };
 
-        println!("Init server...");
-        server.run();
+        let mut first_session = Session::new();
+        first_session.run();
+        server.sessions.push(first_session);
 
         return server;
     }
 
     pub fn run(&mut self) {
         loop {
-            const PORT: u8 = 80;
             let listener = TcpListener::bind(format!("127.0.0.1:{}", PORT)).unwrap();
             println!("Listens for incoming connections on Port {}...", PORT);
 
             for stream in listener.incoming() {
                 match stream {
-                    Ok(stream) => {
-                        let session = Session::new();
-                        thread::spawn(move || session.run());
-                    }
+                    Ok(stream) => match self.connect_to_any_session(stream) {
+                        _ => (),
+                    },
 
                     Err(error) => {
                         println!("Unable to connect: {}", error);
@@ -41,5 +39,25 @@ impl Server {
                 }
             }
         }
+    }
+
+    fn connect_to_any_session(&mut self, stream: TcpStream) -> Result<(), i8> {
+        for session in self.sessions.iter_mut() {
+            match session.connections.len() {
+                0..=MAX_CONNECTIONS_PER_SESSION => {
+                    session.connect(stream);
+                    return Ok(());
+                }
+                _ => (),
+            }
+        }
+
+        if self.sessions.len() < MAX_SESSIONS {
+            let mut session = Session::new();
+            session.connect(stream);
+            self.sessions.push(session);
+        }
+
+        return Err(-1);
     }
 }
