@@ -1,0 +1,23 @@
+[package]
+name = "storyhunter-server"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+tokio =  { version = "1.23.0", features = ["full"] }
+serde = { version = "1.0.152", features = ["derive"] }
+redis = { version = "0.22.1", features = ["tokio-comp"] }
+serde_json = "1.0.91"
+axum = "0.6.1"
+rand = "0.8.5"
+
+
+[dependencies.uuid]
+version = "1.2.2"
+features = [
+    "v4",
+    "fast-rng",
+    "macro-diagnostics",
+]
