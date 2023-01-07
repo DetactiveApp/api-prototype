@@ -3,13 +3,13 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize)]
 pub struct Mission {
-    id: String,
-    name: String,
-    points: i32,
-    timestamp: u32,
-    timeslot: u32,
-    description: String,
-    sequence: Vec<Coord>,
+    pub id: String,
+    pub name: String,
+    pub points: i32,
+    pub timestamp: u32,
+    pub timeslot: u32,
+    pub description: String,
+    pub sequence: Vec<Coord>,
 }
 
 impl Mission {

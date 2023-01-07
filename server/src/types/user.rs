@@ -35,10 +35,13 @@ impl User {
             .unwrap();
     }
 
-    pub fn from_db(&mut self, conn: &mut Connection) {
-        self.name = conn.hget(&self.id, "name").unwrap();
-        self.points = conn.hget(&self.id, "points").unwrap();
-        self.location.latitude = conn.hget(&self.id, "location.latitude").unwrap();
-        self.location.longitude = conn.hget(&self.id, "location.longitude").unwrap();
+    pub fn get_user(user_id: String, conn: &mut Connection) -> User {
+        let mut user = User::new(user_id, String::new());
+        user.name = conn.hget(&user.id, "name").unwrap();
+        user.points = conn.hget(&user.id, "points").unwrap();
+        user.location.latitude = conn.hget(&user.id, "location.latitude").unwrap();
+        user.location.longitude = conn.hget(&user.id, "location.longitude").unwrap();
+
+        user
     }
 }

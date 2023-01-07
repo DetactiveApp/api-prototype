@@ -1,4 +1,3 @@
-use crate::types::User;
 use redis::RedisResult;
 
 extern crate redis;
@@ -22,7 +21,7 @@ pub fn mission_db_conn() -> RedisResult<Connection> {
     }
 }
 
-pub fn check_user(id: String) -> bool {
+pub fn check_user(id: &String) -> bool {
     let mut conn = user_db_conn().unwrap();
     match conn.exists(id).unwrap() {
         0 => return false,

@@ -1,4 +1,4 @@
-mod commands;
+mod routes;
 mod types;
 mod utils;
 
@@ -16,12 +16,10 @@ async fn main() {
 
     let app = Router::new()
         .route("/", get(root))
-        .route("/register", get(commands::user::register))
-        .route(
-            "/user",
-            get(commands::user::get_user).patch(commands::user::patch_user),
-        )
-        .route("/missions", get(commands::missions::get_missions));
+        .route("/user/register", get(routes::user::register))
+        .route("/user", get(routes::user::get_user))
+        .route("/user", patch(routes::user::patch_user))
+        .route("/missions", get(routes::missions::get_missions));
 
     let addr = SocketAddr::from(([0, 0, 0, 0], 8080));
     axum::Server::bind(&addr)
