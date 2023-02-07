@@ -1,0 +1,20 @@
+version: '3.9'
+services:
+  user-db:
+    container_name: user-db
+    image: redis
+    environment:
+      - REDIS_PASSWORD=*9TOKU4tDObb3!5Ak*eR*848SZNPpo3kXY9o*H5DKHX#9@$3M4
+    ports:
+      - "6379:6379"
+    volumes:
+      - cache:/user-db
+
+  server:
+    container_name: server
+    build: /server
+    ports:
+      - "8080:8080"
+
+volumes:
+  cache:
