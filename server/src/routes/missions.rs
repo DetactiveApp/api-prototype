@@ -1,6 +1,8 @@
+use std::fmt::format;
+
 use serde::Deserialize;
 
-use axum::{extract::Query, Json};
+use axum::{extract::Query, http::Request, Json};
 use rand::Rng;
 
 use crate::types::{Mission, User};
@@ -18,18 +20,23 @@ pub async fn get_missions(params: Query<MissionParams>) -> Json<Vec<Mission>> {
     let mut rng = rand::thread_rng();
     let mut response = Vec::new();
 
-    for _ in 0..rng.gen_range(2..30) {
-        response.push(generate_test_mission(&params.id));
+    for mission_id in 0..rng.gen_range(2..30) {
+        response.push(generate_mission(&params.0.id, &mission_id));
     }
 
     return Json(response);
 }
 
-pub fn generate_test_mission(id: &String) -> Mission {
+pub fn generate_mission(user_id: &String, mission_id: &i32) -> Mission {
     let mut conn = utils::db::user_db_conn().unwrap();
-    let user = User::get_user(id.clone(), &mut conn);
+    let user = User::get_user(user_id.clone(), &mut conn);
     let mut mission = Mission::new();
-    mission.id = "2".to_string();
+    mission.id = mission_id.to_string();
 
     return mission;
+}
+
+fn get_street_data() {
+    let url = format!("http://overpass.kumi.systems/api/interpreter?data=[out:json];(way[\"building\"](${});way[\"highway\"](${}););out geom;", );
+    Request::get("");
 }
