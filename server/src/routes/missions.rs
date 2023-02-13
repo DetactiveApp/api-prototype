@@ -21,7 +21,7 @@ pub async fn get_missions(params: Query<MissionParams>) -> Json<Vec<Mission>> {
     let mut response = Vec::new();
 
     for mission_id in 0..rng.gen_range(2..30) {
-        response.push(generate_mission(&params.0.id, &mission_id));
+        response.push(generate_mission(&params.id, &mission_id));
     }
 
     return Json(response);
@@ -37,6 +37,8 @@ pub fn generate_mission(user_id: &String, mission_id: &i32) -> Mission {
 }
 
 fn get_street_data() {
-    let url = format!("http://overpass.kumi.systems/api/interpreter?data=[out:json];(way[\"building\"](${});way[\"highway\"](${}););out geom;", );
-    Request::get("");
+    let bbox = 0;
+
+    let url = format!("http://overpass.kumi.systems/api/interpreter?data=[out:json];(way[\"building\"](${bbox});way[\"highway\"](${bbox}););out geom;");
+    Request::get(url);
 }

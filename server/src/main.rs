@@ -12,7 +12,7 @@ use std::net::SocketAddr;
 
 #[tokio::main]
 async fn main() {
-    println!("Storyhunter Gameserver {}", env!("CARGO_PKG_VERSION"));
+    println!("Detactive Gameserver {}", env!("CARGO_PKG_VERSION"));
 
     let app = Router::new()
         .route("/", get(root))

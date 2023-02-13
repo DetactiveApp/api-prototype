@@ -102,6 +102,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "detactive"
+version = "0.1.0"
+dependencies = [
+ "axum",
+ "rand",
+ "redis",
+ "serde",
+ "serde_json",
+ "tokio",
+ "uuid",
+]
+
+[[package]]
 name = "fnv"
 version = "1.0.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -569,19 +582,6 @@ checksum = "02e2d2db9033d13a1567121ddd7a095ee144db4e1ca1b1bda3419bc0da294ebd"
 dependencies = [
  "libc",
  "winapi",
-]
-
-[[package]]
-name = "storyhunter-server"
-version = "0.1.0"
-dependencies = [
- "axum",
- "rand",
- "redis",
- "serde",
- "serde_json",
- "tokio",
- "uuid",
 ]
 
 [[package]]
