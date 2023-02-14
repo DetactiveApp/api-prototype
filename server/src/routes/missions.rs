@@ -46,13 +46,15 @@ pub fn generate_mission(mission_id: &i32, way_data: &Vec<Coord>) -> Mission {
     }
 
     for i in 0..rng.gen_range(0..way_data.len()) {
-        mission.sequence.push(way_data[i]);
+        if rng.gen_bool(0.1) {
+            mission.sequence.push(way_data[i]);
+        }
     }
     return mission;
 }
 
 async fn get_way_data(latitude: f64, longitude: f64) -> Vec<Coord> {
-    let range: f64 = 0.0001;
+    let range: f64 = 0.003;
 
     let bbox_p1 = latitude - range;
     let bbox_p2 = longitude - range;
