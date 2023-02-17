@@ -5,6 +5,7 @@ use rand::Rng;
 
 use crate::types::{Coord, Mission, User};
 use crate::utils;
+use crate::utils::geo::get_geo_data;
 
 #[derive(Deserialize)]
 pub struct MissionParams {
@@ -19,7 +20,21 @@ pub async fn get_missions(params: Query<MissionParams>) -> Json<Vec<Mission>> {
     let mut conn = utils::db::user_db_conn().unwrap();
     let user = User::get_user(params.0.id.clone(), &mut conn);
 
-    let way_data = get_way_data(user.location.latitude, user.location.longitude).await;
+    let way_data_raw = get_geo_data(user.location.latitude, user.location.longitude).await;
+    let mut way_data: Vec<Coord> = Vec::new();
+
+    for element in way_data_raw["elements"].as_array().unwrap() {
+        if element["type"] != "way" {
+            continue;
+        };
+
+        for coord in element["geometry"].as_array().unwrap() {
+            way_data.push(Coord {
+                latitude: coord["lat"].as_f64().unwrap(),
+                longitude: coord["lon"].as_f64().unwrap(),
+            });
+        }
+    }
 
     let mut rng = rand::thread_rng();
     let mut response = Vec::new();
@@ -31,7 +46,6 @@ pub async fn get_missions(params: Query<MissionParams>) -> Json<Vec<Mission>> {
             response.push(mission);
         }
     }
-
     return Json(response);
 }
 
@@ -50,41 +64,6 @@ pub fn generate_mission(mission_id: &i32, way_data: &Vec<Coord>) -> Mission {
             mission.sequence.push(way_data[i]);
         }
     }
+
     return mission;
-}
-
-async fn get_way_data(latitude: f64, longitude: f64) -> Vec<Coord> {
-    let range: f64 = 0.003;
-
-    let bbox_p1 = latitude - range;
-    let bbox_p2 = longitude - range;
-    let bbox_p3 = latitude + range;
-    let bbox_p4 = longitude + range;
-
-    let bbox = format!("{bbox_p1}, {bbox_p2}, {bbox_p3}, {bbox_p4}");
-    let url = format!("http://overpass.kumi.systems/api/interpreter?data=[out:json];(way[\"building\"]({bbox});way[\"highway\"]({bbox}););out geom;");
-
-    let response = reqwest::get(url)
-        .await
-        .unwrap()
-        .json::<serde_json::Value>()
-        .await
-        .unwrap();
-
-    let mut way_data: Vec<Coord> = Vec::new();
-
-    for element in response["elements"].as_array().unwrap() {
-        if element["type"] != "way" {
-            continue;
-        };
-
-        for coord in element["geometry"].as_array().unwrap() {
-            way_data.push(Coord {
-                latitude: coord["lat"].as_f64().unwrap(),
-                longitude: coord["lon"].as_f64().unwrap(),
-            });
-        }
-    }
-
-    return way_data;
 }

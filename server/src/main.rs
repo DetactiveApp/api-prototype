@@ -19,7 +19,8 @@ async fn main() {
         .route("/user/register", get(routes::user::register))
         .route("/user", get(routes::user::get_user))
         .route("/user", patch(routes::user::patch_user))
-        .route("/missions", get(routes::missions::get_missions));
+        .route("/missions", get(routes::missions::get_missions))
+        .route("/map", get(routes::map::get_map));
 
     let addr = SocketAddr::from(([0, 0, 0, 0], 8080));
     axum::Server::bind(&addr)
