@@ -1,6 +1,4 @@
-pub async fn get_geo_data(latitude: f64, longitude: f64) -> serde_json::Value {
-    let range: f64 = 0.003;
-
+pub async fn get_geo_data(latitude: f64, longitude: f64, range: f64) -> serde_json::Value {
     let bbox_p1 = latitude - range;
     let bbox_p2 = longitude - range;
     let bbox_p3 = latitude + range;

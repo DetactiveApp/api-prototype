@@ -20,7 +20,7 @@ pub async fn get_missions(params: Query<MissionParams>) -> Json<Vec<Mission>> {
     let mut conn = utils::db::user_db_conn().unwrap();
     let user = User::get_user(params.0.id.clone(), &mut conn);
 
-    let way_data_raw = get_geo_data(user.location.latitude, user.location.longitude).await;
+    let way_data_raw = get_geo_data(user.location.latitude, user.location.longitude, 0.003).await;
     let mut way_data: Vec<Coord> = Vec::new();
 
     for element in way_data_raw["elements"].as_array().unwrap() {
