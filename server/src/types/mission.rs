@@ -10,6 +10,7 @@ pub struct Mission {
     pub timeslot: u32,
     pub description: String,
     pub sequence: Vec<Coord>,
+    pub total_distance: i32,
 }
 
 impl Mission {
@@ -22,6 +23,7 @@ impl Mission {
             timestamp: 0,
             description: String::new(),
             sequence: vec![],
+            total_distance: 0,
         };
     }
 }
