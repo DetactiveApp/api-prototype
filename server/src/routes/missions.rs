@@ -29,6 +29,10 @@ pub async fn get_missions(params: Query<MissionParams>) -> Json<Vec<Mission>> {
         };
 
         for coord in element["geometry"].as_array().unwrap() {
+            if element["tags"]["building"] == "yes" {
+                continue;
+            }
+
             way_data.push(Coord {
                 latitude: coord["lat"].as_f64().unwrap(),
                 longitude: coord["lon"].as_f64().unwrap(),
