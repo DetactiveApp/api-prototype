@@ -7,12 +7,10 @@ on:
     branches: [ "release" ]
 
 jobs:
-  check-bats-version:
-    runs-on:
-      labels: api-server
   build:
 
-    runs-on: ubuntu-latest
+    runs-on:
+      labels: api-server
 
     steps:
     - uses: actions/checkout@v3
