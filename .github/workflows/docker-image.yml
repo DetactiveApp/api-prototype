@@ -18,6 +18,9 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt install docker-compose -y
+        
+    - name: open ports
+      run: sudo ufw allow 8080
     
     - name: start docker containers
       run: docker-compose -f "docker-compose.yml" up -d --build
