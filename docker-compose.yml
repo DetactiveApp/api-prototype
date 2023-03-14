@@ -1,6 +1,7 @@
 version: '3.3'
 services:
   user-db:
+    restart: always
     container_name: user-db
     image: redis
     ports:
@@ -9,6 +10,7 @@ services:
       - cache:/user-db
 
   api_server:
+    restart: always
     container_name: api_server
     build: server
     ports:
