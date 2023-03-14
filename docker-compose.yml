@@ -8,8 +8,8 @@ services:
     volumes:
       - cache:/user-db
 
-  server:
-    container_name: server
+  api_server:
+    container_name: api_server
     build: server
     ports:
       - "8080:8080"
