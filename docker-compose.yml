@@ -10,7 +10,7 @@ services:
 
   server:
     container_name: server
-    build: /server
+    build: /
     ports:
       - "8080:8080"
 
