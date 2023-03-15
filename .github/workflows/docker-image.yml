@@ -9,7 +9,7 @@ on:
 jobs:
   build:
     runs-on:
-      labels: api-server
+      labels: api_server
 
     steps:
     - uses: actions/checkout@v3
