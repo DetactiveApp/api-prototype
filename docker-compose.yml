@@ -1,18 +1,19 @@
 version: '3.3'
 services:
   user-db:
-    restart: always
     container_name: user-db
     image: redis
+    restart: always
     ports:
       - "6379:6379"
     volumes:
       - cache:/user-db
 
   api_server:
-    restart: always
     container_name: api_server
     build: api_server
+    restart: always
+    network_mode: 'host'
     ports:
       - "8080:8080"
 
