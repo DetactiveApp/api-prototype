@@ -16,9 +16,9 @@ jobs:
     
     - name: install dependencies
       run: |
-        sudo docker image prune -a
         sudo apt-get update
         sudo apt install docker-compose -y
+        sudo docker image prune -a
 
     - name: open ports
       run: |
