@@ -5,7 +5,7 @@ use redis::Commands;
 use redis::Connection;
 
 pub fn user_db_conn() -> RedisResult<Connection> {
-    let _client = redis::Client::open("redis://127.0.0.1:6379/");
+    let _client = redis::Client::open("redis://0.0.0.0:6379/");
     match _client {
         Ok(client) => return client.get_connection(),
         Err(err) => return Err(err),
@@ -14,7 +14,7 @@ pub fn user_db_conn() -> RedisResult<Connection> {
 
 #[allow(dead_code)]
 pub fn mission_db_conn() -> RedisResult<Connection> {
-    let _client = redis::Client::open("redis://127.0.0.1:6380/");
+    let _client = redis::Client::open("redis://0.0.0.0:6379/");
     match _client {
         Ok(client) => return client.get_connection(),
         Err(err) => return Err(err),
