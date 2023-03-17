@@ -1,8 +1,21 @@
 FROM rust:latest as build
 
-EXPOSE 8080
+RUN USER=root cargo new --bin detactive-gameserver
+WORKDIR /detactive-gameserver
 
-COPY . .
+COPY ./Cargo.lock ./Cargo.lock
+COPY ./Cargo.toml ./Cargo.toml
+
+RUN cargo build --release
+RUN rm src/*.rs
+
+COPY ./src ./src
+
+RUN rm ./target/release/deps/detactive-gameserver*
 RUN cargo build --release
 
-CMD ["./target/release/detactive-gameserver"]
+FROM rust:latest
+
+COPY --from=build /detactive-gameserver/target/release/detactive-gameserver .
+
+CMD ["./detactive-gameserver"]
