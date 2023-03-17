@@ -11,7 +11,7 @@ RUN rm src/*.rs
 
 COPY ./src ./src
 
-RUN rm ./target/release/deps/detactive-gameserver*
+RUN rm ./target/release/deps/detactive_gameserver*
 RUN cargo build --release
 
 FROM rust:latest
