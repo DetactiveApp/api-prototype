@@ -36,6 +36,7 @@ pub async fn get_missions(params: Query<MissionParams>) -> Json<Vec<Mission>> {
             way_data.push(Coord {
                 latitude: coord["lat"].as_f64().unwrap(),
                 longitude: coord["lon"].as_f64().unwrap(),
+                action: None,
             });
         }
     }
@@ -83,6 +84,7 @@ pub fn generate_mission(mission_id: &i32, way_data: &Vec<Coord>) -> Mission {
             .unwrap_or(&Coord {
                 latitude: 0.0,
                 longitude: 0.0,
+                action: None,
             })
             .angle(way_data[i]);
 
@@ -92,6 +94,7 @@ pub fn generate_mission(mission_id: &i32, way_data: &Vec<Coord>) -> Mission {
             .unwrap_or(&Coord {
                 latitude: 0.0,
                 longitude: 0.0,
+                action: None,
             })
             .distance(way_data[i]);
 
