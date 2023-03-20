@@ -1,11 +1,7 @@
-pub async fn get_geo_data(latitude: f64, longitude: f64, range: f64) -> serde_json::Value {
-    let bbox_p1 = latitude - range;
-    let bbox_p2 = longitude - range;
-    let bbox_p3 = latitude + range;
-    let bbox_p4 = longitude + range;
-
-    let bbox = format!("{bbox_p1}, {bbox_p2}, {bbox_p3}, {bbox_p4}");
-    let url = format!("http://overpass.kumi.systems/api/interpreter?data=[out:json];(way[\"building\"]({bbox});way[\"highway\"]({bbox}););out geom;");
+pub async fn get_geo_data(latitude: f64, longitude: f64, radius_meter: i32) -> serde_json::Value {
+    let feature_limits = 50;
+    // Tilequery Mapbox API
+    let url = format!("https://api.mapbox.com/v4/mapbox.mapbox-streets-v8/tilequery/{latitude},{longitude}.json?radius={radius_meter}&limit={feature_limits}&dedupe&access_token=pk.eyJ1IjoibWF4eDE5IiwiYSI6ImNsNXBiMjAzODFsbHUzY3BheTRlb3VsZzIifQ.fdO_y9jgP_obAwt30rQMXQ");
 
     let response = reqwest::get(url)
         .await
