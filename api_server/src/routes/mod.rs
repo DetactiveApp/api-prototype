@@ -1,2 +1,2 @@
-pub mod missions;
+pub mod stories;
 pub mod user;

@@ -2,7 +2,7 @@ use crate::types::Coord;
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize)]
-pub struct Mission {
+pub struct Story {
     pub id: String,
     pub name: String,
     pub points: i32,
@@ -13,9 +13,9 @@ pub struct Mission {
     pub total_distance: i32,
 }
 
-impl Mission {
+impl Story {
     pub fn new() -> Self {
-        return Mission {
+        return Story {
             id: String::new(),
             name: String::new(),
             points: 0,
