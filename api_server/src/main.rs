@@ -4,9 +4,12 @@ mod utils;
 
 use axum::{
     http::StatusCode,
-    routing::{get, patch},
+    routing::{get, patch, post},
     Router,
 };
+
+use reqwest::Method;
+use tower_http::cors::{Any, CorsLayer};
 
 use std::net::SocketAddr;
 
@@ -14,12 +17,21 @@ use std::net::SocketAddr;
 async fn main() {
     println!("Detactive Gameserver {}", env!("CARGO_PKG_VERSION"));
 
+    let cors = CorsLayer::new()
+        .allow_methods([Method::POST, Method::PATCH, Method::GET])
+        .allow_origin(Any);
+
     let app = Router::new()
         .route("/", get(root))
         .route("/user/register", get(routes::user::register))
         .route("/user", get(routes::user::get_user))
         .route("/user", patch(routes::user::patch_user))
-        .route("/stories", get(routes::stories::get_stories));
+        //.route("/stories", get(routes::stories::get_stories))
+        .route("/blueprint", get(routes::blueprint::get))
+        .route("/blueprint", post(routes::blueprint::post))
+        .route("/blueprint", patch(routes::blueprint::patch))
+        .route("/blueprint/list", get(routes::blueprint::get_list))
+        .layer(cors);
 
     let addr = SocketAddr::from(([0, 0, 0, 0], 8080));
     axum::Server::bind(&addr)

@@ -1,8 +1,10 @@
+mod blueprint;
 mod coord;
 mod location;
 mod story;
 mod user;
 
+pub use blueprint::Blueprint;
 pub use coord::Coord;
 pub use location::Location;
 pub use story::Story;
