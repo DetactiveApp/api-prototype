@@ -9,6 +9,15 @@ services:
     volumes:
       - cache:/user-db
 
+  blueprint-db:
+    container_name: blueprint-db
+    image: redis
+    restart: always
+    ports:
+      - "6380:6380"
+    volumes:
+      - cache:/blueprint-db
+
   api_server:
     container_name: api_server
     build: api_server
