@@ -12,17 +12,9 @@ pub struct Blueprint {
 }
 
 impl Blueprint {
-    pub fn new(id: &str) -> Self {
-        return Blueprint {
-            metadata: Value::Null,
-            nodes: Value::Null,
-            edges: Value::Null,
-        };
-    }
-
     pub fn to_db(&mut self, conn: &mut Connection) {
         let id = Uuid::new_v4().to_string();
-        self.metadata = serde_json::json!({ "id": &id });
+        self.metadata = serde_json::json!({ "id": &id, "tags": &self.metadata.get("tags") });
 
         let blueprint_json = serde_json::to_string(self).unwrap();
         () = conn.set(&id, blueprint_json).unwrap();

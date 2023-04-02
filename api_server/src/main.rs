@@ -4,7 +4,7 @@ mod utils;
 
 use axum::{
     http::StatusCode,
-    routing::{get, patch, post},
+    routing::{delete, get, patch, post},
     Router,
 };
 
@@ -43,7 +43,8 @@ async fn main() {
         .route("/blueprint", get(routes::blueprint::get))
         .route("/blueprint", post(routes::blueprint::post))
         .route("/blueprint", patch(routes::blueprint::patch))
-        .route("/blueprint/list", get(routes::blueprint::get_list))
+        .route("/blueprint", delete(routes::blueprint::delete))
+        .route("/blueprint/labels", get(routes::blueprint::get_labels))
         .layer(cors);
 
     let addr = SocketAddr::from(([0, 0, 0, 0], 8080));
