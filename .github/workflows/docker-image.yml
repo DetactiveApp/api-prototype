@@ -18,7 +18,7 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt install docker-compose -y
-        sudo docker image prune -a
+        sudo docker rmi api_server -f
 
     - name: open ports
       run: |
