@@ -26,7 +26,7 @@ pub struct PostBlueprintParams {
     blueprint: Blueprint,
 }
 
-pub async fn post(Json(body): Json<PostBlueprintParams>) -> StatusCode {
+pub async fn post(Json(mut body): Json<PostBlueprintParams>) -> StatusCode {
     let mut conn: Connection = match utils::db::blueprint_db_conn() {
         Ok(conn) => conn,
         Err(err) => {
@@ -35,11 +35,9 @@ pub async fn post(Json(body): Json<PostBlueprintParams>) -> StatusCode {
         }
     };
 
-    println!("ID: {}", body.blueprint.metadata.clone().unwrap().id);
-
     body.blueprint.to_db(&mut conn);
 
-    Blueprint::get_blueprint(&body.blueprint.metadata.clone().unwrap().id, &mut conn);
+    //Blueprint::get_blueprint(&body.blueprint.metadata.clone().unwrap().id, &mut conn);
     return StatusCode::OK;
 }
 

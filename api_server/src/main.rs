@@ -8,18 +8,31 @@ use axum::{
     Router,
 };
 
-use reqwest::Method;
+use reqwest::{header, Method};
 use tower_http::cors::{Any, CorsLayer};
 
-use std::net::SocketAddr;
+use std::{net::SocketAddr, time::Duration};
 
 #[tokio::main]
 async fn main() {
     println!("Detactive Gameserver {}", env!("CARGO_PKG_VERSION"));
 
     let cors = CorsLayer::new()
-        .allow_methods([Method::POST, Method::PATCH, Method::GET])
-        .allow_origin(Any);
+        .allow_headers(vec![
+            header::ACCEPT,
+            header::ACCEPT_LANGUAGE,
+            header::AUTHORIZATION,
+            header::CONTENT_LANGUAGE,
+            header::CONTENT_TYPE,
+        ])
+        .allow_methods(vec![
+            Method::POST,
+            Method::GET,
+            Method::PATCH,
+            Method::DELETE,
+        ])
+        .allow_origin(Any)
+        .max_age(Duration::from_secs(60 * 60));
 
     let app = Router::new()
         .route("/", get(root))
