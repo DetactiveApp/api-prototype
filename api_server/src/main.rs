@@ -4,22 +4,35 @@ mod utils;
 
 use axum::{
     http::StatusCode,
-    routing::{get, patch, post},
+    routing::{delete, get, patch, post},
     Router,
 };
 
-use reqwest::Method;
+use reqwest::{header, Method};
 use tower_http::cors::{Any, CorsLayer};
 
-use std::net::SocketAddr;
+use std::{net::SocketAddr, time::Duration};
 
 #[tokio::main]
 async fn main() {
     println!("Detactive Gameserver {}", env!("CARGO_PKG_VERSION"));
 
     let cors = CorsLayer::new()
-        .allow_methods([Method::POST, Method::PATCH, Method::GET])
-        .allow_origin(Any);
+        .allow_headers(vec![
+            header::ACCEPT,
+            header::ACCEPT_LANGUAGE,
+            header::AUTHORIZATION,
+            header::CONTENT_LANGUAGE,
+            header::CONTENT_TYPE,
+        ])
+        .allow_methods(vec![
+            Method::POST,
+            Method::GET,
+            Method::PATCH,
+            Method::DELETE,
+        ])
+        .allow_origin(Any)
+        .max_age(Duration::from_secs(60 * 60));
 
     let app = Router::new()
         .route("/", get(root))
@@ -30,7 +43,8 @@ async fn main() {
         .route("/blueprint", get(routes::blueprint::get))
         .route("/blueprint", post(routes::blueprint::post))
         .route("/blueprint", patch(routes::blueprint::patch))
-        .route("/blueprint/list", get(routes::blueprint::get_list))
+        .route("/blueprint", delete(routes::blueprint::delete))
+        .route("/blueprint/labels", get(routes::blueprint::get_labels))
         .layer(cors);
 
     let addr = SocketAddr::from(([0, 0, 0, 0], 8080));
