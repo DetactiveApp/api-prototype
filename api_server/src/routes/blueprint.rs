@@ -13,7 +13,10 @@ pub struct GetBlueprintParams {
 pub async fn get(params: Query<GetBlueprintParams>) -> Result<Json<Blueprint>, StatusCode> {
     let mut conn: Connection = match utils::db::blueprint_db_conn() {
         Ok(conn) => conn,
-        Err(_) => return Err(StatusCode::INTERNAL_SERVER_ERROR),
+        Err(err) => {
+            println!("{}", err);
+            return Err(StatusCode::INTERNAL_SERVER_ERROR);
+        }
     };
 
     if !conn.exists(&params.id).unwrap_or(false) {
@@ -33,7 +36,10 @@ pub struct PostBlueprintParams {
 pub async fn post(Json(mut body): Json<PostBlueprintParams>) -> Result<Json<String>, StatusCode> {
     let mut conn: Connection = match utils::db::blueprint_db_conn() {
         Ok(conn) => conn,
-        Err(_) => return Err(StatusCode::INTERNAL_SERVER_ERROR),
+        Err(err) => {
+            println!("{}", err);
+            return Err(StatusCode::INTERNAL_SERVER_ERROR);
+        }
     };
 
     body.blueprint.to_db(&mut conn);
@@ -48,7 +54,10 @@ pub async fn patch(
 ) -> StatusCode {
     let mut conn: Connection = match utils::db::blueprint_db_conn() {
         Ok(conn) => conn,
-        Err(_) => return StatusCode::INTERNAL_SERVER_ERROR,
+        Err(err) => {
+            println!("{}", err);
+            return StatusCode::INTERNAL_SERVER_ERROR;
+        }
     };
 
     if !conn.exists(&params.id).unwrap_or(false) {
@@ -63,7 +72,10 @@ pub async fn patch(
 pub async fn delete(params: Query<GetBlueprintParams>) -> StatusCode {
     let mut conn: Connection = match utils::db::blueprint_db_conn() {
         Ok(conn) => conn,
-        Err(_) => return StatusCode::INTERNAL_SERVER_ERROR,
+        Err(err) => {
+            println!("{}", err);
+            return StatusCode::INTERNAL_SERVER_ERROR;
+        }
     };
 
     if !conn.exists(&params.id).unwrap_or(false) {
@@ -81,7 +93,10 @@ pub async fn delete(params: Query<GetBlueprintParams>) -> StatusCode {
 pub async fn get_labels() -> Result<Json<Vec<Value>>, StatusCode> {
     let mut conn: Connection = match utils::db::blueprint_db_conn() {
         Ok(conn) => conn,
-        Err(_) => return Err(StatusCode::INTERNAL_SERVER_ERROR),
+        Err(err) => {
+            println!("{}", err);
+            return Err(StatusCode::INTERNAL_SERVER_ERROR);
+        }
     };
 
     let keys: Vec<String> = conn.keys("*").unwrap();

@@ -12,9 +12,17 @@ services:
   blueprint-db:
     container_name: blueprint-db
     image: redis
+    command:
+      [
+        "redis-server",
+        "--bind",
+        "blueprint-db",
+        "--port",
+        "6380"
+      ]
     restart: always
     ports:
-      - "6380:6379"
+      - "6380:6380"
     volumes:
       - cache:/blueprint-db
 
