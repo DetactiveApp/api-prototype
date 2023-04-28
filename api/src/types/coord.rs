@@ -6,7 +6,6 @@ use serde::{Deserialize, Serialize};
 pub struct Coord {
     pub latitude: f64,
     pub longitude: f64,
-    pub action: Option<f64>,
 }
 
 impl Coord {

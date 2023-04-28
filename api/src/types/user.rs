@@ -1,14 +1,11 @@
 use redis::{Commands, Connection};
 use serde::{Deserialize, Serialize};
 
-use crate::types::Coord;
-
 #[derive(Serialize, Deserialize)]
 pub struct User {
     pub id: String,
     pub name: String,
     pub points: i32,
-    pub location: Coord,
 }
 
 impl User {
@@ -17,11 +14,6 @@ impl User {
             id: id,
             name: name,
             points: 0,
-            location: Coord {
-                latitude: 0.0,
-                longitude: 0.0,
-                action: None,
-            },
         };
     }
 

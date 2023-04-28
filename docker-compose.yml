@@ -1,34 +1,17 @@
 version: '3.3'
 services:
-  user-db:
-    container_name: user-db
-    image: redis
-    restart: always
-    ports:
-      - "6379:6379"
-    volumes:
-      - cache:/user-db
-
-  blueprint-db:
-    container_name: blueprint-db
-    image: redis
-    command:
-      [
-        "redis-server",
-        "--bind",
-        "blueprint-db",
-        "--port",
-        "6380"
-      ]
+  db:
+    container_name: db
+    image: postgres
     restart: always
     ports:
       - "6380:6380"
     volumes:
-      - cache:/blueprint-db
+      - cache:/db
 
-  api_server:
-    container_name: api_server
-    build: api_server
+  api:
+    container_name: api
+    build: api
     restart: always
     ports:
       - "8080:8080"
