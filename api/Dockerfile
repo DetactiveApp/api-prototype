@@ -11,7 +11,7 @@ RUN rm src/*.rs
 
 COPY ./src ./src
 
-RUN rm ./target/release/deps/api*
+RUN rm ./target/release/deps/detactive_api*
 RUN cargo build --release
 
 FROM rust:latest
