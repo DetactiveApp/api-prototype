@@ -37,10 +37,7 @@ async fn main() {
     let sticker_db_pool: PgPool = utils::db::sticker_pool().await;
 
     let app = Router::new()
-        .nest(
-            &format!("/api/v{}/", &env!("CARGO_PKG_VERSION")[..1]),
-            api(),
-        )
+        .nest(&format!("/api/v{}", &env!("CARGO_PKG_VERSION")[..1]), api())
         .layer(Extension(detactive_db_pool))
         .layer(Extension(sticker_db_pool))
         .layer(cors);

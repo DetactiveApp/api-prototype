@@ -11,6 +11,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: b814dc1ee44c62b78d1b48e3ff2a43effee817b234fdc0de75db05a5013aaecf
+
   api:
     container_name: api
     build: api
