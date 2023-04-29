@@ -10,6 +10,7 @@ RUN cargo build --release
 RUN rm src/*.rs
 
 COPY ./src ./src
+COPY ./db ./db
 
 RUN rm ./target/release/deps/detactive_api*
 RUN cargo build --release
