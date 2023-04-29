@@ -1,38 +1,19 @@
 version: '3.3'
 services:
-  user-db:
-    container_name: user-db
-    image: redis
+  db:
+    container_name: db
+    image: postgres
     restart: always
     ports:
-      - "6379:6379"
+      - "5432:5432"
     volumes:
-      - cache:/user-db
-
-  blueprint-db:
-    container_name: blueprint-db
-    image: redis
-    command:
-      [
-        "redis-server",
-        "--bind",
-        "blueprint-db",
-        "--port",
-        "6380"
-      ]
-    restart: always
-    ports:
-      - "6380:6380"
-    volumes:
-      - cache:/blueprint-db
-
-  api_server:
-    container_name: api_server
-    build: api_server
+      - ./api/db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: b814dc1ee44c62b78d1b48e3ff2a43effee817b234fdc0de75db05a5013aaecf
+  api:
+    container_name: api
+    build: api
     restart: always
     ports:
       - "8080:8080"
-
-volumes:
-  cache:
-    driver: local

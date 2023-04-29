@@ -1,5 +1,4 @@
-const ACCESS_TOKEN: &str =
-    "pk.eyJ1IjoibWF4eDE5IiwiYSI6ImNsNXBiMjAzODFsbHUzY3BheTRlb3VsZzIifQ.fdO_y9jgP_obAwt30rQMXQ";
+/*
 const FEATURE_LIMIT: i32 = 50;
 
 pub async fn get_geo_context(
@@ -18,3 +17,4 @@ pub async fn get_geo_context(
 
     return response;
 }
+ */
