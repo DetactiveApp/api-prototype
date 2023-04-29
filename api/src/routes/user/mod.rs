@@ -2,8 +2,8 @@ use axum::{routing::post, Router};
 
 mod new;
 
-use new::new;
+use new::request;
 
-pub fn router() -> Router {
-    return Router::new().route("/new", post(new));
+pub fn user_router() -> Router {
+    return Router::new().route("/new", post(request));
 }

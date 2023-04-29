@@ -9,6 +9,8 @@ use tower_http::cors::{Any, CorsLayer};
 
 use std::{net::SocketAddr, time::Duration};
 
+use crate::routes::api;
+
 #[tokio::main]
 async fn main() {
     println!("Detactive API v{}", env!("CARGO_PKG_VERSION"));
@@ -30,11 +32,12 @@ async fn main() {
         .allow_origin(Any)
         .max_age(Duration::from_secs(60 * 60));
 
-    let api = Router::new();
-
     let app = Router::new()
         //api
-        .nest(&format!("/api/v{}/", &env!("CARGO_PKG_VERSION")[..1]), api)
+        .nest(
+            &format!("/api/v{}/", &env!("CARGO_PKG_VERSION")[..1]),
+            api(),
+        )
         .layer(cors);
 
     let addr = SocketAddr::from(([0, 0, 0, 0], 8080));
