@@ -41,14 +41,16 @@ CREATE TABLE player_story_steps (
   finished_at TIMESTAMP,
   latitude DOUBLE PRECISION NOT NULL,
   longitude DOUBLE PRECISION NOT NULL,
+  was_waypoint_a_fallback BOOLEAN NOT NULL DEFAULT FALSE,
   PRIMARY KEY(player_story_uuid, step_uuid)
 );
 
 CREATE TABLE steps (
   uuid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-  description VARCHAR(120) NOT NULL,
+  story_uuid UUID NOT NULL,
+  waypoint_uuid UUID,
+  description VARCHAR(120),
   medium_type MEDIUMTYPE NOT NULL,
-  place_type VARCHAR(30),
   src TEXT NOT NULL,
   title VARCHAR(120) NOT NULL
 );
@@ -57,6 +59,13 @@ CREATE TABLE stories (
   uuid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   description VARCHAR(120) NOT NULL,
   title VARCHAR(120) NOT NULL
+);
+
+CREATE TABLE waypoints (
+  uuid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  max_distance SMALLINT NOT NULL,
+  min_distance SMALLINT NOT NULL,
+  place_type VARCHAR(30)
 );
 
 /***************************************************
@@ -97,4 +106,16 @@ ALTER TABLE player_story_steps
 ADD CONSTRAINT fk_step
 FOREIGN KEY (step_uuid)
 REFERENCES steps(uuid)
+ON DELETE CASCADE;
+
+ALTER TABLE steps
+ADD CONSTRAINT fk_story
+FOREIGN KEY (story_uuid)
+REFERENCES stories(uuid)
+ON DELETE CASCADE;
+
+ALTER TABLE steps
+ADD CONSTRAINT fk_waypoint
+FOREIGN KEY (waypoint_uuid)
+REFERENCES waypoints(uuid)
 ON DELETE CASCADE;

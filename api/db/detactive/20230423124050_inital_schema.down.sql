@@ -14,11 +14,15 @@ ALTER TABLE player_story_steps
 DROP CONSTRAINT fk_player_story, 
 DROP CONSTRAINT fk_step;
 
+ALTER TABLE steps
+DROP CONSTRAINT fk_story, 
+DROP CONSTRAINT fk_waypoint;
+
 /***************************************************
 **----------------- REMOVE TABLES ----------------**
 ***************************************************/
 
-DROP TABLE decisions, players, player_stories, player_story_steps, steps, stories;
+DROP TABLE decisions, players, player_stories, player_story_steps, steps, stories, waypoints;
 
 /***************************************************
 **-------------- REMOVE CUSTOM TYPES -------------**
