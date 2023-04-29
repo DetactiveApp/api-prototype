@@ -11,7 +11,7 @@ tokio =  { version = "1.23.0", features = ["full"] }
 reqwest = { version = "0.11.14", features= ["json"] }
 tower-http = { version = "0.4.0", features= ["full"] }
 serde = { version = "1.0.152", features = ["derive"] }
-sqlx = { version = "0.6.3", features = [ "runtime-tokio-rustls", "postgres", "macros", "json", "chrono", "uuid" ] }
+sqlx = { version = "0.6.3", features = [ "runtime-async-std-native-tls", "postgres", "macros", "json", "chrono", "uuid" ] }
 
 axum = "0.6.1"
 rand = "0.8.5"
