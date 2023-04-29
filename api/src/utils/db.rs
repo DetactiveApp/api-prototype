@@ -10,7 +10,7 @@ pub async fn detactive_pool() -> PgPool {
         .await
         .unwrap();
 
-    sqlx::migrate!("./db/detactive").run(&pool).await.unwrap();
+    sqlx::migrate!("db/detactive").run(&pool).await.unwrap();
 
     return pool;
 }
@@ -22,7 +22,7 @@ pub async fn sticker_pool() -> PgPool {
         .await
         .unwrap();
 
-    sqlx::migrate!("./db/sticker").run(&pool).await.unwrap();
+    sqlx::migrate!("db/sticker").run(&pool).await.unwrap();
 
     return pool;
 }
