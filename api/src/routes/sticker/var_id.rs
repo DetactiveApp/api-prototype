@@ -12,7 +12,14 @@ pub async fn request(Path(path): Path<String>) -> Result<String, StatusCode> {
         .fetch_one(&db)
         .await
     {
-        Ok(sticker) => return Ok(sticker.get("redirect_url")),
+        Ok(sticker) => {
+            sqlx::query("INSERT INTO sticker_hits (sticker_id) VALUES ($1)")
+                .bind(path)
+                .execute(&db)
+                .await
+                .unwrap();
+            return Ok(sticker.get("redirect_url"));
+        }
         Err(_) => return Err(StatusCode::NOT_FOUND),
     };
 }
