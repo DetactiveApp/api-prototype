@@ -2,14 +2,11 @@ mod routes;
 mod types;
 mod utils;
 
-use axum::Router;
-
+use crate::{routes::api, utils::db};
+use axum::{Extension, Router};
 use reqwest::{header, Method};
-use tower_http::cors::{Any, CorsLayer};
-
 use std::{net::SocketAddr, time::Duration};
-
-use crate::routes::api;
+use tower_http::cors::{Any, CorsLayer};
 
 #[tokio::main]
 async fn main() {
@@ -32,8 +29,16 @@ async fn main() {
         .allow_origin(Any)
         .max_age(Duration::from_secs(60 * 60));
 
+    let detactive_db_pool = db::detactive_pool().await;
+    let sticker_db_pool = db::sticker_pool().await;
+
     let app = Router::new()
-        .nest(&format!("/api/v{}", &env!("CARGO_PKG_VERSION")[..1]), api())
+        .nest(
+            &format!("/api/v{}", &env!("CARGO_PKG_VERSION")[..1]),
+            api().await,
+        )
+        .layer(Extension(detactive_db_pool))
+        .layer(Extension(sticker_db_pool))
         .layer(cors);
 
     let addr = SocketAddr::from(([0, 0, 0, 0], 8080));

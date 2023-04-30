@@ -6,11 +6,10 @@ services:
     restart: always
     ports:
       - "5432:5432"
+    env_file:
+      - .env
     volumes:
       - ./api/db/init.sql:/docker-entrypoint-initdb.d/init.sql
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: b814dc1ee44c62b78d1b48e3ff2a43effee817b234fdc0de75db05a5013aaecf
 
   api:
     container_name: api
@@ -18,7 +17,5 @@ services:
     restart: always
     ports:
       - "8080:8080"
-      
-volumes:
-  cache:
-    driver: local
+    env_file:
+      - .env

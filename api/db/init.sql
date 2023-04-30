@@ -1,2 +1,1 @@
-CREATE DATABASE detactive;
 CREATE DATABASE sticker;

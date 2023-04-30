@@ -4,6 +4,6 @@ mod new;
 
 use new::request;
 
-pub fn user_router() -> Router {
+pub async fn user_router() -> Router {
     return Router::new().route("/new", post(request));
 }

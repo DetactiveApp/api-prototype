@@ -1,24 +1,30 @@
 use sqlx::postgres::{PgPool, PgPoolOptions};
-
-const DETACTIVE_DB: &str = "postgresql://postgres:b814dc1ee44c62b78d1b48e3ff2a43effee817b234fdc0de75db05a5013aaecf@127.0.0.1:5432/detactive";
-const STICKER_DB: &str = "postgresql://postgres:b814dc1ee44c62b78d1b48e3ff2a43effee817b234fdc0de75db05a5013aaecf@127.0.0.1/sticker";
+use std::env;
 
 pub async fn detactive_pool() -> PgPool {
     let pool = PgPoolOptions::new()
-        .max_connections(5)
-        .connect(DETACTIVE_DB)
+        .max_connections(100)
+        .connect(&env::var("DETACTIVE_DB_URL").expect("Could not find DETACTIVE_DB_URL."))
         .await
-        .unwrap();
-    sqlx::migrate!("db/detactive").run(&pool).await.unwrap();
+        .expect("Error during detactive-db connection pool initialization.");
+
+    sqlx::migrate!("db/detactive")
+        .run(&pool)
+        .await
+        .expect("Error during migrating data to detactive-db.");
     return pool;
 }
 
 pub async fn sticker_pool() -> PgPool {
     let pool = PgPoolOptions::new()
-        .max_connections(5)
-        .connect(STICKER_DB)
+        .max_connections(100)
+        .connect(&env::var("STICKER_DB_URL").expect("Could not find STICKER_DB_URL."))
         .await
-        .unwrap();
-    sqlx::migrate!("db/sticker").run(&pool).await.unwrap();
+        .expect("Error during sticker-db connection pool initialization.");
+
+    sqlx::migrate!("db/sticker")
+        .run(&pool)
+        .await
+        .expect("Error during migrating data to sticker-db.");
     return pool;
 }

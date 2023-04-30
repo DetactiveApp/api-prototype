@@ -11,9 +11,9 @@ pub async fn router() -> StatusCode {
     return StatusCode::NO_CONTENT;
 }
 
-pub fn api() -> Router {
+pub async fn api() -> Router {
     return Router::new()
         .route("/", get(router))
-        .nest("/user", user_router())
-        .nest("/sticker", sticker_router());
+        .nest("/user", user_router().await)
+        .nest("/sticker", sticker_router().await);
 }
