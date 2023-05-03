@@ -12,6 +12,8 @@ reqwest = { version = "0.11.14", features= ["json"] }
 tower-http = { version = "0.4.0", features= ["full"] }
 serde = { version = "1.0.152", features = ["derive"] }
 sqlx = { version = "0.6.3", features = [ "runtime-tokio-native-tls", "postgres", "macros", "json", "chrono", "uuid" ] }
+axum-server = { version = "0.4.7", features = ["tls-rustls"] }
+rustls-acme = { version = "0.6.0", features = ["axum"] }
 
 axum = "0.6.1"
 rand = "0.8.5"

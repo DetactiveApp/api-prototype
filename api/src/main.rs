@@ -2,42 +2,40 @@ mod routes;
 mod types;
 mod utils;
 
-use crate::routes::api;
+use std::{net::SocketAddr, path::PathBuf, sync::Arc};
+
+use crate::{routes::api, utils::cors};
 use axum::Router;
-use reqwest::{header, Method};
-use std::{net::SocketAddr, time::Duration};
-use tower_http::cors::{Any, CorsLayer};
+use rustls_acme::{caches::DirCache, futures_rustls::rustls::ServerConfig, AcmeConfig};
 
 #[tokio::main]
 async fn main() {
     println!("Detactive API v{}", env!("CARGO_PKG_VERSION"));
 
-    let cors = CorsLayer::new()
-        .allow_headers(vec![
-            header::ACCEPT,
-            header::ACCEPT_LANGUAGE,
-            header::AUTHORIZATION,
-            header::CONTENT_LANGUAGE,
-            header::CONTENT_TYPE,
-        ])
-        .allow_methods(vec![
-            Method::POST,
-            Method::GET,
-            Method::PATCH,
-            Method::DELETE,
-        ])
-        .allow_origin(Any)
-        .max_age(Duration::from_secs(60 * 60));
+    let state = AcmeConfig::new(vec!["test-api.detactive.de"])
+        .contact(vec!["mailto: max@maxbeier.dev"])
+        .cache_option(Some(PathBuf::new().clone()).map(DirCache::new))
+        .directory_lets_encrypt(true)
+        .state();
+
+    let rustls_config = ServerConfig::builder()
+        .with_safe_defaults()
+        .with_no_client_auth()
+        .with_cert_resolver(state.resolver());
+
+    let acceptor = state.axum_acceptor(Arc::new(rustls_config));
+
+    let addr = SocketAddr::from(([0, 0, 0, 0], 8080));
 
     let app = Router::new()
         .nest(
             &format!("/api/v{}", &env!("CARGO_PKG_VERSION")[..1]),
             api().await,
         )
-        .layer(cors);
+        .layer(cors());
 
-    let addr = SocketAddr::from(([0, 0, 0, 0], 8080));
-    axum::Server::bind(&addr)
+    axum_server::bind(addr)
+        .acceptor(acceptor)
         .serve(app.into_make_service())
         .await
         .unwrap();

@@ -1,2 +1,4 @@
+mod cors;
 pub mod db;
-pub mod geo;
+
+pub use cors::cors;
