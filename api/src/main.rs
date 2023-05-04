@@ -24,8 +24,8 @@ async fn main() {
         .layer(cors());
 
     match RustlsConfig::from_pem_file(
-        format!("/var/www/{}", domain),
-        format!("/var/www/{}", domain),
+        format!("/var/www/{}/cert.pem", domain),
+        format!("/var/www/{}/key.pem", domain),
     )
     .await
     {
