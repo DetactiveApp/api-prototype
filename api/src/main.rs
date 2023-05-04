@@ -12,7 +12,8 @@ use axum_server::tls_rustls::RustlsConfig;
 async fn main() {
     println!("Detactive API v{}", env!("CARGO_PKG_VERSION"));
 
-    let domain = env!("ACME_DOMAIN");
+    let domain =
+        std::env::var("ACME_DOMAIN").unwrap_or_else(|_| "test-api.detactive.de".to_string());
 
     let addr = SocketAddr::from(([0, 0, 0, 0], 8080));
     let app = Router::new()
