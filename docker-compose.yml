@@ -1,5 +1,11 @@
 version: '3.3'
 services:
+  gateway:
+    container_name: gateway
+    image: nginx
+  ports:
+    - "8080:80"
+
   db:
     container_name: db
     image: postgres
@@ -19,10 +25,6 @@ services:
       - "8080:8080"
     env_file:
       - .env
-    command:
-      - curl https://get.acme.sh | sh -s email=${ACME_EMAIL}
-      - acme.sh --issue -d ${ACME_DOMAIN} --webroot /var/www/${ACME_DOMAIN}
-      - acme.sh --install-cert \ --domain ${ACME_DOMAIN} \ --cert-file /var/www/${ACME_DOMAIN}/cert.pem \ --key-file /var/www/${ACME_DOMAIN}/key.pem \ --fullchain-file /var/www/${ACME_DOMAIN}/fullchain.pem
 
   pgadmin:
     container_name: pgadmin
