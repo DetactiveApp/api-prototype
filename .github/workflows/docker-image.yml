@@ -38,7 +38,7 @@ jobs:
     - name: generate certs
       run: |
         sudo ln -s /snap/bin/certbot /usr/bin/certbot
-        sudo certbot certonly --standalone -d $DOMAIN --staple-ocsp -m max@maxbeier.dev --agree-tos  
+        sudo certbot certonly --standalone -d $DOMAIN --staple-ocsp -m max@maxbeier.dev --agree-tos --non-interactive
     
     - name: start docker containers
       run: docker-compose -f "docker-compose.yml" up -d --build
