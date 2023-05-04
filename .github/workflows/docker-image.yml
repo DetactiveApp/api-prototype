@@ -16,15 +16,18 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+
+    - name: Load environment variables
+      run: |
+        set -o allexport
+        [ -f .env ] && source .env
+        set +o allexport
     
     - name: install/setup dependencies
       run: |
         sudo apt-get update
         sudo apt install docker-compose -y
         sudo docker rm api_server -f
-        sudo snap install core
-        sudo snap refresh core
-        sudo snap install --classic certbot
 
     - name: open ports
       run: |
@@ -34,10 +37,6 @@ jobs:
         sudo ufw allow http
         sudo ufw allow https
         sudo ufw enable
-
-    - name: generate certs
-      run: |
-        sudo certbot certonly --standalone -d $DOMAIN --staple-ocsp -m max@maxbeier.dev --agree-tos --non-interactive
     
     - name: start docker containers
       run: docker-compose -f "docker-compose.yml" up -d --build
