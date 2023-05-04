@@ -9,6 +9,8 @@ services:
       - mkdir -p /var/www/${ACME_DOMAIN}
       - acme.sh --issue -d ${ACME_DOMAIN} --webroot /var/www/${ACME_DOMAIN}
       - acme.sh --install-cert \ --domain ${ACME_DOMAIN} \ --cert-file /var/www/${ACME_DOMAIN}/cert.pem \ --key-file /var/www/${ACME_DOMAIN}/key.pem \ --fullchain-file /var/www/${ACME_DOMAIN}/fullchain.pem
+    volumes:
+      - shared:/
 
   db:
     container_name: db
@@ -29,6 +31,8 @@ services:
       - "8080:8080"
     env_file:
       - .env
+    volumes:
+      - shared:/
 
   pgadmin:
     container_name: pgadmin
@@ -38,3 +42,6 @@ services:
       - .env
     ports:
       - "5050:80"
+
+volumes:
+  shared:
