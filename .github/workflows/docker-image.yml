@@ -6,9 +6,6 @@ on:
   pull_request:
     branches: [ "release-0.0.1" ]
 
-env:
-  DOMAIN: test-api.detactive.de
-
 jobs:
   build:
     runs-on:

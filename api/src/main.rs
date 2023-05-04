@@ -12,6 +12,8 @@ use axum_server::tls_rustls::RustlsConfig;
 async fn main() {
     println!("Detactive API v{}", env!("CARGO_PKG_VERSION"));
 
+    let domain = env!("ACME_DOMAIN");
+
     let addr = SocketAddr::from(([0, 0, 0, 0], 8080));
     let app = Router::new()
         .nest(
@@ -21,8 +23,8 @@ async fn main() {
         .layer(cors());
 
     match RustlsConfig::from_pem_file(
-        "examples/self-signed-certs/cert.pem",
-        "examples/self-signed-certs/key.pem",
+        format!("/var/www/{}", domain),
+        format!("/var/www/{}", domain),
     )
     .await
     {
