@@ -31,5 +31,5 @@ jobs:
       run: docker-compose -f "docker-compose.yml" up -d --build
     
     - name: configure SSL/TLS certificates
-      run: docker-compose run --rm certbot certonly --agree-tos --email detactive.app@gmail.com standalone -d test-api.detactive.de -n
+      run: docker-compose run --rm certbot certonly --agree-tos --email detactive.app@gmail.com certonly -d test-api.detactive.de -n
 
