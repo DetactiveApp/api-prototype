@@ -9,17 +9,11 @@ services:
       - "443:443"
     env_file:
       - .env
-    network_mode: "host"
     volumes:
-      - ./gateway/nginx:/etc/nginx/conf.docker
-      - ./gateway/certbot/conf:/etc/letsencrypt
-      - ./gateway/certbot/wwww:/var/www/certbot
+      - ./gateway/nginx:/etc/nginx/nginx.conf
 
   certbot:
     image: certbot/certbot:latest
-    volumes:
-      - ./gateway/certbot/conf:/etc/letsencrypt
-      - ./gateway/certbot/wwww:/var/www/certbot
     depends_on:
       - gateway
     command: >-
@@ -34,7 +28,7 @@ services:
     env_file:
       - .env
     volumes:
-      - ./api/db/init.sql:/docker-entrypoint-initdb.d/init.sql/:rw
+      - ./api/db/init.sql:/docker-entrypoint-initdb.d/init.sql/
 
   api:
     container_name: api
