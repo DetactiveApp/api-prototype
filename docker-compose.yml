@@ -11,13 +11,16 @@ services:
       - .env
     volumes:
       - ./gateway/nginx:/etc/nginx/conf.d
+      - ./gateway/certbot:/etc/certbot/www
 
   certbot:
     image: certbot/certbot:latest
     depends_on:
       - gateway
     command: >-
-      certonly --reinstall --webroot -n --email detactive.app@gmail.com --agree-tos --no-eff-email -d ${HOSTNAME}
+      certonly --reinstall --webroot -webroot-path /etc/certbot/www -n --email detactive.app@gmail.com --agree-tos --no-eff-email -d ${HOSTNAME}
+    volumes:
+      - ./gateway/certbot:/etc/certbot/www
 
   db:
     container_name: db
