@@ -34,5 +34,5 @@ jobs:
       run: sudo docker-compose restart
     
     - name: configure SSL/TLS certificates
-      run: sudo docker-compose run --rm certbot certonly --agree-tos --email detactive.app@gmail.com --webroot --webroot-path /var/www/certbot/ -d test-api.detactive.de -n
+      run: sudo docker-compose run --rm certbot certonly --agree-tos --email detactive.app@gmail.com --webroot --webroot-path /var/www/certbot/ -d test-api.detactive.de -n -v
 
