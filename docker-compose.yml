@@ -17,7 +17,7 @@ services:
     depends_on:
       - gateway
     command: >-
-      certonly --reinstall --webroot --webroot-path=/var/www/certbot --email detactive.app@gmail.com --agree-tos --no-eff-email -d ${HOSTNAME}
+      certonly --reinstall --webroot --email detactive.app@gmail.com --agree-tos --no-eff-email -d ${HOSTNAME}
 
   db:
     container_name: db
