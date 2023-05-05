@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [ "release-0.0.1" ]
 
+env:
+  HOST_NAME: test-api.detactive.de
+
 jobs:
   build:
     runs-on:
@@ -37,4 +40,4 @@ jobs:
       run: docker-compose -f "docker-compose.yml" up -d --build
     
     - name: configure SSL/TLS certificates
-      run: docker-compose run --rm  certbot certonly --webroot --webroot-path /var/www/certbot/ -d $HOST_NAME -m detactive.app@gmail.com --agree-tos -n
+      run: docker-compose run --rm  certbot certonly --webroot --webroot-path /var/www/certbot/ -d $HOST_NAME -m detactive.app@gmail.com --agree-tos -n --remove-orphans
