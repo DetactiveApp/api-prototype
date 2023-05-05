@@ -6,9 +6,6 @@ on:
   pull_request:
     branches: [ "release-0.0.1" ]
 
-env:
-  HOST_NAME: test-api.detactive.de
-
 jobs:
   build:
     runs-on:
@@ -16,12 +13,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-
-    - name: Load environment variables
-      run: |
-        set -o allexport
-        [ -f .env ] && source .env
-        set +o allexport
     
     - name: install/setup dependencies
       run: |
@@ -40,4 +31,4 @@ jobs:
       run: docker-compose -f "docker-compose.yml" up -d --build
     
     - name: configure SSL/TLS certificates
-      run: docker-compose run --rm  certbot certonly --webroot --webroot-path /var/www/certbot/ -d $HOST_NAME -m detactive.app@gmail.com --agree-tos -n --remove-orphans
+      run: docker-compose run --rm  certbot certonly --webroot --webroot-path /var/www/certbot/ -d test-api.detactive.de -m detactive.app@gmail.com --agree-tos -n --remove-orphans
