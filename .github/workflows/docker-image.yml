@@ -28,11 +28,11 @@ jobs:
         sudo ufw enable
     
     - name: start docker containers
-      run: docker-compose -f "docker-compose.yml" up -d --build
+      run: sudo docker-compose -f "docker-compose.yml" up -d --build
 
     - name: restart docker containers
-      run: docker-compose restart
+      run: sudo docker-compose restart
     
     - name: configure SSL/TLS certificates
-      run: docker-compose run --rm certbot certonly --agree-tos --email detactive.app@gmail.com --webroot --webroot-path /var/www/certbot/ -d test-api.detactive.de -n
+      run: sudo docker-compose run --rm certbot certonly --agree-tos --email detactive.app@gmail.com --webroot --webroot-path /var/www/certbot/ -d test-api.detactive.de -n
 
