@@ -31,4 +31,4 @@ jobs:
       run: docker-compose -f "docker-compose.yml" up -d --build
     
     - name: configure SSL/TLS certificates
-      run: docker-compose run --rm  certbot certonly --webroot --webroot-path /var/www/certbot/ -d test-api.detactive.de -m detactive.app@gmail.com --agree-tos -n --remove-orphans
+      run: docker-compose run --rm  certbot certonly --webroot --webroot-path /var/www/certbot/ -d test-api.detactive.de -m detactive.app@gmail.com --agree-tos -n
