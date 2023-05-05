@@ -34,7 +34,7 @@ jobs:
         sudo ufw enable
     
     - name: start docker containers
-      run: docker-compose -f "docker-compose.yml" up -d --build renew
+      run: docker-compose -f "docker-compose.yml" up -d --build
     
     - name: configure SSL/TLS certificates
       run: docker-compose run --rm  certbot certonly --webroot --webroot-path /var/www/certbot/ -d ${HOST_NAME} -m detactive.app@gmail.com --agree-tos -n
