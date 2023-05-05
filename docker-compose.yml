@@ -10,7 +10,7 @@ services:
     env_file:
       - .env
     volumes:
-      - ./gateway/nginx:/etc/nginx/nginx.conf
+      - ./gateway/nginx:/etc/nginx/conf.d
 
   certbot:
     image: certbot/certbot:latest
