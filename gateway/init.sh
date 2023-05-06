@@ -74,7 +74,8 @@ docker-compose run --rm --entrypoint "\
     --rsa-key-size $rsa_key_size \
     --agree-tos \
     --force-renewal" certbot \
-    --non-interactive
+    -n \
+    -v 
 echo
 
 echo "### Reloading gateway ..."
