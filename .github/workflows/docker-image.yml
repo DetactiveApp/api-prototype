@@ -29,6 +29,7 @@ jobs:
     
     - name: generate tls/ssl certificates
       run: |
+        pwd
         sudo server/gateway/init.sh
 
     - name: start docker containers
