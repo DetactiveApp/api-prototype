@@ -38,3 +38,6 @@ jobs:
         docker-compose run --rm certbot
         docker-compose stop
 
+    - name: Start production services
+      run: |
+        docker-compose run
