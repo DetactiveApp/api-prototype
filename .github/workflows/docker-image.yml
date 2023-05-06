@@ -20,10 +20,6 @@ jobs:
         sudo apt install docker-compose -y
         sudo docker rm api_server -f
 
-    - name: Open internal ports
-      run: |
-        sudo ufw disable
-
     - name: Build and deploy Docker Compose setup
       run: |
         sudo mkdir -p /var/www/html
