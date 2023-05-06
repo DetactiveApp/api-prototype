@@ -40,4 +40,4 @@ jobs:
 
     - name: Start production services
       run: |
-        docker-compose up
+        docker-compose up -d
