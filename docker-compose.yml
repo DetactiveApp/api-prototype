@@ -11,6 +11,7 @@ services:
     volumes:
       - shared:/data/:rw
       - ./nginx:/etc/nginx
+      - /etc/letsencrypt/live:/etc/letsencrypt/live
     depends_on:
       - certbot
 
@@ -22,7 +23,7 @@ services:
       - shared:/data/:rw
     command:
       - mkdir /var/www/certbot
-      - certonly --webroot -w /var/www/certbot --email detactive.app@gmail.com --agree-tos --no-eff-email -d ${DOMAIN}
+      - certonly --webroot -w /var/www/certbot --email detactive.app@gmail.com --agree-tos --no-eff-email -d test-api.detactive.de
 
   db:
     container_name: db
