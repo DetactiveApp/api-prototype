@@ -14,34 +14,26 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     
-    - name: install/setup dependencies
+    - name: Install/Setup dependencies
       run: |
         sudo apt-get update
         sudo apt install docker-compose -y
         sudo docker rm api_server -f
 
-    - name: open ports
+    - name: Open internal ports
       run: |
         sudo ufw allow 22
         sudo ufw allow http
         sudo ufw allow https
         sudo ufw enable
     
-    - name: configure nginx
+    - name: Build and deploy Docker Compose setup
       run: |
-        sudo docker-compose -f "docker-compose.yml" up -d nginx
+        docker-compose build
+        docker-compose up -d
 
-    - name: configure certificates
+    - name: Obtain SSL/TLS certificates
       run: |
-        sudo mkdir -p /var/www/certbot
-        sudo docker-compose -f "docker-compose.yml" up certbot
-
-      
-    - name: restart nginx
-      run: |
-        sudo docker-compose -f "docker-compose.yml" restart nginx
-
-    - name: deploy docker container using docker compose
-      run: |
-        sudo docker-compose -f "docker-compose.yml" up -d
+        docker-compose run --rm certbot
+        docker-compose stop
 
