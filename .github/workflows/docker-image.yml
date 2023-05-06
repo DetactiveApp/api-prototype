@@ -22,25 +22,21 @@ jobs:
 
     - name: Open internal ports
       run: |
-        sudo ufw allow 22
-        sudo ufw allow http
-        sudo ufw allow https
-        sudo ufw allow 8080
-        sudo ufw enable
-    
+        sudo ufw disable
+
     - name: Build and deploy Docker Compose setup
       run: |
-        mkdir -p /var/www/html
-        docker-compose up -d --force-recreate --no-deps --build nginx
+        sudo mkdir -p /var/www/html
+        sudo docker-compose up -d --force-recreate --no-deps --build nginx
 
     - name: Obtain SSL/TLS certificates
       run: |
         if [ ! -d /etc/letsencrypt/live/ ]
         then
-          docker-compose run --rm certbot
-          docker-compose stop
+          sudo docker-compose run --rm certbot
+          sudo docker-compose stop
         fi
 
     - name: Start production services
       run: |
-        docker-compose up -d --build
+        sudo docker-compose up -d --build
