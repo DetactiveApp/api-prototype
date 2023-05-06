@@ -32,7 +32,7 @@ jobs:
         sudo docker-compose -f "docker-compose.yml" up nginx -d
 
     - name: configure certificates
-    - run: |
+      run: |
         sudo docker-compose -f "docker-compose.yml" up certbot
 
     
