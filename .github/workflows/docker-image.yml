@@ -42,4 +42,4 @@ jobs:
 
     - name: Start production services
       run: |
-        docker-compose up -d --build --net=host
+        docker-compose up -d --build
