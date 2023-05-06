@@ -23,7 +23,7 @@ services:
     depends_on:
       - gateway
     command:
-      - certbot certonly --webroot -w /var/www/certbot -n --test-cert -m detactive.app@gmail.com -d ${HOSTNAME}
+      - certonly --webroot -w /var/www/certbot -n --test-cert -m detactive.app@gmail.com -d test-api.detactive.de
 
   db:
     container_name: db
