@@ -3,7 +3,7 @@ services:
   gateway:
     container_name: gateway
     image: nginx
-    restart: always
+    restart: unless-stopped
     ports:
       - "80:80"
       - "443:443"
@@ -13,14 +13,15 @@ services:
       - ./gateway/nginx:/etc/nginx/conf.d
       - ./gateway/certbot/conf:/etc/letsencrypt
       - ./gateway/certbot/www:/var/www/certbot
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
 
   certbot:
     image: certbot/certbot:latest
+    restart: unless-stopped
     volumes:
       - ./gateway/certbot/conf:/etc/letsencrypt
       - ./gateway/certbot/www:/var/www/certbot
-    command: >-
-      certonly --reinstall --webroot --webroot-path=/var/www/certbot -n --email detactive.app@gmail.com --agree-tos --no-eff-email -d ${HOSTNAME}
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
 
   db:
     container_name: db
