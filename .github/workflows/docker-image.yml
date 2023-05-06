@@ -35,8 +35,11 @@ jobs:
       run: |
         sudo docker-compose -f "docker-compose.yml" up certbot
 
-    
+    - name: restart nginx
+      run: |
+        sudo service nginx restart
+
     - name: deploy docker container using docker compose
       run: |
-        sudo docker-compose -f "docker-compose.yml" restart -d
+        sudo docker-compose -f "docker-compose.yml" up -d
 
