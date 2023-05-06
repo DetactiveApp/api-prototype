@@ -29,8 +29,7 @@ jobs:
     
     - name: generate tls/ssl certificates
       run: |
-        pwd
-        sudo ./gateway/init.sh
+        sudo gateway/init.sh
 
     - name: start docker containers
       run: sudo docker-compose -f "docker-compose.yml" up -d --build
