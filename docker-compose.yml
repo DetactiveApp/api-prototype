@@ -18,6 +18,7 @@ services:
       - .env
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt
+      - /var/www/html:/var/www/html
     command: certonly --webroot --webroot-path=/var/www/html --email detactive.app@gmail.com --agree-tos --no-eff-email --test-cert -d test-api.detactive.de
 
   db:
@@ -29,7 +30,7 @@ services:
     env_file:
       - .env
     volumes:
-      - ./api/db/init.sql:/docker-entrypoint-initdb.d/init.sql/
+      - ./api/db/init.sql:/docker-entrypoint-initdb.d/init.sql
 
   api:
     container_name: api
