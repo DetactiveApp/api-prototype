@@ -13,6 +13,8 @@ services:
       - /etc/letsencrypt:/etc/letsencrypt
       - /var/lib/letsencrypt:/var/lib/letsencrypt
       - /var/www/html:/var/www/html
+    networks:
+      - root
 
   certbot:
     image: certbot/certbot
@@ -25,6 +27,8 @@ services:
     command: certonly --force-renewal --webroot --webroot-path=/var/www/html --email detactive.app@gmail.com --agree-tos --no-eff-email -d test-api.detactive.de
     depends_on:
       - nginx
+    networks:
+      - root
 
   db:
     container_name: db
@@ -36,6 +40,8 @@ services:
       - .env
     volumes:
       - ./api/db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - root
 
   api:
     container_name: api
@@ -45,6 +51,8 @@ services:
       - "8080:8080"
     env_file:
       - .env
+    networks:
+      - root
 
   pgadmin:
     container_name: pgadmin
@@ -54,3 +62,9 @@ services:
       - .env
     ports:
       - "5050:80"
+    networks:
+      - root
+
+networks:
+  root:
+    driver: bridge
