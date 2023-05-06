@@ -68,3 +68,4 @@ services:
 networks:
   root:
     driver: bridge
+    external: true
