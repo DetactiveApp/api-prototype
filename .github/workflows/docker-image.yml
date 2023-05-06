@@ -38,5 +38,5 @@ jobs:
     
     - name: deploy docker container using docker compose
       run: |
-        sudo docker-compose -f "docker-compose.yml" up -d
+        sudo docker-compose -f "docker-compose.yml" restart -d
 
