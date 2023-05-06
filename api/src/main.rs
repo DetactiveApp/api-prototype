@@ -5,7 +5,11 @@ mod utils;
 use std::net::SocketAddr;
 
 use crate::{routes::api, utils::cors};
-use axum::Router;
+use axum::{routing::get, Router};
+
+async fn root() -> String {
+    return format!("Detactive API v{}", env!("CARGO_PKG_VERSION"));
+}
 
 #[tokio::main]
 async fn main() {
@@ -17,6 +21,7 @@ async fn main() {
             &format!("/v{}", &env!("CARGO_PKG_VERSION")[..1]),
             api().await,
         )
+        .route("/", get(root))
         .layer(cors());
 
     axum::Server::bind(&addr)
