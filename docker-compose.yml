@@ -13,8 +13,6 @@ services:
       - /etc/letsencrypt:/etc/letsencrypt
       - /var/lib/letsencrypt:/var/lib/letsencrypt
       - /var/www/html:/var/www/html
-    links:
-      - server_api:server_api
 
   certbot:
     image: certbot/certbot
