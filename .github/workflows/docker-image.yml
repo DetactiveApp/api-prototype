@@ -27,6 +27,15 @@ jobs:
         sudo ufw allow https
         sudo ufw enable
     
+    - name: configure nginx
+      run: |
+        sudo docker-compose -f "docker-compose.yml" up nginx -d
+
+    - name: configure certificates
+    - run: |
+      sudo docker-compose -f "docker-compose.yml" up certbot
+
+    
     - name: deploy docker container using docker compose
       run: |
         sudo docker-compose -f "docker-compose.yml" up -d
