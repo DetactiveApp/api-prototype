@@ -14,7 +14,7 @@ async fn main() {
     let addr = SocketAddr::from(([0, 0, 0, 0], 8080));
     let app = Router::new()
         .nest(
-            &format!("/api/v{}", &env!("CARGO_PKG_VERSION")[..1]),
+            &format!("/v{}", &env!("CARGO_PKG_VERSION")[..1]),
             api().await,
         )
         .layer(cors());
