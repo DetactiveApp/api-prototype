@@ -28,7 +28,9 @@ jobs:
         sudo ufw enable
     
     - name: generate tls/ssl certificates
-      run: sudo ./gateway/init.sh
+      run: |
+        pwd
+        sudo ./gateway/init.sh
 
     - name: start docker containers
       run: sudo docker-compose -f "docker-compose.yml" up -d --build
