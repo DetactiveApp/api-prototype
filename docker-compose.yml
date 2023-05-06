@@ -1,28 +1,25 @@
 version: '3.3'
 services:
-  gateway:
-    container_name: gateway
+  nginx:
     image: nginx
-    restart: unless-stopped
     ports:
       - "80:80"
       - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+    depends_on:
+      - certbot
+
+  certbot:
+    image: certbot/certbot
+    command: certonly --webroot -w /var/www/certbot --email detactive.app@gmail.com --agree-tos --no-eff-email --staging --test-cert -d ${HOSTNAME}
     env_file:
       - .env
     volumes:
-      - ./gateway/nginx/templates:/etc/nginx/templates:ro
-      - ./etc/letsencrypt:/etc/letsencrypt:ro
-      - ./certbot/data:/var/www/certbot
-
-  certbot:
-    image: certbot/certbot:latest
-    depends_on:
-      - gateway
-    command: >-
-      certonly --reinstall --webroot --webroot-path=/var/www/certbot --email detactive.app@gmail.com --agree-tos --no-eff-email -d ${HOSTNAME}
-    volumes:
-      - ./etc/letsencrypt:/etc/letsencrypt
-      - ./certbot/data:/var/www/certbot
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
 
   db:
     container_name: db
