@@ -27,7 +27,10 @@ jobs:
         sudo ufw allow https
         sudo ufw enable
     
-    - name: start docker containers
+    - name: create certs
+      run: sudo docker-compose -f "docker-compose.yml" up certbot
+
+    - name: start docker containers for production
       run: sudo docker-compose -f "docker-compose.yml" up -d --build
 
 

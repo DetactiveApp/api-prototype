@@ -10,20 +10,19 @@ services:
     env_file:
       - .env
     volumes:
-      - ./gateway/nginx:/etc/nginx/conf.d
-      - ./gateway/certbot/conf:/etc/letsencrypt
-      - ./gateway/certbot/www:/var/www/certbot
+      - ./gateway/nginx/templates:/etc/nginx/templates:ro
+      - ./etc/letsencrypt:/etc/letsencrypt:ro
+      - ./certbot/data:/var/www/certbot
 
   certbot:
     image: certbot/certbot:latest
-    restart: unless-stopped
-    volumes:
-      - ./gateway/certbot/conf:/etc/letsencrypt
-      - ./gateway/certbot/www:/var/www/certbot
     depends_on:
       - gateway
-    command:
-      - certonly --webroot -w /var/www/certbot -n --test-cert -m detactive.app@gmail.com -d test-api.detactive.de
+    command: >-
+      certonly --reinstall --webroot --webroot-path=/var/www/certbot --email detactive.app@gmail.com --agree-tos --no-eff-email -d ${HOSTNAME}
+    volumes:
+      - ./etc/letsencrypt:/etc/letsencrypt
+      - ./certbot/data:/var/www/certbot
 
   db:
     container_name: db
