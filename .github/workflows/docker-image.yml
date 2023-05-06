@@ -33,7 +33,7 @@ jobs:
 
     - name: configure certificates
     - run: |
-      sudo docker-compose -f "docker-compose.yml" up certbot
+        sudo docker-compose -f "docker-compose.yml" up certbot
 
     
     - name: deploy docker container using docker compose
