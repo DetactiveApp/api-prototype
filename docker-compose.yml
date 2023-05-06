@@ -11,6 +11,7 @@ services:
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - /etc/letsencrypt:/etc/letsencrypt
+      - /var/lib/letsencrypt:/var/lib/letsencrypt
       - /var/www/html:/var/www/html
 
   certbot:
@@ -19,6 +20,7 @@ services:
       - .env
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt
+      - /var/lib/letsencrypt:/var/lib/letsencrypt
       - /var/www/html:/var/www/html
     command: certonly --force-renewal --webroot --webroot-path=/var/www/html --email detactive.app@gmail.com --agree-tos --staging --no-eff-email -d test-api.detactive.de
     depends_on:
