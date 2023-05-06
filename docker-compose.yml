@@ -9,6 +9,7 @@ services:
     env_file:
       - .env
     volumes:
+      - shared:/
       - ./nginx:/etc/nginx
       - ./certbot/conf:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
@@ -20,6 +21,7 @@ services:
     env_file:
       - .env
     volumes:
+      - shared:/
       - ./certbot/conf:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
     command: certonly --webroot -w /var/www/certbot --email detactive.app@gmail.com --agree-tos --no-eff-email -d ${HOSTNAME}
@@ -52,3 +54,6 @@ services:
       - .env
     ports:
       - "5050:80"
+
+volumes:
+  shared:
