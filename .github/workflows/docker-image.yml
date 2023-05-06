@@ -37,7 +37,7 @@ jobs:
 
     - name: restart nginx
       run: |
-        sudo service nginx restart
+        sudo docker-compose -f "docker-compose.yml" restart nginx
 
     - name: deploy docker container using docker compose
       run: |
