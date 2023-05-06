@@ -22,7 +22,6 @@ services:
     volumes:
       - shared:/data/:rw
     command:
-      - sudo mkdir -p /var/www/certbot
       - certonly --webroot -w /var/www/certbot --email detactive.app@gmail.com --agree-tos --no-eff-email -d test-api.detactive.de
 
   db:

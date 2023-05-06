@@ -33,6 +33,7 @@ jobs:
 
     - name: configure certificates
       run: |
+        sudo mkdir -p /var/www/certbot
         sudo docker-compose -f "docker-compose.yml" up certbot
       
     - name: restart nginx
