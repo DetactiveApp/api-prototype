@@ -29,6 +29,7 @@ jobs:
     
     - name: Build and deploy Docker Compose setup
       run: |
+        mkdir -p /var/www/html
         docker-compose build
         docker-compose up -d
 
