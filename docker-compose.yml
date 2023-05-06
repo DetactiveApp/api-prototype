@@ -13,7 +13,6 @@ services:
       - ./gateway/nginx:/etc/nginx/conf.d
       - ./gateway/certbot/conf:/etc/letsencrypt
       - ./gateway/certbot/www:/var/www/certbot
-    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
 
   certbot:
     image: certbot/certbot:latest
@@ -21,7 +20,8 @@ services:
     volumes:
       - ./gateway/certbot/conf:/etc/letsencrypt
       - ./gateway/certbot/www:/var/www/certbot
-    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+    depends_on:
+      - gateway
 
   db:
     container_name: db
