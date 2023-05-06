@@ -35,7 +35,7 @@ jobs:
 
     - name: Obtain SSL/TLS certificates
       run: |
-        if [ ! -f /etc/letsencrypt/live/ ]
+        if [ ! -d /etc/letsencrypt/live/ ]
         then
           docker-compose run --rm certbot
           docker-compose stop
