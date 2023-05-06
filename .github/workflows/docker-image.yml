@@ -34,7 +34,7 @@ jobs:
     - name: configure certificates
       run: |
         sudo docker-compose -f "docker-compose.yml" up certbot
-        sudo chcon httpd_config_t /etc/letsencrypt/*
+        sudo chmod -R 0700 /etc/letsencrypt/live
       
     - name: restart nginx
       run: |
