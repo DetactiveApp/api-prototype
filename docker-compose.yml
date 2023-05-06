@@ -21,8 +21,6 @@ services:
       - .env
     volumes:
       - shared:/data/:rw
-    command:
-      - certonly --webroot -w /var/www/certbot --email detactive.app@gmail.com --agree-tos --no-eff-email -d test-api.detactive.de
 
   db:
     container_name: db
