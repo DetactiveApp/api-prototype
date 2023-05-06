@@ -22,7 +22,7 @@ services:
     volumes:
       - ./certbot/conf:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
-    command: certonly --webroot -w /var/www/certbot --email detactive.app@gmail.com --agree-tos --no-eff-email --staging --test-cert -d ${HOSTNAME}
+    command: certonly --webroot -w /var/www/certbot --email detactive.app@gmail.com --agree-tos --no-eff-email -d ${HOSTNAME}
 
   db:
     container_name: db
