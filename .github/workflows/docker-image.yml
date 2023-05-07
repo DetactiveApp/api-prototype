@@ -23,7 +23,7 @@ jobs:
     - name: Create Docker services network
       run: |
         if [ ! "$(docker network ls | grep services)" ]; then
-          echo "Creating services ..."
+          echo "Creating services network..."
           sudo docker network create services
         fi
 
