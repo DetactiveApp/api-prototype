@@ -9,7 +9,7 @@ services:
     env_file:
       - .env
     volumes:
-      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx:/etc/nginx
       - /etc/letsencrypt:/etc/letsencrypt
       - /var/lib/letsencrypt:/var/lib/letsencrypt
       - /var/www/html:/var/www/html
