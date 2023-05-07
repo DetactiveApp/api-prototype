@@ -1,7 +1,7 @@
 version: '3.3'
 services:
   nginx:
-    image: nginx
+    image: proxy
     restart: always
     ports:
       - "80:80"
