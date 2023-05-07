@@ -14,6 +14,15 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     
+    - name: Create external Web network
+      run: |
+      if [ ! "$(docker network ls | grep nginx-proxy)" ]; then
+        echo "Creating Web network ..."
+        docker network create web
+      else
+        echo "Web network already exists... Skipping Step"
+      fi
+
     - name: Install/Setup dependencies
       run: |
         sudo apt-get update
