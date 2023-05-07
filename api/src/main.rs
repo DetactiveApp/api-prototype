@@ -15,7 +15,7 @@ async fn root() -> String {
 async fn main() {
     println!("Detactive API v{}", env!("CARGO_PKG_VERSION"));
 
-    let addr = SocketAddr::from(([127, 0, 0, 1], 8080));
+    let addr = SocketAddr::from(([0, 0, 0, 0], 8080));
     let app = Router::new()
         .nest(
             &format!("/v{}", &env!("CARGO_PKG_VERSION")[..1]),
