@@ -22,7 +22,10 @@ jobs:
 
     - name: Create Docker services network
       run: |
-        sudo docker network create services
+        if [ ! "$(docker network ls | grep services)" ]; then
+          echo "Creating services ..."
+          sudo docker network create services
+        fi
 
     - name: Build and deploy Docker Compose setup
       run: |
