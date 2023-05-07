@@ -13,8 +13,6 @@ services:
       - /etc/letsencrypt:/etc/letsencrypt
       - /var/lib/letsencrypt:/var/lib/letsencrypt
       - /var/www/html:/var/www/html
-    networks:
-      - services
 
   certbot:
     image: certbot/certbot
@@ -47,8 +45,6 @@ services:
       - "8080:8080"
     env_file:
       - .env
-    networks:
-      - services
 
   pgadmin:
     container_name: pgadmin
@@ -58,7 +54,3 @@ services:
       - .env
     ports:
       - "5050:80"
-
-networks:
-  services:
-    external: true
