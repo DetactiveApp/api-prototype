@@ -16,12 +16,12 @@ jobs:
     
     - name: Create external Web network
       run: |
-      if [ ! "$(docker network ls | grep web)" ]; then
-        echo "Creating Web network ..."
-        docker network create web
-      else
-        echo "Web network already exists... Skipping Step"
-      fi
+        if [ ! "$(docker network ls | grep web)" ]; then
+          echo "Creating Web network ..."
+          docker network create web
+        else
+          echo "Web network already exists... Skipping Step"
+        fi
 
     - name: Install/Setup dependencies
       run: |
