@@ -52,7 +52,7 @@ services:
       - web
       - internal
 
-network:
+networks:
   web:
     external: true
   internal:
