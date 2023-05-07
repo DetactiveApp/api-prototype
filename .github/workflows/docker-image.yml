@@ -20,19 +20,6 @@ jobs:
         sudo apt install docker-compose -y
         sudo docker rm api_server -f
 
-    - name: Build and deploy Docker Compose setup
-      run: |
-        sudo mkdir -p /var/www/html
-        sudo docker-compose up -d --force-recreate --no-deps --build proxy
-
-    - name: Obtain SSL/TLS certificates
-      run: |
-        if [ ! -d /etc/letsencrypt/live/ ]
-        then
-          sudo docker-compose run --rm certbot
-          sudo docker-compose stop
-        fi
-
     - name: Start production services
       run: |
         sudo docker-compose up -d --build
