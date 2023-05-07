@@ -15,8 +15,9 @@ services:
       - /var/lib/letsencrypt:/var/lib/letsencrypt
       - /var/www/html:/var/www/html
       - /var/log/nginx:/var/log/nginx
-    links:
-      - "proxy:api"
+    networks:
+      - web
+      - api
 
   certbot:
     container_name: certbot
@@ -41,6 +42,8 @@ services:
       - .env
     volumes:
       - ./api/db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - api
 
   api:
     container_name: api
@@ -50,6 +53,8 @@ services:
       - "8080:8080"
     env_file:
       - .env
+    networks:
+      - api
 
   pgadmin:
     container_name: pgadmin
@@ -59,3 +64,9 @@ services:
       - .env
     ports:
       - "5050:80"
+    networks:
+      - web
+
+networks:
+  web:
+  api:
