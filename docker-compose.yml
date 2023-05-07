@@ -1,7 +1,8 @@
 version: '3.3'
 services:
-  nginx:
-    image: proxy
+  proxy:
+    container_name: proxy
+    image: nginx
     restart: always
     ports:
       - "80:80"
@@ -16,6 +17,7 @@ services:
       - /var/log/nginx:/var/log/nginx
 
   certbot:
+    container_name: certbot
     image: certbot/certbot
     env_file:
       - .env
