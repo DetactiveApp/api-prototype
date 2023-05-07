@@ -23,7 +23,7 @@ jobs:
     - name: Build and deploy Docker Compose setup
       run: |
         sudo mkdir -p /var/www/html
-        sudo docker-compose up -d --force-recreate --no-deps --build nginx
+        sudo docker-compose up -d --force-recreate --no-deps --build proxy
 
     - name: Obtain SSL/TLS certificates
       run: |
