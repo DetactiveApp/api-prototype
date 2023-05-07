@@ -20,6 +20,10 @@ jobs:
         sudo apt install docker-compose -y
         sudo docker rm api_server -f
 
+    - name: Create Docker services network
+      run: |
+        sudo docker network create services
+
     - name: Build and deploy Docker Compose setup
       run: |
         sudo mkdir -p /var/www/html
