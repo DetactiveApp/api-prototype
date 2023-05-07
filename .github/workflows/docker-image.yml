@@ -16,7 +16,7 @@ jobs:
     
     - name: Create external Web network
       run: |
-      if [ ! "$(docker network ls | grep nginx-proxy)" ]; then
+      if [ ! "$(docker network ls | grep web)" ]; then
         echo "Creating Web network ..."
         docker network create web
       else
