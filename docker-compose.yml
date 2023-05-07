@@ -1,4 +1,4 @@
-version: '3.3'
+version: '3.5'
 services:
   proxy:
     container_name: proxy
@@ -15,6 +15,8 @@ services:
       - /var/lib/letsencrypt:/var/lib/letsencrypt
       - /var/www/html:/var/www/html
       - /var/log/nginx:/var/log/nginx
+    links:
+      - "proxy:api"
 
   certbot:
     container_name: certbot
