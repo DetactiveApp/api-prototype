@@ -35,6 +35,9 @@ services:
       - "3000:80"
     env_file:
       - .env
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api.rule=Host(`test-api.detactive.de`) && PathPrefix(`/api`)"
     depends_on:
       - db
     networks:
