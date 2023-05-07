@@ -13,6 +13,7 @@ services:
       - /etc/letsencrypt:/etc/letsencrypt
       - /var/lib/letsencrypt:/var/lib/letsencrypt
       - /var/www/html:/var/www/html
+      - /var/log/nginx:/var/log/nginx
 
   certbot:
     image: certbot/certbot
