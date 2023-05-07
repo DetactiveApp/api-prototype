@@ -13,6 +13,8 @@ services:
       - ./traefik.yml:/etc/traefik/traefik.yml
       - /var/run/docker.sock:/var/run/docker.sock
       - /etc/ssl/certs:/etc/ssl/certs
+    networks:
+      - web
 
   db:
     image: postgres
@@ -23,6 +25,8 @@ services:
       - .env
     volumes:
       - ./api/db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - internal
 
   api:
     build: api
@@ -33,6 +37,9 @@ services:
       - .env
     depends_on:
       - db
+    networks:
+      - web
+      - internal
 
   pgadmin:
     image: dpage/pgadmin4
@@ -41,3 +48,12 @@ services:
       - .env
     ports:
       - "4000:80"
+    networks:
+      - web
+      - internal
+
+network:
+  web:
+    external: true
+  internal:
+    external: false
