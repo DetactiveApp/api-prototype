@@ -1,0 +1,26 @@
+providers:
+  docker:
+    exposedByDefault: false
+    network: web
+
+entryPoints:
+  http:
+    address: ":80"
+    http:
+      redirections:
+        entryPoint:
+          to: "https"
+          scheme: "https"
+  
+  https:
+    address: ":443"
+    http:
+      tls:
+      certResolver: le
+
+certificatesResolvers:
+  le:
+    acme:
+      tlschallenge: true
+      email: "detactive.app@gmail.com"
+      storage: "/etc/ssl/certs/acme.json"
