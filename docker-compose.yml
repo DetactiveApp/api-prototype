@@ -51,7 +51,6 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.pgadmin.entrypoints=web"
-      - "traefik.http.routers.pgadmin.service=pgadmin"
       - "traefik.http.routers.pgadmin.rule=(Host(`test-api.detactive.de`) && PathPrefix(`/pgadmin`))"
     networks:
       - web
