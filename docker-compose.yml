@@ -27,16 +27,16 @@ services:
     volumes:
       - ./api/db/init.sql:/docker-entrypoint-initdb.d/init.sql
 
-  api:
+  api_server:
     build: api
     restart: always
     env_file:
       - .env
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.api.entrypoints=web"
-      - "traefik.http.routers.api.rule=(Host(`test-api.detactive.de`) && PathPrefix(`/api`))"
-      - "traefik.http.routers.api.tls=false"
+      - "traefik.http.routers.api_server.entrypoints=web"
+      - "traefik.http.routers.api_server.rule=(Host(`test-api.detactive.de`) && PathPrefix(`/api`))"
+      - "traefik.http.routers.api_server.tls=false"
     depends_on:
       - db
     networks:
