@@ -44,19 +44,6 @@ services:
     networks:
       - web
 
-  pgadmin:
-    image: dpage/pgadmin4
-    restart: always
-    env_file:
-      - .env
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.pgadmin.entrypoints=websecure"
-      - "traefik.http.routers.pgadmin.rule=(Host(`test-api.detactive.de`) && PathPrefix(`/pgadmin`))"
-      - "traefik.http.routers.pgadmin.tls=true"
-    networks:
-      - web
-
 networks:
   web:
     external: true
