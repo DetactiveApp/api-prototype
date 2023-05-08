@@ -5,6 +5,7 @@ providers:
 
 api:
   dashboard: true
+  insecure: true
 
 entryPoints:
   http:
