@@ -34,7 +34,7 @@ services:
       - "traefik.enable=true"
       - "traefik.docker.network=web"
       - "traefik.http.routers.api.entrypoints=websecure"
-      - "traefik.http.routers.api.rule=(Host(`test-api.detactive.de`) && PathPrefix(`/api`))"
+      - "traefik.http.routers.api.rule=(Host(`test-api.detactive.de`) && PathPrefix(`/detactive`))"
       - "traefik.http.routers.api.tls=true"
     depends_on:
       - db
