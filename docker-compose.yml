@@ -2,6 +2,7 @@ version: '3.5'
 services:
   traefik:
     image: traefik
+    network_mode: "host"
     restart: always
     ports:
       - "80:80"
