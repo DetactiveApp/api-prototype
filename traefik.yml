@@ -4,8 +4,7 @@ providers:
     network: web
 
 api:
-  dashboard: true
-  insecure: true
+  dashboard: false
 
 entryPoints:
   http:
@@ -18,12 +17,6 @@ entryPoints:
   
   https:
     address: ":443"
-    routers:
-      dashboard:
-      rule: Host(`test-api.detactive.de`) && PathPrefix(`/dashboard`)
-      service: api@internal
-      middlewares:
-        - auth
     http:
       tls:
         certResolver: le
