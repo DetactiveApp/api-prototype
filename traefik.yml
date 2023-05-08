@@ -18,6 +18,12 @@ entryPoints:
   
   https:
     address: ":443"
+    routers:
+      dashboard:
+      rule: Host(`test-api.detactive.de`) && PathPrefix(`/dashboard`)
+      service: api@internal
+      middlewares:
+        - auth
     http:
       tls:
         certResolver: le
