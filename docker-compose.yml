@@ -10,6 +10,7 @@ services:
     env_file:
       - .env
     volumes:
+      - ./traefik.yml:/etc/traefik/traefik.yml
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /etc/ssl/certs:/etc/ssl/certs
       - /etc/traefik:/etc/traefik
