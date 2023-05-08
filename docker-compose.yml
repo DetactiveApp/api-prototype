@@ -50,8 +50,9 @@ services:
     restart: always
     env_file:
       - .env
-    ports:
-      - "4000:80"
+    labels:
+      - "traefik.port=80"
+      - "traefik.http.routers.api.rule=Host(`test-api.detactive.de`) && PathPrefix(`/pgadmin`)"
     networks:
       - web
       - internal
