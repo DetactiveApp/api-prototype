@@ -14,8 +14,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /etc/ssl/certs:/etc/ssl/certs
       - /etc/traefik:/etc/traefik
-    networks:
-      - web
 
   db:
     image: postgres
@@ -26,8 +24,6 @@ services:
       - .env
     volumes:
       - ./api/db/init.sql:/docker-entrypoint-initdb.d/init.sql
-    networks:
-      - internal
 
   api:
     build: api
@@ -36,12 +32,12 @@ services:
       - .env
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.api.rule=Host(`test-api.detactive.de`) && PathPrefix(`/api`)"
+      - "traefik.docker.network=web"
+      - "traefik.http.routers.api.entrypoints=websecure"
+      - "traefik.http.routers.api.rule=(Host(`test-api.detactive.de`) && PathPrefix(`/api`))"
+      - "traefik.http.routers.api.tls=true"
     depends_on:
       - db
-    networks:
-      - web
-      - internal
 
   pgadmin:
     image: dpage/pgadmin4
@@ -50,15 +46,7 @@ services:
       - .env
     labels:
       - "traefik.enable=true"
+      - "traefik.docker.network=web"
       - "traefik.http.routers.pgadmin.entrypoints=websecure"
       - "traefik.http.routers.pgadmin.rule=(Host(`test-api.detactive.de`) && PathPrefix(`/pgadmin`))"
       - "traefik.http.routers.pgadmin.tls=true"
-    networks:
-      - web
-      - internal
-
-networks:
-  web:
-    external: true
-  internal:
-    external: false
