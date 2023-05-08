@@ -9,7 +9,8 @@ providers:
     network: web
 
 api:
-  dashboard: false
+  dashboard: true
+  insecure: true
 
 entryPoints:
   http:
