@@ -33,9 +33,9 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=web"
-      - "traefik.http.routers.api.entrypoints=websecure"
+      - "traefik.http.routers.api.entrypoints=web"
       - "traefik.http.routers.api.rule=(Host(`test-api.detactive.de`) && PathPrefix(`/api`))"
-      - "traefik.http.routers.api.tls=true"
+      - "traefik.http.routers.api.tls=false"
     depends_on:
       - db
 
@@ -47,9 +47,9 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=web"
-      - "traefik.http.routers.pgadmin.entrypoints=websecure"
+      - "traefik.http.routers.pgadmin.entrypoints=web"
       - "traefik.http.routers.pgadmin.rule=(Host(`test-api.detactive.de`) && PathPrefix(`/pgadmin`))"
-      - "traefik.http.routers.pgadmin.tls=true"
+      - "traefik.http.routers.pgadmin.tls=false"
 
 networks:
   web:
