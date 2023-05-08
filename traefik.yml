@@ -3,11 +3,6 @@ log:
   filePath: "/etc/traefik/traefik.log"
   format: json
 
-providers:
-  docker:
-    endpoint: "unix:///var/run/docker.sock"
-    exposedByDefault: false
-    network: web
 
 api:
   dashboard: true
@@ -19,7 +14,7 @@ entryPoints:
     http:
       redirections:
         entryPoint:
-          to: "https"
+          to: "websecure"
           scheme: "https"
   
   websecure:
@@ -34,3 +29,7 @@ certificatesResolvers:
       tlschallenge: true
       email: "detactive.app@gmail.com"
       storage: "/etc/ssl/certs/acme.json"
+
+providers:
+  docker:
+    exposedByDefault: false
