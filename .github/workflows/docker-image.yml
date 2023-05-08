@@ -27,6 +27,7 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt install docker-compose -y
+        sudo docker rm traefik -f
         sudo docker rm api_server -f
 
     - name: Start production services

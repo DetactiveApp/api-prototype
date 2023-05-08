@@ -21,10 +21,10 @@ entryPoints:
     address: ":443"
     http:
       tls:
-        certResolver: le
+        certResolver: lets_encrypt
 
 certificatesResolvers:
-  le:
+  lets_encrypt:
     acme:
       tlschallenge: true
       email: "detactive.app@gmail.com"
