@@ -13,6 +13,7 @@ services:
       - ./traefik.yml:/etc/traefik/traefik.yml
       - /var/run/docker.sock:/var/run/docker.sock
       - /etc/ssl/certs:/etc/ssl/certs
+      - /etc/traefik:/etc/traefik
     networks:
       - web
 

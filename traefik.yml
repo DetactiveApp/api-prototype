@@ -1,5 +1,7 @@
 log:
   level: DEBUG
+  filePath: "/etc/traefik/traefik.log"
+  format: json
 
 providers:
   docker:
