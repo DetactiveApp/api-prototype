@@ -3,6 +3,9 @@ providers:
     exposedByDefault: false
     network: web
 
+api:
+  dashboard: true
+
 entryPoints:
   http:
     address: ":80"
