@@ -52,10 +52,10 @@ services:
       - .env
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.pgadmin.entrypoints=web"
-      - "traefik.http.routers.pgadmin.service=pgadmin"
+      - "traefik.https.routers.pgadmin.entrypoints=web"
+      - "traefik.https.routers.pgadmin.service=pgadmin"
       - "traefik.port=80"
-      - "traefik.http.routers.pgadmin.rule=(Host(`test-api.detactive.de`) && PathPrefix(`/pgadmin`))"
+      - "traefik.https.routers.pgadmin.rule=(Host(`test-api.detactive.de`) && PathPrefix(`/pgadmin`))"
     networks:
       - web
       - internal
