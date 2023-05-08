@@ -1,10 +1,11 @@
 log:
-  level: DEBUG
+  level: INFO
   filePath: "/etc/traefik/traefik.log"
   format: json
 
 providers:
   docker:
+    endpoint: "unix:///var/run/docker.sock"
     exposedByDefault: false
     network: web
 
@@ -13,7 +14,7 @@ api:
   insecure: true
 
 entryPoints:
-  http:
+  web:
     address: ":80"
     http:
       redirections:
@@ -21,7 +22,7 @@ entryPoints:
           to: "https"
           scheme: "https"
   
-  https:
+  websecure:
     address: ":443"
     http:
       tls:
