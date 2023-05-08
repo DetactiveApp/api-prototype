@@ -29,16 +29,16 @@ services:
     networks:
       - web
 
-  api_server:
+  api:
     build: api
     restart: always
     env_file:
       - .env
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.api_server.entrypoints=web"
-      - "traefik.http.routers.api_server.rule=(Host(`test-api.detactive.de`) && PathPrefix(`/api`))"
-      - "traefik.http.routers.api_server.tls=false"
+      - "traefik.http.routers.api.entrypoints=websecure"
+      - "traefik.http.routers.api.rule=(Host(`test-api.detactive.de`) && PathPrefix(`/api`))"
+      - "traefik.http.routers.api.tls=true"
     depends_on:
       - db
     networks:
