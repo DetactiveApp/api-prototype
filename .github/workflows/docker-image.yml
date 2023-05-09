@@ -13,20 +13,17 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    
-    - name: Create external Web network
+
+    - name: Install/Setup dependencies
       run: |
+        sudo apt-get update
+        sudo apt install docker-compose -y
         if [ ! "$(docker network ls | grep web)" ]; then
           echo "Creating Web network ..."
           docker network create web
         else
           echo "Web network already exists... Skipping Step"
         fi
-
-    - name: Install/Setup dependencies
-      run: |
-        sudo apt-get update
-        sudo apt install docker-compose -y
         sudo docker rm traefik -f
         sudo docker rm api_server -f
 
