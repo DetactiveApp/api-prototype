@@ -8,7 +8,6 @@ services:
     command:
       - --providers.docker
       - --providers.docker.exposedbydefault=false
-      - --providers.docker.network=web
       - --entrypoints.web.address=:80
       - --entrypoints.websecure.address=:443
       - --api.insecure
@@ -17,6 +16,7 @@ services:
       - --certificatesresolvers.le.acme.tlschallenge=true
     labels:
       - traefik.enable=true
+      - traefik.docker.network=web
       - traefik.http.routers.api.service=api@internal
       - traefik.http.routers.my-app.rule=Host(`test-api.detactive.de`)
       - traefik.http.routers.traefik.tls.certresolver=le
