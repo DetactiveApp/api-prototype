@@ -13,14 +13,14 @@ services:
       - --entrypoints.web.address=:80
       - --entrypoints.websecure.address=:443
       - --api.insecure
-      - --certificatesresolvers.le.acme.email=detactive.app@gmail.com
+      - --certificatesresolvers.le.acme.email=${LETSENCRYPT_MAIL}
       - --certificatesresolvers.le.acme.storage=/etc/ssl/certs/acme.json
       - --certificatesresolvers.le.acme.tlschallenge=true
     labels:
       - traefik.enable=true
       - traefik.docker.network=web
       - traefik.http.routers.api.service=api@internal
-      - traefik.http.routers.my-app.rule=Host(`test-api.detactive.de`)
+      - traefik.http.routers.api.rule=Host(`${DOMAIN_NAME}`)
       - traefik.http.routers.traefik.tls.certresolver=le
       - traefik.http.routers.traefik.entrypoints=websecure
     volumes:
@@ -48,10 +48,10 @@ services:
     labels:
       - traefik.enable=true
       - traefik.docker.network=web
-      - traefik.http.routers.detactive_api.rule=Host(`test-api.detactive.de`) && PathPrefix(`/api`)
-      - traefik.http.services.detactive_api.loadbalancer.server.port=80
-      - traefik.http.routers.detactive_api.tls.certresolver=le
-      - traefik.http.routers.detactive_api.entrypoints=websecure
+      - traefik.http.routers.api.rule=Host(`${DOMAIN_NAME}`) && PathPrefix(`/api`)
+      - traefik.http.services.api.loadbalancer.server.port=80
+      - traefik.http.routers.api.tls.certresolver=le
+      - traefik.http.routers.api.entrypoints=websecure
     depends_on:
       - db
     networks:
