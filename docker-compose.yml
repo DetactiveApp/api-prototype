@@ -45,8 +45,8 @@ services:
     labels:
       - traefik.http.routers.api.rule=Host(`test-api.detactive.de`) && PathPrefix(`/api`)
       - traefik.http.services.api.loadbalancer.server.port=80
-      - traefik.http.routers.my-app.tls.certresolver=le
-      - traefik.http.routers.my-app.entrypoints=websecure
+      - traefik.http.routers.api.tls.certresolver=le
+      - traefik.http.routers.api.entrypoints=websecure
     depends_on:
       - db
     networks:
