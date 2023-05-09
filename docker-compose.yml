@@ -10,7 +10,7 @@ services:
       - --providers.docker.exposedbydefault=false
       - --providers.docker.network=web
       - --entrypoints.web.address=:80
-      - --entrypoints.websecure.address=:443
+      #  - --entrypoints.websecure.address=:443
       - --api.insecure
       - --certificatesresolvers.le.acme.email=detactive.app@gmail.com
       - --certificatesresolvers.le.acme.storage=/etc/ssl/certs/acme.json
@@ -52,8 +52,8 @@ services:
       - traefik.docker.network=web
       - traefik.http.routers.api.rule=Host(`test-api.detactive.de`) && PathPrefix(`/api`)
       - traefik.http.services.api.loadbalancer.server.port=80
-      - traefik.http.routers.api.tls.certresolver=le
-      - traefik.http.routers.api.entrypoints=websecure
+      #  - traefik.http.routers.api.tls.certresolver=le
+      - traefik.http.routers.api.entrypoints=web
     depends_on:
       - db
     networks:
