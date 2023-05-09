@@ -28,7 +28,7 @@ services:
     volumes:
       - ./api/db/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
-      - web
+      - internal
 
   api:
     build: api
@@ -42,7 +42,10 @@ services:
       - db
     networks:
       - web
+      - internal
 
 networks:
   web:
     external: true
+  internal:
+    external: false
