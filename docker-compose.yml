@@ -27,8 +27,6 @@ services:
       - .env
     volumes:
       - ./api/db/init.sql:/docker-entrypoint-initdb.d/init.sql
-    networks:
-      - web
 
   api:
     build: api
