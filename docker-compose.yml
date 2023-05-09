@@ -8,12 +8,15 @@ services:
     command:
       - --entrypoints.web.address=:80
       - --entrypoints.websecure.address=:443
-      - --certificatesresolvers.le.acme.storage=/etc/ssl/certs/acme.json
-      - --certificatesresolvers.le.acme.tlschallenge=true
       - --providers.docker
       - --api.insecure
+      - --certificatesresolvers.le.acme.email=detactive.app@gmail.com
+      - --certificatesresolvers.le.acme.storage=/etc/ssl/certs/acme.json
+      - --certificatesresolvers.le.acme.tlschallenge=true
     labels:
       - traefik.http.routers.redirs.middlewares=redirect-to-https
+      - traefik.http.routers.traefik.tls.certresolver=le
+      - traefik.http.routers.traefik.entrypoints=websecure
     ports:
       - "80:80"
       - "443:443"
