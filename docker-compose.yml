@@ -50,7 +50,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.docker.network=web
-      - traefik.http.routers.detactive_api.rule=Host(`test-api.detactive.de`) && PathPrefix(`/api`)
+      - traefik.http.routers.detactive_api.rule=Host(`test-api.detactive.de`) && PathPrefix(`/detactive_api`)
       - traefik.http.services.detactive_api.loadbalancer.server.port=80
       - traefik.http.routers.detactive_api.tls.certresolver=le
       - traefik.http.routers.detactive_api.entrypoints=websecure
