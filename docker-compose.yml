@@ -12,6 +12,10 @@ services:
       - --certificatesresolvers.le.acme.tlschallenge=true
       - --providers.docker
       - --api.insecure
+    labels:
+      - traefik.http.routers.redirs.rule=hostregexp(`{host:.+}`)
+      - traefik.http.routers.redirs.entrypoints=web
+      - traefik.http.routers.redirs.middlewares=redirect-to-https
     ports:
       - "80:80"
       - "443:443"
