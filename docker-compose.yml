@@ -17,6 +17,7 @@ services:
       - --certificatesresolvers.le.acme.tlschallenge=true
     labels:
       - traefik.enable=true
+      - traefik.http.routers.api.service=api@internal
       - traefik.http.routers.my-app.rule=Host(`test-api.detactive.de`)
       - traefik.http.routers.traefik.tls.certresolver=le
       - traefik.http.routers.traefik.entrypoints=websecure
@@ -41,7 +42,7 @@ services:
     networks:
       - internal
 
-  api:
+  detactive_api:
     build: api
     restart: always
     env_file:
@@ -49,10 +50,10 @@ services:
     labels:
       - traefik.enable=true
       - traefik.docker.network=web
-      - traefik.http.routers.api.rule=Host(`test-api.detactive.de`) && PathPrefix(`/api`)
-      - traefik.http.services.api.loadbalancer.server.port=80
-      - traefik.http.routers.api.tls.certresolver=le
-      - traefik.http.routers.api.entrypoints=websecure
+      - traefik.http.routers.detactive_api.rule=Host(`test-api.detactive.de`) && PathPrefix(`/api`)
+      - traefik.http.services.detactive_api.loadbalancer.server.port=80
+      - traefik.http.routers.detactive_api.tls.certresolver=le
+      - traefik.http.routers.detactive_api.entrypoints=websecure
     depends_on:
       - db
     networks:
