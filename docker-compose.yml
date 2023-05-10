@@ -24,7 +24,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /etc/ssl/certs:/etc/ssl/certs
-      - /etc/traefik/traefik.log:/etc/traefik/traefik.log
+      - /etc/traefik:/etc/traefik
 
   db:
     image: postgres
