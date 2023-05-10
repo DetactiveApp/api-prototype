@@ -29,17 +29,6 @@ services:
       - /etc/ssl/certs:/etc/ssl/certs
       - /etc/traefik:/etc/traefik
 
-  db:
-    image: postgres
-    restart: always
-    environment:
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-    volumes:
-      - ./api/db/init.sql:/docker-entrypoint-initdb.d/init.sql
-    networks:
-      - internal
-
   detactive_api:
     build: api
     restart: always
@@ -55,6 +44,34 @@ services:
       - traefik.http.routers.api.entrypoints=websecure
     depends_on:
       - db
+    networks:
+      - web
+      - internal
+
+  db:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - ./api/db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - internal
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=web
+      - traefik.http.routers.api.rule=Host(`${DOMAIN_NAME}`) && PathPrefix(`/pgadmin`)
+      - traefik.http.services.api.loadbalancer.server.port=80
+      - traefik.http.routers.api.tls.certresolver=le
+      - traefik.http.routers.api.entrypoints=websecure
     networks:
       - web
       - internal
