@@ -16,13 +16,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-
-    - name: Load environment variables
-      run: |
-        set -o allexport
-        source ${{ env.ENV_FILE }}
-        set +o allexport
-
+    
     - name: Install/Setup dependencies
       run: |
         sudo apt-get update
