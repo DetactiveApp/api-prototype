@@ -27,14 +27,7 @@ jobs:
 
     - name: Export env variables
       run: |
-        export DOMAIN_NAME=${{ env.DOMAIN_NAME }}
-        export LETSENCRYPT_MAIL=${{ env.LETSENCRYPT_MAIL }}
-        export POSTGRES_USER=${{ env.POSTGRES_USER }}
-        export POSTGRES_PASSWORD=${{ env.POSTGRES_PASSWORD }}
-        export DETACTIVE_DB_URL=${{ env.DETACTIVE_DB_URL }}
-        export STICKER_DB_URL=${{ env.STICKER_DB_URL }}
-        export PGADMIN_DEFAULT_EMAIL=${{ env.PGADMIN_DEFAULT_EMAIL }}
-        export PGADMIN_DEFAULT_PASSWORD=${{ env.PGADMIN_DEFAULT_PASSWORD }}
+        env
 
     - name: Install/Setup dependencies
       run: |
