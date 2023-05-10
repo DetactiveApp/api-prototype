@@ -14,6 +14,13 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+    - name: Set env variables
+      shell: bash
+      run: |
+        while read line; do
+          echo "$line" >> $GITHUB_ENV
+        done < ${{ env.ENV_FILE }}
+
     - name: Install/Setup dependencies
       run: |
         sudo apt-get update
