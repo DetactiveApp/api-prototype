@@ -32,6 +32,8 @@ services:
   detactive_api:
     build: api
     restart: always
+    ports:
+      - 80:80
     environment:
       - DETACTIVE_DB_URL=${DETACTIVE_DB_URL}
       - STICKER_DB_URL=${STICKER_DB_URL}
@@ -70,10 +72,10 @@ services:
     labels:
       - traefik.enable=true
       - traefik.docker.network=web
-      - traefik.http.routers.api.rule=Host(`${DOMAIN_NAME}`) && PathPrefix(`/pgadmin`)
-      - traefik.http.services.api.loadbalancer.server.port=5050
-      - traefik.http.routers.api.tls.certresolver=le
-      - traefik.http.routers.api.entrypoints=websecure
+      - traefik.http.routers.pgadmin.rule=Host(`${DOMAIN_NAME}`) && PathPrefix(`/pgadmin`)
+      - traefik.http.services.pgadmin.loadbalancer.server.port=5050
+      - traefik.http.routers.pgadmin.tls.certresolver=le
+      - traefik.http.routers.pgadmin.entrypoints=websecure
     networks:
       - web
       - internal
