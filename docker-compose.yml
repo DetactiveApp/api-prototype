@@ -10,10 +10,13 @@ services:
       - --providers.docker.network=web
       - --entrypoints.web.address=:80
       - --entrypoints.websecure.address=:443
-      - --api.insecure=false
+      - --api.insecure=true
       - --certificatesresolvers.le.acme.email=${LETSENCRYPT_MAIL}
       - --certificatesresolvers.le.acme.storage=/etc/ssl/certs/acme.json
       - --certificatesresolvers.le.acme.tlschallenge=true
+      - --log.level=DEBUG
+      - --log.filePath=/etc/traefik/traefik.log
+      - --log.format=json
     labels:
       - traefik.enable=true
       - traefik.docker.network=web
