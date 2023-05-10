@@ -10,7 +10,7 @@ services:
       - --providers.docker.network=web
       - --entrypoints.web.address=:80
       - --entrypoints.websecure.address=:443
-      - --api.insecure=true
+      - --api.insecure=false
       - --certificatesresolvers.le.acme.email=${LETSENCRYPT_MAIL}
       - --certificatesresolvers.le.acme.storage=/etc/ssl/certs/acme.json
       - --certificatesresolvers.le.acme.tlschallenge=true
