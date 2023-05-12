@@ -3,7 +3,6 @@ services:
   traefik:
     image: traefik:v2.10.1
     restart: always
-    network_mode: host
     command:
       - --providers.docker=true
       - --providers.docker.exposedbydefault=false
@@ -28,6 +27,8 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /etc/ssl/certs:/etc/ssl/certs
       - /etc/traefik:/etc/traefik
+    networks:
+      - web
 
   detactive_api:
     build: api
