@@ -27,8 +27,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /etc/ssl/certs:/etc/ssl/certs
       - /etc/traefik:/etc/traefik
-    networks:
-      - web
 
   detactive_api:
     build: api
