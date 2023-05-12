@@ -23,7 +23,6 @@ services:
     labels:
       - traefik.enable=true
       - traefik.docker.network=web
-      - traefik.http.routers.traefik.service=api@internal
       - traefik.http.routers.traefik.rule=Host(`${DOMAIN_NAME}`)
       - traefik.http.routers.traefik.tls.certresolver=le
       - traefik.http.routers.traefik.entrypoints=websecure
