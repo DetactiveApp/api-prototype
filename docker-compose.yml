@@ -3,7 +3,6 @@ services:
   traefik:
     image: traefik:v2.10.1
     restart: always
-    network_mode: host
     command:
       - --providers.docker=true
       - --providers.docker.exposedbydefault=false
