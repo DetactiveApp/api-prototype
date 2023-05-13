@@ -21,7 +21,8 @@ async fn main() {
             &format!("/v{}", &env!("CARGO_PKG_VERSION")[..1]),
             api().await,
         )
-        .route("/", get(root));
+        .route("/", get(root))
+        .layer(cors());
 
     axum::Server::bind(&addr)
         .serve(app.into_make_service())
