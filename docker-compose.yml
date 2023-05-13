@@ -31,6 +31,8 @@ services:
     build: api
     restart: always
     env_file: .env
+    environment:
+      - SCRIPT_NAME=/api
     labels:
       - traefik.enable=true
       - traefik.docker.network=web
