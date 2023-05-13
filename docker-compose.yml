@@ -54,7 +54,7 @@ services:
     volumes:
       - ./api/db/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
-      - internal
+      - web
 
   pgadmin:
     image: dpage/pgadmin4
@@ -71,7 +71,6 @@ services:
       - traefik.http.routers.pgadmin.entrypoints=websecure
     networks:
       - web
-      - internal
 
 networks:
   web:
