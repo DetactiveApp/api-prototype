@@ -14,6 +14,10 @@ async fn root() -> String {
     return format!("Detactive API v{}", env!("CARGO_PKG_VERSION"));
 }
 
+async fn moai() -> &'static str {
+    return "🗿";
+}
+
 #[tokio::main]
 async fn main() {
     println!("Detactive API v{}", env!("CARGO_PKG_VERSION"));
@@ -26,6 +30,7 @@ async fn main() {
             &format!("/v{}", &env!("CARGO_PKG_VERSION")[..1]),
             api().await,
         )
+        .route("/moai", get(moai))
         .route("/", get(root))
         .layer(cors());
 
