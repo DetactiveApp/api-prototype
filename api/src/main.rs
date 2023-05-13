@@ -17,11 +17,11 @@ async fn main() {
 
     let addr = SocketAddr::from(([0, 0, 0, 0], 3000));
     let app = Router::new()
+        .route("/", get(root))
         .nest(
             &format!("/v{}", &env!("CARGO_PKG_VERSION")[..1]),
             api().await,
         )
-        .route("/", get(root))
         .layer(cors());
 
     axum::Server::bind(&addr)
