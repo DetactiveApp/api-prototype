@@ -20,12 +20,6 @@ services:
       - --log.level=DEBUG
       - --log.filePath=/etc/traefik/traefik.log
       - --log.format=json
-    labels:
-      - traefik.enable=true
-      - traefik.docker.network=web
-      - traefik.http.routers.traefik.rule=Host(`${DOMAIN_NAME}`)
-      - traefik.http.routers.traefik.tls.certresolver=le
-      - traefik.http.routers.traefik.entrypoints=websecure
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /etc/ssl/certs:/etc/ssl/certs
