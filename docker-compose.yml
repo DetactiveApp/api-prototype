@@ -30,9 +30,7 @@ services:
   detactive_api:
     build: api
     restart: always
-    environment:
-      - DETACTIVE_DB_URL=${DETACTIVE_DB_URL}
-      - STICKER_DB_URL=${STICKER_DB_URL}
+    env_file: .env
     labels:
       - traefik.enable=true
       - traefik.docker.network=web
@@ -48,9 +46,7 @@ services:
   db:
     image: postgres
     restart: always
-    environment:
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    env_file: .env
     volumes:
       - ./api/db/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
@@ -59,9 +55,7 @@ services:
   pgadmin:
     image: dpage/pgadmin4
     restart: always
-    environment:
-      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
-      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
+    env_file: .env
     labels:
       - traefik.enable=true
       - traefik.docker.network=web
