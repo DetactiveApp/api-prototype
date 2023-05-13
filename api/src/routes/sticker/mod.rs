@@ -10,5 +10,5 @@ async fn test() -> &'static str {
 pub async fn sticker_router() -> Router {
     return Router::new()
         .route("/:id", get(request))
-        .route("test", get(test));
+        .route("/test", get(test));
 }
