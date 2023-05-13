@@ -13,11 +13,16 @@ pub async fn router() -> StatusCode {
     return StatusCode::NO_CONTENT;
 }
 
+async fn moai() -> &'static str {
+    return "🗿";
+}
+
 pub async fn api() -> Router {
     let detactive_db_pool = db::detactive_pool().await;
     return Router::new()
         .route("/", get(router))
         .nest("/user", user_router().await)
         .layer(Extension(detactive_db_pool))
+        .route("/moai", get(moai))
         .nest("/sticker", sticker_router().await);
 }
