@@ -9,8 +9,8 @@ use user::user_router;
 
 use crate::utils::db;
 
-pub async fn router() -> StatusCode {
-    return StatusCode::NO_CONTENT;
+async fn router() -> StatusCode {
+    return StatusCode::NOT_FOUND;
 }
 
 async fn moai() -> &'static str {
