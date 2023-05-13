@@ -4,7 +4,10 @@ mod utils;
 
 use std::net::SocketAddr;
 
-use crate::{routes::api, utils::cors};
+use crate::{
+    routes::api,
+    utils::{cors, db::migrate_db},
+};
 use axum::{routing::get, Router};
 
 async fn root() -> String {
@@ -14,6 +17,8 @@ async fn root() -> String {
 #[tokio::main]
 async fn main() {
     println!("Detactive API v{}", env!("CARGO_PKG_VERSION"));
+
+    migrate_db().await;
 
     let addr = SocketAddr::from(([0, 0, 0, 0], 3000));
     let app = Router::new()

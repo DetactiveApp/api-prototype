@@ -18,6 +18,6 @@ pub async fn api() -> Router {
     return Router::new()
         .route("/", get(router))
         .nest("/user", user_router().await)
-        .nest("/sticker", sticker_router().await)
-        .layer(Extension(detactive_db_pool));
+        .layer(Extension(detactive_db_pool))
+        .nest("/sticker", sticker_router().await);
 }
