@@ -20,6 +20,6 @@ pub async fn request(Path(path): Path<String>) -> Result<String, StatusCode> {
                 .unwrap();
             return Ok(sticker.get("redirect_url"));
         }
-        Err(_) => return Err(StatusCode::NOT_FOUND),
+        Err(_) => return Err(StatusCode::NO_CONTENT),
     };
 }
