@@ -41,6 +41,7 @@ services:
       - traefik.http.routers.detactive_api.entrypoints=websecure
     networks:
       - web
+      - internal
 
   db:
     image: postgres
@@ -51,7 +52,7 @@ services:
     volumes:
       - ./api/db/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
-      - web
+      - internal
 
   pgadmin:
     image: dpage/pgadmin4
@@ -68,6 +69,7 @@ services:
       - traefik.http.routers.pgadmin.entrypoints=websecure
     networks:
       - web
+      - internal
 
 networks:
   web:
