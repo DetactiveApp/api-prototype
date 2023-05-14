@@ -27,7 +27,7 @@ pub async fn api() -> Router {
     return Router::new()
         .nest("/user", user_router().await)
         .nest("/sticker", sticker_router().await)
-        .nest("/storyhunter", storystudio_router().await)
+        .nest("/storystudio", storystudio_router().await)
         .route("/moai", get(moai))
         .route("/", get(router))
         .layer(AddExtensionLayer::new(ApiContext {
