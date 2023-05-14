@@ -27,7 +27,7 @@ services:
       - web
 
   detactive_api:
-    build: api
+    build: ../api
     restart: always
     env_file: .env
     ports:
@@ -52,7 +52,7 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - ./api/db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ../api/db/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - internal
 

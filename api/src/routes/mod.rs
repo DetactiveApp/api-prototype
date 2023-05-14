@@ -1,12 +1,14 @@
-use axum::{routing::get, Extension, Router};
+use axum::{routing::get, Router};
+use tower_http::add_extension::AddExtensionLayer;
 
 mod sticker;
 mod storystudio;
 mod user;
 
+use self::storystudio::storystudio_router;
 use reqwest::StatusCode;
 use sticker::sticker_router;
-use tower_http::add_extension::AddExtensionLayer;
+
 use user::user_router;
 
 use crate::{types::ApiContext, utils::db};
@@ -25,6 +27,7 @@ pub async fn api() -> Router {
     return Router::new()
         .nest("/user", user_router().await)
         .nest("/sticker", sticker_router().await)
+        .nest("/storyhunter", storystudio_router().await)
         .route("/moai", get(moai))
         .route("/", get(router))
         .layer(AddExtensionLayer::new(ApiContext {

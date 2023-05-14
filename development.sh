@@ -6,4 +6,4 @@ if [ ! "$(docker network ls | grep web)" ];
         echo "Web network already exists... Skipping Step"
 fi
 
-docker-compose up -d --build
+docker-compose -f ./env/docker-compose.development.yml up --build

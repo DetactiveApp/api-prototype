@@ -7,6 +7,6 @@ pub struct Body {}
 #[derive(Serialize, Deserialize)]
 pub struct Response {}
 
-pub async fn request(body: Json<Body>) -> Json<Response> {
+pub async fn request() -> Json<Response> {
     return Json(Response {});
 }
