@@ -1,1 +1,1 @@
-CREATE DATABASE sticker;
+CREATE DATABASE company;
