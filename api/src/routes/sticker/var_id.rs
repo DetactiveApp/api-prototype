@@ -4,7 +4,7 @@ use sqlx::Row;
 
 use crate::utils::db;
 
-pub async fn request(Path(path): Path<String>) -> Result<String, StatusCode> {
+pub async fn request(Path(path): Path<String>) -> String {
     let db: sqlx::Pool<sqlx::Postgres> = db::sticker_pool().await;
 
     match sqlx::query("SELECT redirect_url FROM stickers WHERE deleted_at IS NULL AND id = $1;")
@@ -18,8 +18,8 @@ pub async fn request(Path(path): Path<String>) -> Result<String, StatusCode> {
                 .execute(&db)
                 .await
                 .unwrap();
-            return Ok(sticker.get("redirect_url"));
+            return sticker.get("redirect_url");
         }
-        Err(_) => return Err(StatusCode::NOT_FOUND),
+        Err(_) => return String::from("https://www.detactive.de/"),
     };
 }
