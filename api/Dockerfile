@@ -7,7 +7,7 @@ COPY ./Cargo.lock ./Cargo.lock
 COPY ./Cargo.toml ./Cargo.toml
 
 RUN cargo install sqlx-cli --features postgres
-RUN ~/.cargo/bin/sqlx migrate build-script
+RUN /.cargo/bin/sqlx migrate build-script
 
 RUN cargo build --release
 RUN rm src/*.rs
