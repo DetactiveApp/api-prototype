@@ -17,11 +17,11 @@ CREATE TABLE sticker_hits (
 
 CREATE TABLE staff (
   id SERIAL PRIMARY KEY,
-  joined TIMESTAMP NOT NULL,
+  joined TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   first_name VARCHAR(255) NOT NULL,
-  name VARCHAR(255) NOT NULL,
+  last_name VARCHAR(255) NOT NULL,
   mail VARCHAR(255) NOT NULL,
-  storystudio_access BOOLEAN NOT NULL
+  storystudio_access BOOLEAN NOT NULL DEFAULT FALSE
 );
 
 /***************************************************
