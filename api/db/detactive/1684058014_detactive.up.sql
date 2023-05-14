@@ -49,7 +49,7 @@ CREATE TABLE steps (
   uuid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   story_uuid UUID NOT NULL,
   waypoint_uuid UUID,
-  description NOT NULL VARCHAR(120),
+  description VARCHAR(120) NOT NULL,
   medium_type MEDIUMTYPE,
   src TEXT NOT NULL,
   title VARCHAR(120) NOT NULL
