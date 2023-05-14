@@ -21,7 +21,7 @@ async fn moai() -> &'static str {
 
 pub async fn api() -> Router {
     let detactive_db_pool = db::detactive_pool().await;
-    let company_db_pool = db::detactive_pool().await;
+    let company_db_pool = db::company_pool().await;
     return Router::new()
         .nest("/user", user_router().await)
         .nest("/sticker", sticker_router().await)
