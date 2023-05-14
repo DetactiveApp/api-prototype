@@ -10,12 +10,12 @@ pub async fn detactive_pool() -> PgPool {
     return pool;
 }
 
-pub async fn sticker_pool() -> PgPool {
+pub async fn company_pool() -> PgPool {
     let pool = PgPoolOptions::new()
         .max_connections(100)
-        .connect(&env::var("STICKER_DB_URL").expect("Could not find STICKER_DB_URL."))
+        .connect(&env::var("COMPANY_DB_URL").expect("Could not find COMPANY_DB_URL."))
         .await
-        .expect("Error during sticker-db connection pool initialization.");
+        .expect("Error during company-db connection pool initialization.");
 
     return pool;
 }
@@ -26,8 +26,8 @@ pub async fn migrate_db() {
         .await
         .expect("Error during migrating data to detactive-db.");
 
-    sqlx::migrate!("db/sticker")
-        .run(&sticker_pool().await)
+    sqlx::migrate!("db/company")
+        .run(&company_pool().await)
         .await
         .expect("Error during migrating data to sticker-db.");
 }
