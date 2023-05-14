@@ -1,3 +1,4 @@
+mod context;
 mod coord;
 mod decision;
 mod medium;
@@ -6,6 +7,7 @@ mod story;
 mod user;
 mod waypoint;
 
+pub use context::ApiContext;
 pub use coord::Coord;
 pub use decision::Decision;
 pub use medium::Medium;
