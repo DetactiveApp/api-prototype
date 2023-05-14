@@ -1,8 +1,6 @@
 use axum::{extract::Path, Extension};
 use sqlx::{PgPool, Row};
 
-use crate::utils::db;
-
 pub async fn request(Path(path): Path<String>, Extension(company_db): Extension<PgPool>) -> String {
     match sqlx::query("SELECT redirect_url FROM stickers WHERE deleted_at IS NULL AND id = $1;")
         .bind(&path)

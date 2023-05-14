@@ -21,10 +21,10 @@ async fn moai() -> &'static str {
 pub async fn api() -> Router {
     let detactive_db_pool = db::detactive_pool().await;
     return Router::new()
-        .route("/", get(router))
         .nest("/user", user_router().await)
         .layer(Extension(detactive_db_pool))
-        .route("/moai", get(moai))
         .nest("/sticker", sticker_router().await)
-        .layer(Extension(company_pool));
+        .layer(Extension(company_pool))
+        .route("/moai", get(moai))
+        .route("/", get(router));
 }
