@@ -3,7 +3,7 @@ use sqlx::Row;
 
 use crate::types::ApiContext;
 
-pub async fn request(Path(path): Path<String>, ctx: Extension<ApiContext>) -> String {
+pub async fn request(Path(path): Path<String>, Extension(ctx): Extension<ApiContext>) -> String {
     match sqlx::query("SELECT redirect_url FROM stickers WHERE deleted_at IS NULL AND id = $1;")
         .bind(&path)
         .fetch_one(&ctx.company_db)
