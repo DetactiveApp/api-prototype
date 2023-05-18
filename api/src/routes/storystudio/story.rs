@@ -1,4 +1,4 @@
-use axum::{Extension, Json};
+use axum::{extract::Path, Extension, Json};
 use reqwest::StatusCode;
 use serde::{Deserialize, Serialize};
 use sqlx::Row;
@@ -33,6 +33,31 @@ pub async fn post_request(
     {
         Ok(result) => Ok(Json(PostResponse {
             uuid: result.get("uuid"),
+        })),
+        Err(_) => Err(StatusCode::INTERNAL_SERVER_ERROR),
+    };
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct GetResponse {
+    title: String,
+    description: String,
+    active: bool,
+}
+
+pub async fn get_request(
+    Extension(ctx): Extension<ApiContext>,
+    Path(uuid): Path<Uuid>,
+) -> Result<Json<GetResponse>, StatusCode> {
+    return match sqlx::query("SELECT description, title, active FROM stories WHERE uuid = $1;")
+        .bind(uuid)
+        .fetch_one(&ctx.detactive_db)
+        .await
+    {
+        Ok(result) => Ok(Json(GetResponse {
+            title: result.get("title"),
+            description: result.get("description"),
+            active: result.get("active"),
         })),
         Err(_) => Err(StatusCode::INTERNAL_SERVER_ERROR),
     };
