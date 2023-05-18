@@ -28,4 +28,4 @@ jobs:
 
     - name: Start production services
       run: |
-        sudo docker-compose up -f ./env/docker-compose.production.yml -d
+        sudo docker-compose up -f ./env/docker-compose.production.yml -d --build
