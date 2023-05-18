@@ -23,8 +23,8 @@ jobs:
         else
           echo "Web network already exists... Skipping Step"
         fi
-        sudo docker rm traefik -f
-        sudo docker rm detactive_api -f
+        sudo docker rm traefik-1 -f
+        sudo docker rm detactive_api-1 -f
 
     - name: Start production services
       run: |
