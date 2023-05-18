@@ -8,7 +8,7 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 **-------------- CREATE CUSTOM TYPES -------------**
 ***************************************************/
 
-CREATE TYPE MEDIUMTYPE AS ENUM ('audio', 'image', 'video');
+CREATE TYPE MEDIATYPE AS ENUM ('audio', 'image', 'video');
 
 /***************************************************
 **----------------- CREATE TABLES ----------------**
@@ -50,7 +50,7 @@ CREATE TABLE steps (
   story_uuid UUID NOT NULL,
   waypoint_uuid UUID,
   description VARCHAR(120) NOT NULL,
-  medium_type MEDIUMTYPE,
+  media_type MEDIATYPE,
   src TEXT NOT NULL,
   title VARCHAR(120) NOT NULL
 );
@@ -58,7 +58,8 @@ CREATE TABLE steps (
 CREATE TABLE stories (
   uuid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   description VARCHAR(120) NOT NULL,
-  title VARCHAR(120) NOT NULL
+  title VARCHAR(120) NOT NULL,
+  active BOOLEAN NOT NULL DEFAULT FALSE
 );
 
 CREATE TABLE waypoints (

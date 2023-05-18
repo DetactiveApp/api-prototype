@@ -9,16 +9,16 @@ pub struct QueryParams {
     mail: String,
 }
 
-pub async fn request(
+pub async fn get_request(
     Query(query): Query<QueryParams>,
     Extension(ctx): Extension<ApiContext>,
 ) -> StatusCode {
-    match sqlx::query("SELECT id FROM staff WHERE mail = $1 AND storystudio_access = true;")
+    return match sqlx::query("SELECT id FROM staff WHERE mail = $1 AND storystudio_access = true;")
         .bind(query.mail)
         .fetch_one(&ctx.company_db)
         .await
     {
-        Ok(_) => return StatusCode::OK,
-        Err(_) => return StatusCode::NOT_FOUND,
+        Ok(_) => StatusCode::OK,
+        Err(_) => StatusCode::NOT_FOUND,
     };
 }
