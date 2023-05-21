@@ -1,5 +1,5 @@
 use axum::{
-    routing::{get, post},
+    routing::{get, post, put},
     Router,
 };
 
@@ -15,6 +15,7 @@ pub async fn storystudio_router() -> Router {
         .route("/waypoint", post(waypoint::post_request))
         .route("/list", get(list::get_request))
         .route("/story", post(story::post_request))
-        .route("/:story/get", get(story::get_request))
+        .route("/:story", put(story::put_request))
+        .route("/:story", get(story::get_request))
         .route("/:story/step", post(step::post_request));
 }

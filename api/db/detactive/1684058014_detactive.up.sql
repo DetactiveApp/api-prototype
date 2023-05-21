@@ -66,7 +66,8 @@ CREATE TABLE waypoints (
   uuid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   max_distance SMALLINT NOT NULL,
   min_distance SMALLINT NOT NULL,
-  place_type VARCHAR(30)
+  place_type VARCHAR(30),
+  place_override BOOLEAN NOT NULL DEFAULT FALSE
 );
 
 /***************************************************
