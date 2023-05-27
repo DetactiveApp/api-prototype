@@ -1,7 +1,7 @@
 mod context;
 mod coord;
-mod media;
+mod mediatype;
 
 pub use context::ApiContext;
 pub use coord::Coord;
-pub use media::MediaType;
+pub use mediatype::MediaType;

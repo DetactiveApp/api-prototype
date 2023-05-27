@@ -18,7 +18,7 @@ pub struct PostResponse {
     uuid: Uuid,
 }
 
-pub async fn post_request(
+pub async fn new_request(
     Extension(ctx): Extension<ApiContext>,
     Json(body): Json<PostBody>,
 ) -> Result<Json<PostResponse>, StatusCode> {
@@ -36,3 +36,7 @@ pub async fn post_request(
         Err(_) => Err(StatusCode::INTERNAL_SERVER_ERROR)
     };
 }
+
+pub async fn put_request() {}
+
+pub async fn delete_request() {}
