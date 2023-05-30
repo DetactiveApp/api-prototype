@@ -1,4 +1,4 @@
-use axum::{routing::get, Router};
+use axum::{middleware, routing::get, Router};
 use tower_http::add_extension::AddExtensionLayer;
 
 mod sticker;
@@ -11,7 +11,10 @@ use sticker::sticker_router;
 
 use user::user_router;
 
-use crate::{types::ApiContext, utils::db};
+use crate::{
+    types::ApiContext,
+    utils::{db, guard},
+};
 
 async fn router() -> StatusCode {
     return StatusCode::NOT_FOUND;
@@ -24,10 +27,12 @@ async fn moai() -> &'static str {
 pub async fn api() -> Router {
     let detactive_db_pool = db::detactive_pool().await;
     let company_db_pool = db::company_pool().await;
+
     return Router::new()
         .nest("/user", user_router().await)
-        .nest("/sticker", sticker_router().await)
+        .route_layer(middleware::from_fn(guard))
         .nest("/storystudio", storystudio_router().await)
+        .nest("/sticker", sticker_router().await)
         .route("/moai", get(moai))
         .route("/", get(router))
         .layer(AddExtensionLayer::new(ApiContext {

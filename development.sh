@@ -1,3 +1,5 @@
+#!/bin/bash
+
 if [ ! "$(docker network ls | grep web)" ]; 
     then
         echo "Creating Web network ..."

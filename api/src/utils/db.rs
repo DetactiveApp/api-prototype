@@ -1,7 +1,4 @@
-use sqlx::{
-    migrate::Migrator,
-    postgres::{PgPool, PgPoolOptions},
-};
+use sqlx::postgres::{PgPool, PgPoolOptions};
 use std::env;
 
 pub async fn detactive_pool() -> PgPool {
