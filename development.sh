@@ -9,3 +9,5 @@ if [ ! "$(docker network ls | grep web)" ];
 fi
 
 docker-compose -f ./env/docker-compose.development.yml up --build
+
+read -p "Press any key to continue." x
