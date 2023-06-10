@@ -64,10 +64,16 @@ pub async fn get_request(
         }
 
         if story_tags.iter().all(|tag| location_tags.contains(tag)) {
+            let story = sqlx::query("SELECT * FROM stories WHERE uuid = $1")
+                .bind(*story_uuid)
+                .fetch_one(&ctx.detactive_db)
+                .await
+                .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+
             stories.push(GetResponse {
-                uuid: *story_uuid,
-                title: String::new(),
-                description: String::new(),
+                uuid: story.get("uuid"),
+                title: story.get("title"),
+                description: story.get("description"),
                 distance: 0,
                 duration: 0,
                 tags: vec![],
