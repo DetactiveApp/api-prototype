@@ -14,6 +14,7 @@ pub async fn get_local_location_tags(lat: &f64, lon: &f64) -> Result<Vec<String>
         .json::<serde_json::Value>()
         .await
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+
     ctx.get("features")
         .and_then(|features| features.as_array())
         .map(|array| {
