@@ -14,5 +14,6 @@ To start the development server, just run the following shell:
 | Service  | Hostname               |
 |----------|------------------------|
 | API      | http://localhost:3000/ |
+| Swagger  | http://localhost:8080/ |
 | Postgres | http://localhost:5432/ |
 | PgAdmin  | http://localhost:5050/ |
