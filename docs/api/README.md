@@ -28,7 +28,6 @@ Gets next step at given game uuid.
 TODO
 ```
 ---
----
 ## GET /game/{}/forward?lat={}&lon={}&to={}
 Gets next decision step at given game uuid using the "to" query parameter.
 ### Response Example:
