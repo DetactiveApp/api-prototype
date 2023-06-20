@@ -10,6 +10,7 @@ pub struct Claims {
     iat: usize,
 }
 
+#[allow(dead_code)]
 pub fn encode() -> Result<String, StatusCode> {
     let datetime_iat = Utc::now();
     let datetime_exp = datetime_iat + Duration::seconds(30);

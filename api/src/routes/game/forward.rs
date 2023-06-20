@@ -6,24 +6,45 @@ use reqwest::StatusCode;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use crate::types::ApiContext;
+use crate::types::{ApiContext, MediaType};
 
 #[derive(Serialize, Deserialize)]
 pub struct QueryParams {
     lat: f64,
     lon: f64,
+    to: Option<Uuid>,
 }
 
 #[derive(Serialize, Deserialize)]
-pub struct GetResponse {
+pub struct Waypoint {
+    uuid: Uuid,
     lat: f64,
     lon: f64,
 }
 
+#[derive(Serialize, Deserialize)]
+pub struct Decision {
+    uuid: Uuid,
+    step_input_uuid: Uuid,
+    step_output_uuid: Uuid,
+    title: String,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct Step {
+    uuid: Uuid,
+    description: String,
+    media_type: MediaType,
+    src: String,
+    title: String,
+    decisions: Vec<Decision>,
+    waypoint: Waypoint,
+}
+
 pub async fn get_request(
-    Path(path): Path<Uuid>,
-    Query(query): Query<QueryParams>,
+    Path(story_uuid): Path<Uuid>,
+    Query(params): Query<QueryParams>,
     Extension(ctx): Extension<ApiContext>,
-) -> Result<Json<GetResponse>, StatusCode> {
-    return Err(StatusCode::OK);
+) -> Result<Json<Step>, StatusCode> {
+    return Err(StatusCode::NOT_IMPLEMENTED);
 }

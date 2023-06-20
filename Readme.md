@@ -1,4 +1,7 @@
-# Server
+# Server Development
+## Documentation
+[API](docs/api/README.md)
+
 ## Local Dependencies
 Make sure to have [Docker](https://docs.docker.com/get-docker/) installed.
 
