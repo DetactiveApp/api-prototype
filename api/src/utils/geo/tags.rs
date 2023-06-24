@@ -2,9 +2,17 @@ use std::env;
 
 use reqwest::StatusCode;
 
-pub async fn get_local_location_tags(lat: &f64, lon: &f64) -> Result<Vec<String>, StatusCode> {
+pub async fn get_local_location_tags(
+    lat: &f64,
+    lon: &f64,
+    radius: i32,
+) -> Result<Vec<String>, StatusCode> {
     let mapbox_token = &env::var("MAPBOX_TOKEN").expect("Mapbox access token not found.");
-    let url = format!("https://api.mapbox.com/v4/mapbox.mapbox-streets-v8/tilequery/{lon},{lat}.json?limit=50&radius=1000&dedupe&geometry=point&layers=poi_label&access_token={mapbox_token}&filter=(walkway|footway)=true");
+    let url = format!(
+        "https://api.mapbox.com/search/searchbox/v1/reverse?longitude={lon}&latitude={lat}&radius={radius}&access_token={mapbox_token}"
+    );
+
+    println!("{:?}", url);
 
     let mut location_tags: Vec<String> = Vec::new();
 

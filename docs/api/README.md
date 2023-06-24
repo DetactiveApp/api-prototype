@@ -4,7 +4,7 @@ Prefix: /api/v1
 
 # Routes:
 
-## GET /story/list?lat={}&lon={}
+## GET /game/list?lat={}&lon={}
 Gets list of potential stories that are playable around given coordinates.
 ### Response Example:
 ```json
