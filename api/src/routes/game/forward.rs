@@ -17,14 +17,14 @@ pub struct QueryParams {
 }
 
 #[derive(Serialize, Deserialize)]
-pub struct Waypoint {
+pub struct DWaypoint {
     uuid: Uuid,
     lat: f64,
     lon: f64,
 }
 
 #[derive(Serialize, Deserialize)]
-pub struct Decision {
+pub struct DDecision {
     uuid: Uuid,
     step_input_uuid: Uuid,
     step_output_uuid: Uuid,
@@ -32,21 +32,21 @@ pub struct Decision {
 }
 
 #[derive(Serialize, Deserialize)]
-pub struct Step {
+pub struct DStep {
     uuid: Uuid,
     description: String,
     media_type: MediaType,
     src: String,
     title: String,
-    decisions: Vec<Decision>,
-    waypoint: Option<Waypoint>,
+    decisions: Vec<DDecision>,
+    waypoint: Option<DWaypoint>,
 }
 
 pub async fn get_request(
     Path(player_story_uuid): Path<Uuid>,
     Query(mut params): Query<QueryParams>,
     Extension(ctx): Extension<ApiContext>,
-) -> Result<Json<Step>, StatusCode> {
+) -> Result<Json<DStep>, StatusCode> {
     if params.to.is_none() {
         params.to =
             Some(sqlx::query("SELECT step_uuid FROM player_story_steps WHERE player_story_uuid = $1 AND finished_at = null;")
@@ -63,12 +63,12 @@ pub async fn get_request(
         .await
         .map_err(|_| StatusCode::NOT_FOUND)?;
 
-    let waypoint: Option<Waypoint> = match sqlx::query("SELECT * FROM waypoints WHERE uuid = $1;")
+    let waypoint: Option<DWaypoint> = match sqlx::query("SELECT * FROM waypoints WHERE uuid = $1;")
         .bind(step.get::<Uuid, &str>("waypoint_uuid"))
         .fetch_one(&ctx.detactive_db)
         .await
     {
-        Ok(row) => Some(Waypoint {
+        Ok(row) => Some(DWaypoint {
             uuid: row.get("uuid"),
             lat: 0.0,
             lon: 0.0,
@@ -76,7 +76,7 @@ pub async fn get_request(
         Err(_) => None,
     };
 
-    let decisions: Vec<Decision> =
+    let decisions: Vec<DDecision> =
         match sqlx::query("SELECT * FROM decisions WHERE step_input_uuid = $1")
             .bind(step.get::<Uuid, &str>("uuid"))
             .fetch_all(&ctx.detactive_db)
@@ -84,7 +84,7 @@ pub async fn get_request(
         {
             Ok(rows) => rows
                 .iter()
-                .map(|row| Decision {
+                .map(|row| DDecision {
                     uuid: row.get("uuid"),
                     step_input_uuid: row.get("step_input_uuid"),
                     step_output_uuid: row.get("step_output_uuid"),
@@ -94,7 +94,7 @@ pub async fn get_request(
             Err(_) => vec![],
         };
 
-    Ok(Json(Step {
+    Ok(Json(DStep {
         uuid: step.get("uuid"),
         description: step.get("description"),
         media_type: step.get("media_type"),
