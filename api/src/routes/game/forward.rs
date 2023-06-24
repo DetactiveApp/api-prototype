@@ -57,33 +57,50 @@ pub async fn get_request(
                 .get("step_uuid"));
     }
 
-    let step_data: PgRow = sqlx::query("SELECT * FROM steps WHERE uuid = $1;")
+    let step: PgRow = sqlx::query("SELECT * FROM steps WHERE uuid = $1;")
         .bind(params.to)
         .fetch_one(&ctx.detactive_db)
         .await
         .map_err(|_| StatusCode::NOT_FOUND)?;
 
-    let waypoint_data: PgRow = sqlx::query("SELECT * FROM waypoints WHERE uuid = $1;")
-        .bind(step_data.get::<Uuid, &str>("waypoint_uuid"))
+    let waypoint: Option<Waypoint> = match sqlx::query("SELECT * FROM waypoints WHERE uuid = $1;")
+        .bind(step.get::<Uuid, &str>("waypoint_uuid"))
         .fetch_one(&ctx.detactive_db)
         .await
-        .map_err(|_| StatusCode::NOT_FOUND)?;
-
-    let waypoint: Option<Waypoint> = Some(Waypoint {
-        uuid: waypoint_data.get("uuid"),
-        lat: 0.0,
-        lon: 0.0,
-    });
-
-    let step: Step = Step {
-        uuid: step_data.get("uuid"),
-        description: step_data.get("description"),
-        media_type: step_data.get("media_type"),
-        src: step_data.get("src"),
-        title: step_data.get("title"),
-        decisions: vec![],
-        waypoint: waypoint,
+    {
+        Ok(row) => Some(Waypoint {
+            uuid: row.get("uuid"),
+            lat: 0.0,
+            lon: 0.0,
+        }),
+        Err(_) => None,
     };
 
-    Err(StatusCode::NOT_IMPLEMENTED)
+    let decisions: Vec<Decision> =
+        match sqlx::query("SELECT * FROM decisions WHERE step_input_uuid = $1")
+            .bind(step.get::<Uuid, &str>("uuid"))
+            .fetch_all(&ctx.detactive_db)
+            .await
+        {
+            Ok(rows) => rows
+                .iter()
+                .map(|row| Decision {
+                    uuid: row.get("uuid"),
+                    step_input_uuid: row.get("step_input_uuid"),
+                    step_output_uuid: row.get("step_output_uuid"),
+                    title: row.get("title"),
+                })
+                .collect(),
+            Err(_) => vec![],
+        };
+
+    Ok(Json(Step {
+        uuid: step.get("uuid"),
+        description: step.get("description"),
+        media_type: step.get("media_type"),
+        src: step.get("src"),
+        title: step.get("title"),
+        decisions: decisions,
+        waypoint: waypoint,
+    }))
 }
