@@ -27,7 +27,7 @@ pub async fn get_request(
     Query(query): Query<GetQuery>,
     Extension(ctx): Extension<ApiContext>,
 ) -> Result<Json<Vec<GetResponse>>, StatusCode> {
-    let location_tags = get_local_location_tags(&query.lat, &query.lon, 3000).await?;
+    let location_tags = get_local_location_tags(&query.lat, &query.lon, 3000.).await?;
     let mut stories: Vec<GetResponse> = vec![];
 
     let story_uuids: Vec<Uuid> = sqlx::query("SELECT uuid FROM stories WHERE active = true;")
