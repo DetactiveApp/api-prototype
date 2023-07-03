@@ -70,8 +70,10 @@ Gets next step at given game uuid.
   ],
   "waypoint": {
     "uuid": "e6ded33f-b37c-4d31-9d6c-380eb4486c53",
-    "lat": "53.551086",
-    "lon": "9.993682"
+    "coordinates": {
+      "lat": "53.551086",
+      "lon": "9.993682"
+    }
   }
 }
 ```
@@ -109,8 +111,10 @@ in a UUID)
   ],
   "waypoint": {
     "uuid": "e6ded33f-b37c-4d31-9d6c-380eb4486c53",
-    "lat": "53.551086",
-    "lon": "9.993682"
+    "coordinates": {
+      "lat": "53.551086",
+      "lon": "9.993682"
+    }
   }
 }
 ```

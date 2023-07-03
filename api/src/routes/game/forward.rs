@@ -7,39 +7,13 @@ use serde::{Deserialize, Serialize};
 use sqlx::{postgres::PgRow, Row};
 use uuid::Uuid;
 
-use crate::types::{ApiContext, MediaType};
+use crate::types::{ApiContext, DCoord, DDecision, DStep, DWaypoint};
 
 #[derive(Serialize, Deserialize)]
 pub struct QueryParams {
     lat: f64,
     lon: f64,
     to: Option<Uuid>,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct DWaypoint {
-    uuid: Uuid,
-    lat: f64,
-    lon: f64,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct DDecision {
-    uuid: Uuid,
-    step_input_uuid: Uuid,
-    step_output_uuid: Uuid,
-    title: String,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct DStep {
-    uuid: Uuid,
-    description: String,
-    media_type: MediaType,
-    src: String,
-    title: String,
-    decisions: Vec<DDecision>,
-    waypoint: Option<DWaypoint>,
 }
 
 pub async fn get_request(
@@ -70,8 +44,7 @@ pub async fn get_request(
     {
         Ok(row) => Some(DWaypoint {
             uuid: row.get("uuid"),
-            lat: 0.0,
-            lon: 0.0,
+            coordinates: DCoord { lat: 0.0, lon: 0.0 },
         }),
         Err(_) => None,
     };
