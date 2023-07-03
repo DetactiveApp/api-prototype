@@ -7,7 +7,10 @@ use serde::{Deserialize, Serialize};
 use sqlx::{postgres::PgRow, Row};
 use uuid::Uuid;
 
-use crate::types::{ApiContext, DCoord, DDecision, DStep, DWaypoint};
+use crate::{
+    types::{ApiContext, DDecision, DStep, DWaypoint},
+    utils::geo::near,
+};
 
 #[derive(Serialize, Deserialize)]
 pub struct QueryParams {
@@ -44,7 +47,7 @@ pub async fn get_request(
     {
         Ok(row) => Some(DWaypoint {
             uuid: row.get("uuid"),
-            coordinates: DCoord { lat: 0.0, lon: 0.0 },
+            coordinates: near(row.get("place_type"), params.lat, params.lon).await?,
         }),
         Err(_) => None,
     };

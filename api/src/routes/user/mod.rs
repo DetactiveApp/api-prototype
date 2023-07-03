@@ -1,9 +1,5 @@
-use axum::{routing::post, Router};
-
-mod new;
-
-use new::request;
+use axum::Router;
 
 pub async fn user_router() -> Router {
-    return Router::new().route("/new", post(request));
+    return Router::new();
 }
