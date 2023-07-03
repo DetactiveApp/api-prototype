@@ -15,7 +15,7 @@ pub async fn get_tags(lat: &f64, lon: &f64) -> Result<Vec<String>, StatusCode> {
     let d_lan = distance_to_latitude(radius_m);
     let d_lon = distance_to_longitude(radius_m, *lat);
 
-    // Quad out of coordinates around the user position
+    // Quad Mask out of coordinates around the user position
     let coords: [[f64; 2]; 4] = [
         [lat + d_lan, lon - d_lon],
         [lat + d_lan, lon + d_lon],
