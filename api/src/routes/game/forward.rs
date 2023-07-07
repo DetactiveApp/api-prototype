@@ -20,14 +20,14 @@ pub struct QueryParams {
 }
 
 pub async fn get_request(
-    Path(player_story_uuid): Path<Uuid>,
+    Path(user_story_uuid): Path<Uuid>,
     Query(mut params): Query<QueryParams>,
     Extension(ctx): Extension<ApiContext>,
 ) -> Result<Json<DStep>, StatusCode> {
     if params.to.is_none() {
         params.to =
-            Some(sqlx::query("SELECT step_uuid FROM player_story_steps WHERE player_story_uuid = $1 AND finished_at = null;")
-                .bind(&player_story_uuid)
+            Some(sqlx::query("SELECT step_uuid FROM user_story_steps WHERE user_story_uuid = $1 AND finished_at = null;")
+                .bind(&user_story_uuid)
                 .fetch_one(&ctx.detactive_db)
                 .await
                 .map_err(|_| StatusCode::NOT_FOUND)?

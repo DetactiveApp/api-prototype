@@ -10,6 +10,7 @@ use crate::types::{ApiContext, MediaType};
 pub struct PostBody {
     title: String,
     description: String,
+    image: String,
     active: bool,
 }
 
@@ -23,10 +24,11 @@ pub async fn post_request(
     Json(body): Json<PostBody>,
 ) -> Result<Json<PostResponse>, StatusCode> {
     return match sqlx::query(
-        "INSERT INTO stories (title, description, active) VALUES ($1, $2, $3) RETURNING uuid",
+        "INSERT INTO stories (title, description, image, active) VALUES ($1, $2, $3, $4) RETURNING uuid",
     )
     .bind(body.title)
     .bind(body.description)
+    .bind(body.image)
     .bind(body.active)
     .fetch_one(&ctx.detactive_db)
     .await

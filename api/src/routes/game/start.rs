@@ -21,7 +21,7 @@ pub async fn get_request(
     Extension(ctx): Extension<ApiContext>,
 ) -> Result<Json<GetResponse>, StatusCode> {
     let game_uuid = sqlx::query(
-        "INSERT INTO player_stories (story_uuid, player_uuid) VALUES ($1, $2) RETURNING uuid;",
+        "INSERT INTO user_stories (story_uuid, user_uuid) VALUES ($1, $2) RETURNING uuid;",
     )
     .bind(params.story_uuid)
     .bind(Uuid::new_v4())
