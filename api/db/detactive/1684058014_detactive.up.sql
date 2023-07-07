@@ -21,28 +21,27 @@ CREATE TABLE decisions (
   title VARCHAR(120) NOT NULL
 );
 
-CREATE TABLE players (
+CREATE TABLE users (
   uuid UUID DEFAULT uuid_generate_v4() PRIMARY KEY
 );
 
-CREATE TABLE player_stories (
+CREATE TABLE user_stories (
   uuid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   story_uuid UUID NOT NULL,
-  player_uuid UUID NOT NULL,
+  user_uuid UUID NOT NULL,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   deleted_at TIMESTAMP,
   finished_at TIMESTAMP
 );
 
-CREATE TABLE player_story_steps (
-  player_story_uuid UUID,
+CREATE TABLE user_story_steps (
+  user_story_uuid UUID,
   step_uuid UUID,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   finished_at TIMESTAMP,
   latitude DOUBLE PRECISION NOT NULL,
   longitude DOUBLE PRECISION NOT NULL,
-  was_waypoint_a_fallback BOOLEAN NOT NULL DEFAULT FALSE,
-  PRIMARY KEY(player_story_uuid, step_uuid)
+  PRIMARY KEY(user_story_uuid, step_uuid)
 );
 
 CREATE TABLE steps (
@@ -59,6 +58,7 @@ CREATE TABLE stories (
   uuid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   description VARCHAR(120) NOT NULL,
   title VARCHAR(120) NOT NULL,
+  image TEXT NOT NULL,
   active BOOLEAN NOT NULL DEFAULT FALSE
 );
 
@@ -86,25 +86,25 @@ FOREIGN KEY (step_output_uuid)
 REFERENCES steps(uuid)
 ON DELETE CASCADE;
 
-ALTER TABLE player_stories
+ALTER TABLE user_stories
 ADD CONSTRAINT fk_story
 FOREIGN KEY (story_uuid)
 REFERENCES stories(uuid)
 ON DELETE CASCADE;
 
-ALTER TABLE player_stories
-ADD CONSTRAINT fk_player
-FOREIGN KEY (player_uuid)
-REFERENCES players(uuid)
+ALTER TABLE user_stories
+ADD CONSTRAINT fk_user
+FOREIGN KEY (user_uuid)
+REFERENCES users(uuid)
 ON DELETE CASCADE;
 
-ALTER TABLE player_story_steps
-ADD CONSTRAINT fk_player_story
-FOREIGN KEY (player_story_uuid)
-REFERENCES player_stories(uuid)
+ALTER TABLE user_story_steps
+ADD CONSTRAINT fk_user_story
+FOREIGN KEY (user_story_uuid)
+REFERENCES user_stories(uuid)
 ON DELETE CASCADE;
 
-ALTER TABLE player_story_steps
+ALTER TABLE user_story_steps
 ADD CONSTRAINT fk_step
 FOREIGN KEY (step_uuid)
 REFERENCES steps(uuid)
