@@ -17,10 +17,9 @@ pub struct GetResponse {
     uuid: Uuid,
     title: String,
     description: String,
+    image: String,
     distance: u8,
     duration: u16,
-    tags: Vec<String>,
-    difficulty: f32,
 }
 
 pub async fn get_request(
@@ -52,19 +51,17 @@ pub async fn get_request(
         let mut story_tags: Vec<String> = vec![];
         for story_waypoint in &story_waypoints {
             story_tags.push(
-                sqlx::query(
-                    "SELECT place_type FROM waypoints WHERE uuid = $1 AND place_override = false",
-                )
-                .bind(story_waypoint)
-                .fetch_one(&ctx.detactive_db)
-                .await
-                .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?
-                .get("place_type"),
+                sqlx::query("SELECT place_type FROM waypoints WHERE uuid = $1;")
+                    .bind(story_waypoint)
+                    .fetch_one(&ctx.detactive_db)
+                    .await
+                    .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?
+                    .get("place_type"),
             );
         }
 
         if story_tags.iter().all(|tag| location_tags.contains(tag)) {
-            let story = sqlx::query("SELECT * FROM stories WHERE uuid = $1")
+            let story = sqlx::query("SELECT * FROM stories WHERE uuid = $1;")
                 .bind(*story_uuid)
                 .fetch_one(&ctx.detactive_db)
                 .await
@@ -74,10 +71,9 @@ pub async fn get_request(
                 uuid: story.get("uuid"),
                 title: story.get("title"),
                 description: story.get("description"),
+                image: story.get("image"),
                 distance: 0,
                 duration: 0,
-                tags: vec![],
-                difficulty: 0.0,
             })
         }
     }
