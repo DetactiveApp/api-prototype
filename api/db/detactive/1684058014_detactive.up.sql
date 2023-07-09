@@ -16,8 +16,8 @@ CREATE TYPE MEDIATYPE AS ENUM ('audio', 'image', 'video');
 
 CREATE TABLE decisions (
   uuid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-  step_input_uuid UUID NOT NULL,
-  step_output_uuid UUID NOT NULL,
+  step_input_uuid UUID,
+  step_output_uuid UUID,
   title VARCHAR(120) NOT NULL
 );
 
@@ -64,8 +64,6 @@ CREATE TABLE stories (
 
 CREATE TABLE waypoints (
   uuid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-  max_distance SMALLINT NOT NULL,
-  min_distance SMALLINT NOT NULL,
   place_type VARCHAR(30),
   place_override BOOLEAN NOT NULL DEFAULT FALSE
 );
