@@ -29,25 +29,25 @@ pub async fn get_request(
     let location_tags = get_tags(&query.lat, &query.lon).await?;
     let mut stories: Vec<GetResponse> = vec![];
 
-    let story_uuids: Vec<Uuid> =
-        sqlx::query("SELECT uuid FROM stories WHERE active = true AND uuid IS NOT null;")
-            .fetch_all(&ctx.detactive_db)
-            .await
-            .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?
-            .iter()
-            .map(|row| row.get("uuid"))
-            .collect();
+    let story_uuids: Vec<Uuid> = sqlx::query("SELECT uuid FROM stories WHERE active = true;")
+        .fetch_all(&ctx.detactive_db)
+        .await
+        .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?
+        .iter()
+        .map(|row| row.get("uuid"))
+        .collect();
 
     for story_uuid in &story_uuids {
-        let story_waypoints: Vec<Uuid> =
-            sqlx::query("SELECT waypoint_uuid FROM steps WHERE story_uuid = $1;")
-                .bind(story_uuid)
-                .fetch_all(&ctx.detactive_db)
-                .await
-                .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?
-                .iter()
-                .map(|row| row.get("waypoint_uuid"))
-                .collect();
+        let story_waypoints: Vec<Uuid> = sqlx::query(
+            "SELECT waypoint_uuid FROM steps WHERE story_uuid = $1  AND waypoint_uuid IS NOT null;",
+        )
+        .bind(story_uuid)
+        .fetch_all(&ctx.detactive_db)
+        .await
+        .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?
+        .iter()
+        .map(|row| row.get("waypoint_uuid"))
+        .collect();
 
         let mut story_tags: Vec<String> = vec![];
         for story_waypoint in &story_waypoints {
