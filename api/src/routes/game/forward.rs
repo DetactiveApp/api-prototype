@@ -78,7 +78,7 @@ pub async fn get_request(
                         .collect();
 
                 let waypoint: Option<DWaypoint> =
-                    match sqlx::query("SELECT place_type FROM waypoints WHERE uuid = $1")
+                    match sqlx::query("SELECT place_type FROM waypoints WHERE uuid = $1;")
                         .bind(&step_waypoint_uuid.1)
                         .fetch_one(&ctx.detactive_db)
                         .await
@@ -92,6 +92,14 @@ pub async fn get_request(
                         Err(_) => None,
                     };
 
+                sqlx::query("INSERT INTO user_story_steps (step_uuid, latitude, longitude) VALUES ($1, $2, $3);")
+                    .bind(step_waypoint_uuid.0)
+                    .bind(&waypoint.as_ref().unwrap().coordinates.lat)
+                    .bind(&waypoint.as_ref().unwrap().coordinates.lon)
+                    .execute(&ctx.detactive_db)
+                    .await
+                    .unwrap();
+
                 return match sqlx::query("SELECT * FROM steps WHERE uuid = $1;")
                     .bind(step_waypoint_uuid.0)
                     .fetch_one(&ctx.detactive_db)
@@ -104,5 +112,63 @@ pub async fn get_request(
         }
     }
 
-    Err(StatusCode::NOT_IMPLEMENTED)
+    // 1 > Step
+
+    let previous_step_uuid: Option<Uuid> =
+        sqlx::query("SELECT step_uuid FROM user_story_steps WHERE finished_at IS null;")
+            .fetch_one(&ctx.detactive_db)
+            .await
+            .map(|row| row.get("step_uuid"))
+            .ok()
+            .unwrap();
+
+    let step_uuid: Option<Uuid> =
+        sqlx::query("SELECT step_output_uuid FROM decisions WHERE step_input_uuid = $1;")
+            .bind(previous_step_uuid)
+            .fetch_one(&ctx.detactive_db)
+            .await
+            .map(|row| row.get("step_output_uuid"))
+            .unwrap();
+
+    let next_decisions: Vec<DDecision> =
+        sqlx::query("SELECT * FROM decisions WHERE step_input_uuid = $1;")
+            .bind(step_uuid)
+            .fetch_all(&ctx.detactive_db)
+            .await
+            .unwrap_or(vec![])
+            .iter()
+            .map(|row| DDecision::from(row))
+            .collect();
+
+    let waypoint_uuid: Option<Uuid> =
+        sqlx::query("SELECT waypoint_uuid FROM steps WHERE uuid = $1;")
+            .bind(step_uuid)
+            .fetch_one(&ctx.detactive_db)
+            .await
+            .map(|row| row.get("waypoint_uuid"))
+            .unwrap();
+
+    let waypoint: Option<DWaypoint> =
+        match sqlx::query("SELECT place_type FROM waypoints WHERE uuid = $1;")
+            .bind(&waypoint_uuid)
+            .fetch_one(&ctx.detactive_db)
+            .await
+        {
+            Ok(row) => Some(DWaypoint {
+                uuid: waypoint_uuid.unwrap(),
+                coordinates: near(row.get("place_type"), params.lat, params.lon)
+                    .await
+                    .unwrap_or(DCoord { lat: 0.0, lon: 0.0 }),
+            }),
+            Err(_) => None,
+        };
+
+    match sqlx::query("SELECT * FROM steps WHERE uuid = $1;")
+        .bind(step_uuid)
+        .fetch_one(&ctx.detactive_db)
+        .await
+    {
+        Ok(row) => Ok(Json(DStep::from(&row, next_decisions, waypoint))),
+        Err(_) => Err(StatusCode::NOT_FOUND),
+    }
 }
