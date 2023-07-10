@@ -1,7 +1,7 @@
 use axum::{extract::Query, Extension, Json};
 use reqwest::StatusCode;
 use serde::{Deserialize, Serialize};
-use sqlx::{postgres::PgRow, Row};
+use sqlx::Row;
 use uuid::Uuid;
 
 use crate::{types::ApiContext, utils::geo::get_tags};
@@ -69,7 +69,7 @@ pub async fn get_request(
 
         if story_tags
             .iter()
-            .all(|tag| location_tags.contains(tag) || location_tags.contains(&String::new()))
+            .all(|tag: &String| location_tags.contains(tag) || tag.is_empty())
         {
             let story = sqlx::query("SELECT * FROM stories WHERE uuid = $1;")
                 .bind(*story_uuid)
