@@ -18,7 +18,6 @@ use crate::{
 pub struct QueryParams {
     lat: f64,
     lon: f64,
-    to: Option<Uuid>,
 }
 
 pub async fn get_request(
