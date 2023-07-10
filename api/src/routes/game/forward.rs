@@ -121,6 +121,12 @@ pub async fn get_request(
             .ok()
             .unwrap();
 
+    sqlx::query("INSERT INTO user_story_steps (finished_at) VALUES ($1);")
+        .bind(chrono::Utc::now())
+        .execute(&ctx.detactive_db)
+        .await
+        .unwrap();
+
     let step_uuid: Option<Uuid> =
         sqlx::query("SELECT step_output_uuid FROM decisions WHERE step_input_uuid = $1;")
             .bind(previous_step_uuid)
