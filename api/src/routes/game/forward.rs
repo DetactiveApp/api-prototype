@@ -26,7 +26,7 @@ pub async fn get_request(
     Query(params): Query<QueryParams>,
     Extension(ctx): Extension<ApiContext>,
 ) -> Result<Json<DStep>, StatusCode> {
-    let first_step = sqlx::query("SELECT * FROM user_story_steps WHERE user_story_uuid = $1;")
+    let first_step = !sqlx::query("SELECT * FROM user_story_steps WHERE user_story_uuid = $1;")
         .bind(user_story_uuid)
         .fetch_one(&ctx.detactive_db)
         .await
