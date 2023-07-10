@@ -91,7 +91,8 @@ pub async fn get_request(
                         Err(_) => None,
                     };
 
-                sqlx::query("INSERT INTO user_story_steps (step_uuid, latitude, longitude) VALUES ($1, $2, $3);")
+                sqlx::query("INSERT INTO user_story_steps (user_story_uuid, step_uuid, latitude, longitude) VALUES ($1, $2, $3, $4);")
+                    .bind(user_story_uuid)
                     .bind(step_waypoint_uuid.0)
                     .bind(&waypoint.as_ref().unwrap().coordinates.lat)
                     .bind(&waypoint.as_ref().unwrap().coordinates.lon)
@@ -112,7 +113,6 @@ pub async fn get_request(
     }
 
     // 1 > Step
-
     let previous_step_uuid: Option<Uuid> =
         sqlx::query("SELECT step_uuid FROM user_story_steps WHERE finished_at IS null;")
             .fetch_one(&ctx.detactive_db)
@@ -127,7 +127,7 @@ pub async fn get_request(
             .fetch_one(&ctx.detactive_db)
             .await
             .map(|row| row.get("step_output_uuid"))
-            .unwrap();
+            .map_err(|_| StatusCode::NO_CONTENT)?;
 
     let next_decisions: Vec<DDecision> =
         sqlx::query("SELECT * FROM decisions WHERE step_input_uuid = $1;")
@@ -162,12 +162,12 @@ pub async fn get_request(
             Err(_) => None,
         };
 
-    match sqlx::query("SELECT * FROM steps WHERE uuid = $1;")
+    return match sqlx::query("SELECT * FROM steps WHERE uuid = $1;")
         .bind(step_uuid)
         .fetch_one(&ctx.detactive_db)
         .await
     {
         Ok(row) => Ok(Json(DStep::from(&row, next_decisions, waypoint))),
         Err(_) => Err(StatusCode::NOT_FOUND),
-    }
+    };
 }
