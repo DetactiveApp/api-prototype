@@ -67,7 +67,10 @@ pub async fn get_request(
             );
         }
 
-        if story_tags.is_empty() || story_tags.iter().all(|tag| location_tags.contains(tag)) {
+        if story_tags
+            .iter()
+            .all(|tag| location_tags.contains(tag) || location_tags.contains(&String::new()))
+        {
             let story = sqlx::query("SELECT * FROM stories WHERE uuid = $1;")
                 .bind(*story_uuid)
                 .fetch_one(&ctx.detactive_db)
