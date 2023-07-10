@@ -55,21 +55,23 @@ pub async fn get_request(
 
         let mut story_tags: Vec<String> = vec![];
         for waypoint_uuid in &waypoint_uuids {
-            story_tags.push(
-                match sqlx::query("SELECT place_type FROM waypoints WHERE uuid = $1 AND place_override = false AND place_type != 'random';")
+            let tag: Option<String> = match sqlx::query("SELECT place_type FROM waypoints WHERE uuid = $1 AND place_override = false AND place_type != 'random';")
                     .bind(waypoint_uuid)
                     .fetch_one(&ctx.detactive_db)
                     .await
                     {
-                        Ok(row) => row.get("place_type"),
-                        Err(_) => String::new(),
-                    }
-            );
+                        Ok(row) => Some(row.get("place_type")),
+                        Err(_) => None,
+                    };
+
+            if tag.is_some() {
+                story_tags.push(tag.unwrap())
+            }
         }
 
         if story_tags
             .iter()
-            .all(|tag: &String| location_tags.contains(tag) || tag.is_empty())
+            .all(|tag: &String| location_tags.contains(tag))
         {
             let story = sqlx::query("SELECT * FROM stories WHERE uuid = $1;")
                 .bind(*story_uuid)
