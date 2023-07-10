@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use axum::{
     extract::{Path, Query},
     Extension, Json,
@@ -39,19 +41,20 @@ pub async fn get_request(
                 .map_err(|_| StatusCode::NOT_FOUND)?
                 .get("uuid");
 
-        let step_uuids: Vec<String> = sqlx::query("SELECT uuid FROM steps WHERE story_uuid = $1;")
-            .bind(story_uuid)
-            .fetch_all(&ctx.detactive_db)
-            .await
-            .map_err(|_| StatusCode::NOT_FOUND)?
-            .iter()
-            .map(|row| row.get("uuid"))
-            .collect();
+        let step_waypoint_uuids: HashMap<Uuid, Uuid> =
+            sqlx::query("SELECT uuid FROM steps WHERE story_uuid = $1;")
+                .bind(story_uuid)
+                .fetch_all(&ctx.detactive_db)
+                .await
+                .map_err(|_| StatusCode::NOT_FOUND)?
+                .iter()
+                .map(|row| (row.get("uuid"), row.get("waypoint_uuid")))
+                .collect();
 
-        for step_uuid in &step_uuids {
+        for step_waypoint_uuid in &step_waypoint_uuids {
             let decision: Option<DDecision> =
                 match sqlx::query("SELECT * FROM decisions WHERE step_output_uuid = $1;")
-                    .bind(step_uuid)
+                    .bind(step_waypoint_uuid.0)
                     .fetch_one(&ctx.detactive_db)
                     .await
                 {
@@ -67,7 +70,7 @@ pub async fn get_request(
             if decision.is_some() {
                 let next_decisions: Vec<DDecision> =
                     sqlx::query("SELECT * FROM decisions WHERE step_input_uuid = $1;")
-                        .bind(step_uuid)
+                        .bind(step_waypoint_uuid.0)
                         .fetch_all(&ctx.detactive_db)
                         .await
                         .unwrap_or(vec![])
@@ -75,45 +78,23 @@ pub async fn get_request(
                         .map(|row| DDecision::from(row))
                         .collect();
 
-                let waypoint_uuid: Option<String> =
-                    sqlx::query("SELECT waypoint_uuid FROM steps WHERE uuid = $1;")
-                        .bind(step_uuid)
-                        .fetch_one(&ctx.detactive_db)
-                        .await
-                        .unwrap()
-                        .get("waypoint_uuid");
-
                 let waypoint: Option<DWaypoint> =
-                    sqlx::query("SELECT uuid FROM waypoints WHERE uuid = $1")
-                        .bind(&waypoint_uuid)
+                    match sqlx::query("SELECT uuid FROM waypoints WHERE uuid = $1")
+                        .bind(&step_waypoint_uuid.1)
                         .fetch_one(&ctx.detactive_db)
                         .await
-                        .map(|row: sqlx::postgres::PgRow| DWaypoint {
-                            uuid: row.get("uuid"),
-                            coordinates: DCoord { lat: 0.0, lon: 0.0 },
-                        })
-                        .ok()
-                        .into();
-
-                let waypoint_tag: Option<String> =
-                    sqlx::query("SELECT place_type FROM waypoints WHERE uuid = $1")
-                        .bind(&waypoint_uuid)
-                        .fetch_one(&ctx.detactive_db)
-                        .await
-                        .map(|row: sqlx::postgres::PgRow| row.get("place_type"))
-                        .ok();
-
-                let coordinate: DCoord = near(waypoint_tag.unwrap(), params.lat, params.lon)
-                    .await
-                    .unwrap();
-
-                let waypoint: Option<DWaypoint> = Some(DWaypoint {
-                    uuid: waypoint.unwrap().uuid,
-                    coordinates: coordinate,
-                });
+                    {
+                        Ok(row) => Some(DWaypoint {
+                            uuid: *step_waypoint_uuid.1,
+                            coordinates: near(row.get("place_type"), params.lat, params.lon)
+                                .await
+                                .unwrap_or(DCoord { lat: 0.0, lon: 0.0 }),
+                        }),
+                        Err(_) => None,
+                    };
 
                 return match sqlx::query("SELECT * FROM steps WHERE uuid = $1;")
-                    .bind(step_uuid)
+                    .bind(step_waypoint_uuid.0)
                     .fetch_one(&ctx.detactive_db)
                     .await
                 {
