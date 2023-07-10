@@ -33,16 +33,15 @@ pub async fn get_request(
         .is_ok();
 
     if first_step {
-        let story_uuid: String =
-            sqlx::query("SELECT story_uuid FROM user_stories WHERE uuid = $1;")
-                .bind(user_story_uuid)
-                .fetch_one(&ctx.detactive_db)
-                .await
-                .map_err(|_| StatusCode::NOT_FOUND)?
-                .get("uuid");
+        let story_uuid: Uuid = sqlx::query("SELECT story_uuid FROM user_stories WHERE uuid = $1;")
+            .bind(user_story_uuid)
+            .fetch_one(&ctx.detactive_db)
+            .await
+            .map_err(|_| StatusCode::NOT_FOUND)?
+            .get("story_uuid");
 
-        let step_waypoint_uuids: HashMap<Uuid, Uuid> =
-            sqlx::query("SELECT uuid FROM steps WHERE story_uuid = $1;")
+        let step_waypoint_uuids: HashMap<Uuid, Option<Uuid>> =
+            sqlx::query("SELECT uuid, waypoint_uuid FROM steps WHERE story_uuid = $1;")
                 .bind(story_uuid)
                 .fetch_all(&ctx.detactive_db)
                 .await
@@ -79,13 +78,13 @@ pub async fn get_request(
                         .collect();
 
                 let waypoint: Option<DWaypoint> =
-                    match sqlx::query("SELECT uuid FROM waypoints WHERE uuid = $1")
+                    match sqlx::query("SELECT place_type FROM waypoints WHERE uuid = $1")
                         .bind(&step_waypoint_uuid.1)
                         .fetch_one(&ctx.detactive_db)
                         .await
                     {
                         Ok(row) => Some(DWaypoint {
-                            uuid: *step_waypoint_uuid.1,
+                            uuid: step_waypoint_uuid.1.unwrap(),
                             coordinates: near(row.get("place_type"), params.lat, params.lon)
                                 .await
                                 .unwrap_or(DCoord { lat: 0.0, lon: 0.0 }),
@@ -105,13 +104,5 @@ pub async fn get_request(
         }
     }
 
-    Ok(Json(DStep {
-        uuid: todo!(),
-        description: todo!(),
-        media_type: todo!(),
-        src: todo!(),
-        title: todo!(),
-        decisions: todo!(),
-        waypoint: todo!(),
-    }))
+    Err(StatusCode::NOT_IMPLEMENTED)
 }
