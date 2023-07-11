@@ -52,7 +52,7 @@ pub async fn near(tag: String, lat: f64, lon: f64) -> Result<DCoord, StatusCode>
 
     // Filters tags out of the requests for each quad coordinates
     let mut features: HashMap<String, DCoord> = HashMap::new();
-    for coord in latlon::quad(lat, lon, 1000.0).iter() {
+    for coord in latlon::quad(lat, lon, 500.0).iter() {
         let lon: &f64 = coord.get(1).unwrap();
         let lat: &f64 = coord.get(0).unwrap();
 
