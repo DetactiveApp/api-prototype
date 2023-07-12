@@ -14,7 +14,7 @@ pub async fn near(
     lon: f64,
     place_override: bool,
 ) -> Result<DCoord, StatusCode> {
-    async fn request(layer: &str, lat: f64, lon: f64) -> Result<Value, StatusCode> {
+    async fn request(layer: &str, lat: &f64, lon: &f64) -> Result<Value, StatusCode> {
         let mapbox_token = &env::var("MAPBOX_TOKEN").expect("Mapbox access token not found.");
         let url: String = format!(
             "https://api.mapbox.com/v4/mapbox.mapbox-streets-v8/tilequery/{lon},{lat}.json?radius=1000&limit=50&layers={layer}&access_token={mapbox_token}");
@@ -31,8 +31,8 @@ pub async fn near(
         "random" => {
             let mut coordinates: Vec<DCoord> = vec![];
             for coord in latlon::quad(lat, lon, SEARCH_RADIUS_M).iter() {
-                let lon: f64 = *coord.get(1).unwrap();
-                let lat: f64 = *coord.get(0).unwrap();
+                let lon: &f64 = coord.get(1).unwrap();
+                let lat: &f64 = coord.get(0).unwrap();
 
                 let response = request("random", lat, lon).await?;
 
@@ -62,8 +62,8 @@ pub async fn near(
             let mut features: HashMap<String, DCoord> = HashMap::new();
 
             for coord in latlon::quad(lat, lon, SEARCH_RADIUS_M).iter() {
-                let lon: f64 = *coord.get(1).unwrap();
-                let lat: f64 = *coord.get(0).unwrap();
+                let lon: &f64 = coord.get(1).unwrap();
+                let lat: &f64 = coord.get(0).unwrap();
 
                 let response = request("poi_label", lat, lon).await?;
 
