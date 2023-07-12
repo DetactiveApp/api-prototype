@@ -7,6 +7,8 @@ use crate::types::DCoord;
 
 use super::latlon;
 
+const SEARCH_RADIUS_M: f64 = 500.0;
+
 pub async fn near(
     tag: String,
     lat: f64,
@@ -18,7 +20,7 @@ pub async fn near(
     if tag != "random" {
         // Filters tags out of the requests for each quad coordinates
         let mut features: HashMap<String, DCoord> = HashMap::new();
-        for coord in latlon::quad(lat, lon, 500.0).iter() {
+        for coord in latlon::quad(lat, lon, SEARCH_RADIUS_M).iter() {
             let lon: &f64 = coord.get(1).unwrap();
             let lat: &f64 = coord.get(0).unwrap();
 
@@ -68,7 +70,7 @@ pub async fn near(
     // Check if the tag is "random" and returns a random user accessible coordinate
     if tag == "random" || place_override {
         let mut coordinates: Vec<DCoord> = vec![];
-        for coord in latlon::quad(lat, lon, 1000.0).iter() {
+        for coord in latlon::quad(lat, lon, SEARCH_RADIUS_M).iter() {
             let lon: &f64 = coord.get(1).unwrap();
             let lat: &f64 = coord.get(0).unwrap();
 
