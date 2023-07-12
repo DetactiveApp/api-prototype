@@ -21,10 +21,10 @@ pub async fn near(
 
         reqwest::get(&url)
             .await
-            .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?
+            .map_err(|_| StatusCode::NOT_FOUND)?
             .json::<serde_json::Value>()
             .await
-            .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)
+            .map_err(|_| StatusCode::NOT_FOUND)
     }
 
     match tag {
