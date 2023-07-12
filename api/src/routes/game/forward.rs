@@ -76,26 +76,20 @@ pub async fn get_request(
                         .map(|row| DDecision::from(row))
                         .collect();
 
-                let waypoint: Option<DWaypoint> = match sqlx::query(
-                    "SELECT place_type, place_override FROM waypoints WHERE uuid = $1;",
-                )
-                .bind(&step_waypoint_uuid.1)
-                .fetch_one(&ctx.detactive_db)
-                .await
-                {
-                    Ok(row) => Some(DWaypoint {
-                        uuid: step_waypoint_uuid.1.unwrap(),
-                        coordinates: near(
-                            row.get("place_type"),
-                            params.lat,
-                            params.lon,
-                            row.get("place_override"),
-                        )
+                let waypoint: Option<DWaypoint> =
+                    match sqlx::query("SELECT place_type FROM waypoints WHERE uuid = $1;")
+                        .bind(&step_waypoint_uuid.1)
+                        .fetch_one(&ctx.detactive_db)
                         .await
-                        .unwrap_or(DCoord { lat: 0.0, lon: 0.0 }),
-                    }),
-                    Err(_) => None,
-                };
+                    {
+                        Ok(row) => Some(DWaypoint {
+                            uuid: step_waypoint_uuid.1.unwrap(),
+                            coordinates: near(row.get("place_type"), params.lat, params.lon)
+                                .await
+                                .unwrap_or(DCoord { lat: 0.0, lon: 0.0 }),
+                        }),
+                        Err(_) => None,
+                    };
 
                 sqlx::query("INSERT INTO user_story_steps (user_story_uuid, step_uuid, latitude, longitude) VALUES ($1, $2, $3, $4);")
                     .bind(user_story_uuid)
@@ -160,21 +154,16 @@ pub async fn get_request(
             .unwrap();
 
     let waypoint: Option<DWaypoint> =
-        match sqlx::query("SELECT place_type, place_override FROM waypoints WHERE uuid = $1;")
+        match sqlx::query("SELECT place_type FROM waypoints WHERE uuid = $1;")
             .bind(&waypoint_uuid)
             .fetch_one(&ctx.detactive_db)
             .await
         {
             Ok(row) => Some(DWaypoint {
                 uuid: waypoint_uuid.unwrap(),
-                coordinates: near(
-                    row.get("place_type"),
-                    params.lat,
-                    params.lon,
-                    row.get("place_override"),
-                )
-                .await
-                .unwrap(),
+                coordinates: near(row.get("place_type"), params.lat, params.lon)
+                    .await
+                    .unwrap_or(DCoord { lat: 0.0, lon: 0.0 }),
             }),
             Err(_) => None,
         };
