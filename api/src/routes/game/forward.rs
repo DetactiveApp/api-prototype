@@ -118,7 +118,7 @@ pub async fn get_request(
         }
     }
 
-    // 1 > Step
+    // middle or last step (NOT THE FIRST STEP)
     let previous_step_uuid: Option<Uuid> =
         sqlx::query("SELECT step_uuid FROM user_story_steps WHERE finished_at IS null;")
             .fetch_one(&ctx.detactive_db)
@@ -127,11 +127,13 @@ pub async fn get_request(
             .ok()
             .unwrap();
 
-    sqlx::query("INSERT INTO user_story_steps (finished_at) VALUES ($1);")
-        .bind(chrono::Utc::now())
-        .execute(&ctx.detactive_db)
-        .await
-        .unwrap();
+    sqlx::query(
+        "UPDATE user_story_steps SET finished_at = CURRENT_TIMESTAMP WHERE user_story_uuid = $1;",
+    )
+    .bind(user_story_uuid)
+    .execute(&ctx.detactive_db)
+    .await
+    .unwrap();
 
     let step_uuid: Option<Uuid> =
         sqlx::query("SELECT step_output_uuid FROM decisions WHERE step_input_uuid = $1;")

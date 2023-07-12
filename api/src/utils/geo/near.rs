@@ -9,6 +9,7 @@ use super::latlon;
 
 const SEARCH_RADIUS_M: f64 = 500.0;
 
+// This fuction returns only one poi or random point for the given inputs
 pub async fn near(
     tag: String,
     lat: f64,
