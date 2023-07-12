@@ -4,7 +4,7 @@ use uuid::Uuid;
 
 use super::MediaType;
 
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq)]
 pub struct DCoord {
     pub lat: f64,
     pub lon: f64,

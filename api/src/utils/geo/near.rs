@@ -59,7 +59,10 @@ pub async fn near(
                     features.insert(maki.to_string(), coordinates.unwrap());
                 });
         }
-        return Ok(features.get(&tag).unwrap().clone());
+
+        if features.contains_key(&tag) {
+            return Ok(features.get(&tag).unwrap().clone());
+        }
     }
 
     // Check if the tag is "random" and returns a random user accessible coordinate

@@ -174,7 +174,7 @@ pub async fn get_request(
                     row.get("place_override"),
                 )
                 .await
-                .unwrap_or(DCoord { lat: 0.0, lon: 0.0 }),
+                .unwrap(),
             }),
             Err(_) => None,
         };
