@@ -92,10 +92,10 @@ pub async fn near(
 
                         features.insert(maki.to_string(), coordinates.unwrap());
                     });
+            }
 
-                if features.is_empty() {
-                    return Err(StatusCode::IM_A_TEAPOT);
-                }
+            if features.is_empty() {
+                return Err(StatusCode::NOT_IMPLEMENTED);
             }
 
             Ok(features.get(tag).unwrap().clone())
