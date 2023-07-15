@@ -1,6 +1,8 @@
 use sqlx::postgres::{PgPool, PgPoolOptions};
 use std::env;
 
+use crate::types::DError;
+
 pub async fn detactive_pool() -> PgPool {
     let pool = PgPoolOptions::new()
         .max_connections(100)
@@ -24,7 +26,7 @@ pub async fn migrate_db() {
     sqlx::migrate!("db/detactive")
         .run(&detactive_pool().await)
         .await
-        .expect("Error during migrating data to detactive-db.");
+        .expect("Error during migrating data to sticker-db.");
 
     sqlx::migrate!("db/company")
         .run(&company_pool().await)

@@ -13,6 +13,10 @@ COPY ./src ./src
 COPY ./db ./db
 
 RUN rm ./target/release/deps/detactive_api*
+
+RUN cargo install sqlx-cli
+RUN sqlx migrate build-script
+
 RUN cargo build --release
 
 FROM rust:latest
