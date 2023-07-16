@@ -4,13 +4,13 @@ use axum::{
     extract::{Path, Query},
     Extension, Json,
 };
-use reqwest::StatusCode;
+
 use serde::{Deserialize, Serialize};
 use sqlx::Row;
 use uuid::Uuid;
 
 use crate::{
-    types::{ApiContext, DCoord, DDecision, DStep, DWaypoint},
+    types::{ApiContext, DCoord, DDecision, DError, DStep, DWaypoint},
     utils::geo::near,
 };
 
@@ -24,7 +24,7 @@ pub async fn get_request(
     Path(user_story_uuid): Path<Uuid>,
     Query(params): Query<QueryParams>,
     Extension(ctx): Extension<ApiContext>,
-) -> Result<Json<DStep>, StatusCode> {
+) -> Result<Json<DStep>, DError> {
     let first_step = !sqlx::query("SELECT * FROM user_story_steps WHERE user_story_uuid = $1;")
         .bind(user_story_uuid)
         .fetch_one(&ctx.detactive_db)
@@ -36,7 +36,7 @@ pub async fn get_request(
             .bind(user_story_uuid)
             .fetch_one(&ctx.detactive_db)
             .await
-            .map_err(|_| StatusCode::NOT_FOUND)?
+            .map_err(|_| DError::from("No step found.", 0))?
             .get("story_uuid");
 
         let step_waypoint_uuids: HashMap<Uuid, Option<Uuid>> =
@@ -44,7 +44,7 @@ pub async fn get_request(
                 .bind(story_uuid)
                 .fetch_all(&ctx.detactive_db)
                 .await
-                .map_err(|_| StatusCode::NOT_FOUND)?
+                .map_err(|_| DError::from("No waypoints or steps found.", 0))?
                 .iter()
                 .map(|row| (row.get("uuid"), row.get("waypoint_uuid")))
                 .collect();
@@ -112,7 +112,7 @@ pub async fn get_request(
                     .await
                 {
                     Ok(row) => Ok(Json(DStep::from(&row, next_decisions, waypoint))),
-                    Err(_) => Err(StatusCode::NOT_FOUND),
+                    Err(_) => Err(DError::from("No step found.", 0)),
                 };
             }
         }
@@ -141,7 +141,7 @@ pub async fn get_request(
             .fetch_one(&ctx.detactive_db)
             .await
             .map(|row| row.get("step_output_uuid"))
-            .map_err(|_| StatusCode::NO_CONTENT)?;
+            .map_err(|_| DError::from("No next step found.", 0))?;
 
     let next_decisions: Vec<DDecision> =
         sqlx::query("SELECT * FROM decisions WHERE step_input_uuid = $1;")
@@ -187,6 +187,6 @@ pub async fn get_request(
         .await
     {
         Ok(row) => Ok(Json(DStep::from(&row, next_decisions, waypoint))),
-        Err(_) => Err(StatusCode::NOT_FOUND),
+        Err(_) => Err(DError::from("No story found.", 0)),
     };
 }

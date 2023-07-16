@@ -1,10 +1,9 @@
 use axum::{extract::Query, Extension, Json};
-use reqwest::StatusCode;
 use serde::{Deserialize, Serialize};
 use sqlx::Row;
 use uuid::Uuid;
 
-use crate::types::ApiContext;
+use crate::types::{ApiContext, DError};
 
 #[derive(Serialize, Deserialize)]
 pub struct QueryParams {
@@ -19,7 +18,7 @@ pub struct GetResponse {
 pub async fn get_request(
     Query(params): Query<QueryParams>,
     Extension(ctx): Extension<ApiContext>,
-) -> Result<Json<GetResponse>, StatusCode> {
+) -> Result<Json<GetResponse>, DError> {
     let game_uuid = sqlx::query(
         "INSERT INTO user_stories (story_uuid, user_uuid) VALUES ($1, $2) RETURNING uuid;",
     )
@@ -27,7 +26,7 @@ pub async fn get_request(
     .bind(Uuid::parse_str("87c44130-af78-4c38-9d58-63d5266bde4a").unwrap())
     .fetch_one(&ctx.detactive_db)
     .await
-    .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?
+    .map_err(|_| DError::from("Failed to start game.", 0))?
     .get("uuid");
 
     Ok(Json(GetResponse { game_uuid }))

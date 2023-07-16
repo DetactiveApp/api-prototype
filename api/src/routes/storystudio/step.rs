@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 use sqlx::Row;
 use uuid::Uuid;
 
-use crate::types::{ApiContext, MediaType};
+use crate::types::{ApiContext, DError, MediaType};
 
 #[derive(Serialize, Deserialize)]
 pub struct PostBody {
@@ -24,7 +24,7 @@ pub struct PostResponse {
 pub async fn post_request(
     Extension(ctx): Extension<ApiContext>,
     Json(body): Json<PostBody>,
-) -> Result<Json<PostResponse>, StatusCode> {
+) -> Result<Json<PostResponse>, DError> {
     return match sqlx::query(
         "INSERT INTO steps (story_uuid, waypoint_uuid, description, media_type, src, title) VALUES ($1, $2, $3, $4, $5, $6) RETURNING uuid"
     )
@@ -39,7 +39,7 @@ pub async fn post_request(
         Ok(result) => Ok(Json(PostResponse {
             uuid: result.get("uuid"),
         })),
-        Err(_) => Err(StatusCode::INTERNAL_SERVER_ERROR)
+        Err(_) => Err(DError::from("Could not upload step.", 0))
     };
 }
 

@@ -1,11 +1,11 @@
 use std::env;
 
-use reqwest::StatusCode;
+use crate::types::DError;
 
 use super::latlon;
 
 // Uses the MapBox Tilequery API to reqeust POI's (or Tags).
-pub async fn get_tags(lat: &f64, lon: &f64) -> Result<Vec<String>, StatusCode> {
+pub async fn get_tags(lat: &f64, lon: &f64) -> Result<Vec<String>, DError> {
     let mapbox_token = &env::var("MAPBOX_TOKEN").expect("Mapbox access token not found.");
     let mut location_tags: Vec<String> = Vec::new();
 
@@ -21,10 +21,10 @@ pub async fn get_tags(lat: &f64, lon: &f64) -> Result<Vec<String>, StatusCode> {
 
         let response = reqwest::get(&url)
             .await
-            .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?
+            .map_err(|_| DError::from("Failed to connect to MapBox.", 0))?
             .json::<serde_json::Value>()
             .await
-            .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+            .map_err(|_| DError::from("Failed to connect to MapBox.", 0))?;
 
         response
             .get("features")

@@ -1,10 +1,9 @@
 use axum::{Extension, Json};
-use reqwest::StatusCode;
 use serde::{Deserialize, Serialize};
 use sqlx::Row;
 use uuid::Uuid;
 
-use crate::types::ApiContext;
+use crate::types::{ApiContext, DError};
 
 #[derive(Serialize, Deserialize)]
 pub struct GetResponse {
@@ -14,7 +13,7 @@ pub struct GetResponse {
 
 pub async fn get_request(
     Extension(ctx): Extension<ApiContext>,
-) -> Result<Json<Vec<GetResponse>>, StatusCode> {
+) -> Result<Json<Vec<GetResponse>>, DError> {
     return match sqlx::query("SELECT uuid, title FROM stories;")
         .fetch_all(&ctx.detactive_db)
         .await
@@ -28,6 +27,6 @@ pub async fn get_request(
                 })
                 .collect(),
         )),
-        Err(_) => Err(StatusCode::INTERNAL_SERVER_ERROR),
+        Err(_) => Err(DError::from("Could not get story.", 0)),
     };
 }

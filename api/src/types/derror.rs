@@ -15,3 +15,12 @@ impl IntoResponse for DError {
         }
     }
 }
+
+impl DError {
+    pub fn from(reason: &str, code: u8) -> Self {
+        Self {
+            code: code,
+            reason: reason.to_string(),
+        }
+    }
+}

@@ -1,8 +1,6 @@
 use sqlx::postgres::{PgPool, PgPoolOptions};
 use std::env;
 
-use crate::types::DError;
-
 pub async fn detactive_pool() -> PgPool {
     let pool = PgPoolOptions::new()
         .max_connections(100)

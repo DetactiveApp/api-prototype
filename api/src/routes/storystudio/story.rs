@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 use sqlx::Row;
 use uuid::Uuid;
 
-use crate::types::{ApiContext, MediaType};
+use crate::types::{ApiContext, DError, MediaType};
 
 #[derive(Serialize, Deserialize)]
 pub struct PostBody {
@@ -22,7 +22,7 @@ pub struct PostResponse {
 pub async fn post_request(
     Extension(ctx): Extension<ApiContext>,
     Json(body): Json<PostBody>,
-) -> Result<Json<PostResponse>, StatusCode> {
+) -> Result<Json<PostResponse>, DError> {
     return match sqlx::query(
         "INSERT INTO stories (title, description, image, active) VALUES ($1, $2, $3, $4) RETURNING uuid",
     )
@@ -36,7 +36,7 @@ pub async fn post_request(
         Ok(result) => Ok(Json(PostResponse {
             uuid: result.get("uuid"),
         })),
-        Err(_) => Err(StatusCode::INTERNAL_SERVER_ERROR),
+        Err(_) => Err(DError::from("Could not upload story.", 0)),
     };
 }
 
@@ -89,7 +89,7 @@ pub struct GetResponse {
 pub async fn get_request(
     Extension(ctx): Extension<ApiContext>,
     Path(uuid): Path<Uuid>,
-) -> Result<Json<GetResponse>, StatusCode> {
+) -> Result<Json<GetResponse>, DError> {
     let mut response = GetResponse {
         title: String::new(),
         description: String::new(),
@@ -107,7 +107,7 @@ pub async fn get_request(
             response.description = row.get("description");
             response.active = row.get("active");
         }
-        Err(_) => return Err(StatusCode::INTERNAL_SERVER_ERROR),
+        Err(_) => return Err(DError::from("Could not receive given story.", 0)),
     }
 
     match sqlx::query("SELECT * FROM steps WHERE story_uuid = $1;")
@@ -128,7 +128,7 @@ pub async fn get_request(
                 })
             }
         }
-        Err(_) => return Err(StatusCode::INTERNAL_SERVER_ERROR),
+        Err(_) => return Err(DError::from("Could not receive steps for given story. ", 0)),
     }
 
     return Ok(Json(response));
