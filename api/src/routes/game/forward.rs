@@ -141,7 +141,7 @@ pub async fn get_request(
             .fetch_one(&ctx.detactive_db)
             .await
             .map(|row| row.get("step_output_uuid"))
-            .map_err(|_| DError::from("No next step found.", 0))?;
+            .map_err(|_| DError::from("Story ended.", 999))?;
 
     let next_decisions: Vec<DDecision> =
         sqlx::query("SELECT * FROM decisions WHERE step_input_uuid = $1;")

@@ -4,7 +4,7 @@ use serde::Serialize;
 
 #[derive(Serialize)]
 pub struct DError {
-    pub code: u8,
+    pub code: u16,
     pub reason: String,
 }
 
@@ -17,7 +17,7 @@ impl IntoResponse for DError {
 }
 
 impl DError {
-    pub fn from(reason: &str, code: u8) -> Self {
+    pub fn from(reason: &str, code: u16) -> Self {
         Self {
             code: code,
             reason: reason.to_string(),
