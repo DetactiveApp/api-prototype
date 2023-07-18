@@ -10,9 +10,12 @@ pub struct DError {
 
 impl IntoResponse for DError {
     fn into_response(self) -> axum::response::Response {
-        match self.code {
-            _ => (StatusCode::INTERNAL_SERVER_ERROR, Json(self)).into_response(),
-        }
+        let status_code: StatusCode = match self.code {
+            999 => StatusCode::NO_CONTENT,
+            _ => StatusCode::INTERNAL_SERVER_ERROR,
+        };
+
+        (status_code, Json(self)).into_response()
     }
 }
 
