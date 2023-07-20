@@ -104,7 +104,7 @@ pub async fn get_request(
                     .bind(&waypoint.as_ref().unwrap().coordinates.lon)
                     .execute(&ctx.detactive_db)
                     .await
-                    .unwrap();
+                    .map_err(|_| DError::from("Failed to create step entry.", 0))?;
 
                 return match sqlx::query("SELECT * FROM steps WHERE uuid = $1;")
                     .bind(step_waypoint_uuid.0)
@@ -181,6 +181,15 @@ pub async fn get_request(
             }),
             Err(_) => None,
         };
+
+    sqlx::query("INSERT INTO user_story_steps (user_story_uuid, step_uuid, latitude, longitude) VALUES ($1, $2, $3, $4);")
+        .bind(user_story_uuid)
+        .bind(step_uuid)
+        .bind(&waypoint.as_ref().unwrap().coordinates.lat)
+        .bind(&waypoint.as_ref().unwrap().coordinates.lon)
+        .execute(&ctx.detactive_db)
+        .await
+        .map_err(|_| DError::from("Failed to create step entry.", 0))?;
 
     return match sqlx::query("SELECT * FROM steps WHERE uuid = $1;")
         .bind(step_uuid)
