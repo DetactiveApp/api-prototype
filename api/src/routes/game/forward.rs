@@ -124,8 +124,7 @@ pub async fn get_request(
             .fetch_one(&ctx.detactive_db)
             .await
             .map(|row| row.get("step_uuid"))
-            .ok()
-            .unwrap();
+            .map_err(|_| DError::from("Failed to update step data.", 0))?;
 
     sqlx::query(
         "UPDATE user_story_steps SET finished_at = CURRENT_TIMESTAMP WHERE user_story_uuid = $1;",
@@ -133,7 +132,7 @@ pub async fn get_request(
     .bind(user_story_uuid)
     .execute(&ctx.detactive_db)
     .await
-    .unwrap();
+    .map_err(|_| DError::from("Failed to update step data.", 0))?;
 
     let step_uuid: Option<Uuid> =
         sqlx::query("SELECT step_output_uuid FROM decisions WHERE step_input_uuid = $1;")
@@ -159,7 +158,7 @@ pub async fn get_request(
             .fetch_one(&ctx.detactive_db)
             .await
             .map(|row| row.get("waypoint_uuid"))
-            .unwrap();
+            .map_err(|_| DError::from("Failed to gather waypoint of next step.", 0))?;
 
     let waypoint: Option<DWaypoint> =
         match sqlx::query("SELECT place_type, place_override FROM waypoints WHERE uuid = $1;")
@@ -176,7 +175,9 @@ pub async fn get_request(
                     row.get("place_override"),
                 )
                 .await
-                .unwrap(),
+                .map_err(|_| {
+                    DError::from("Failed to gather place_type of next potential waypoint.", 0)
+                })?,
             }),
             Err(_) => None,
         };

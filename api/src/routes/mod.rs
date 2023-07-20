@@ -21,10 +21,7 @@ async fn moai() -> &'static str {
 }
 
 async fn error() -> DError {
-    DError {
-        reason: String::from("This is a test."),
-        code: 000,
-    }
+    DError::from("This is a test error.", 000)
 }
 
 pub async fn api() -> Router {
