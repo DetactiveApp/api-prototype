@@ -11,10 +11,20 @@ use sticker::sticker_router;
 use storystudio::storystudio_router;
 use user::user_router;
 
-use crate::{types::ApiContext, utils::guard};
+use crate::{
+    types::{ApiContext, DError},
+    utils::guard,
+};
 
 async fn moai() -> &'static str {
     return "🗿";
+}
+
+async fn error() -> DError {
+    DError {
+        reason: String::from("This is a test."),
+        code: 000,
+    }
 }
 
 pub async fn api() -> Router {
@@ -24,6 +34,7 @@ pub async fn api() -> Router {
         .nest("/game", game_router().await)
         .nest("/storystudio", storystudio_router().await)
         .nest("/sticker", sticker_router().await)
+        .route("/error", get(error))
         .route("/moai", get(moai))
         .layer(AddExtensionLayer::new(ApiContext::new().await));
 }
