@@ -127,7 +127,7 @@ pub async fn get_request(
             .map_err(|_| DError::from("Failed to update step data.", 0))?;
 
     sqlx::query(
-        "UPDATE user_story_steps SET finished_at = CURRENT_TIMESTAMP WHERE user_story_uuid = $1;",
+        "UPDATE user_story_steps SET finished_at = CURRENT_TIMESTAMP WHERE user_story_uuid = $1 AND finished_at = NULL;",
     )
     .bind(user_story_uuid)
     .execute(&ctx.detactive_db)
