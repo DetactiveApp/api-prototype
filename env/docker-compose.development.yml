@@ -1,7 +1,9 @@
 version: '3.5'
 services:
   detactive_api:
-    build: ../api
+    build:
+      context: ../api
+      dockerfile: ../api/DockerfileFast
     restart: always
     env_file: .env
     ports:
@@ -17,7 +19,7 @@ services:
       - 5432:5432
     volumes:
       - ../api/db/init.sql:/docker-entrypoint-initdb.d/init.sql
-      - ../api/db/tests:/tests
+      - ../api/db/tests:/docker-entrypoint-initdb.d/tests
 
   pgadmin:
     image: dpage/pgadmin4

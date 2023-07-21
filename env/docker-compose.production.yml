@@ -27,7 +27,9 @@ services:
       - web
 
   detactive_api:
-    build: ../api
+    build:
+      context: ../api
+      dockerfile: ../api/Dockerfile
     restart: always
     env_file: .env
     ports:
