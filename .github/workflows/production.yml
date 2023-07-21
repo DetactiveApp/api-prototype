@@ -24,6 +24,9 @@ jobs:
             echo "Web network already exists... Skipping Step"
           fi
 
+          sudo docker rm -f env_traefik_1
+          sudo docker rm -f env_detactive_api_1
+
       - name: Start production services
         run: |
           sudo docker-compose -f ./env/docker-compose.production.yml up --build -d
