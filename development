@@ -8,9 +8,8 @@ if [ ! "$(docker network ls | grep web)" ];
         echo "Web network already exists... Skipping Step"
 fi
 
-docker rm -f env_traefik_1
-docker rm -f env_detactive_api_1
-
+docker rm -f env_traefik
+docker rm -f env_detactive_api
 
 docker-compose -f ./env/docker-compose.development.yml up --build
 
