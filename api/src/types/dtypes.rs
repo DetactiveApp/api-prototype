@@ -13,7 +13,7 @@ pub struct DCoord {
 #[derive(Serialize, Deserialize)]
 pub struct DWaypoint {
     pub uuid: Uuid,
-    pub coordinates: DCoord,
+    pub coordinates: Option<DCoord>,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -39,8 +39,8 @@ impl DDecision {
 pub struct DStep {
     pub uuid: Uuid,
     pub description: String,
-    pub media_type: MediaType,
-    pub src: String,
+    pub media_type: Option<MediaType>,
+    pub asset_id: Option<String>,
     pub title: String,
     pub decisions: Vec<DDecision>,
     pub waypoint: Option<DWaypoint>,
@@ -52,7 +52,7 @@ impl DStep {
             uuid: row.get("uuid"),
             description: row.get("description"),
             media_type: row.get("media_type"),
-            src: row.get("src"),
+            asset_id: row.get("asset_id"),
             title: row.get("title"),
             decisions: decisions,
             waypoint: waypoint,

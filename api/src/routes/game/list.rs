@@ -17,9 +17,10 @@ pub struct GetQuery {
 #[derive(Serialize, Deserialize)]
 pub struct GetResponse {
     uuid: Uuid,
+    asset_id: String,
+    cms_id: String,
     title: String,
     description: String,
-    image: String,
     distance: u8,
     duration: u16,
 }
@@ -83,9 +84,10 @@ pub async fn get_request(
 
             stories.push(GetResponse {
                 uuid: story.get("uuid"),
+                asset_id: story.get("asset_id"),
+                cms_id: story.get("cms_id"),
                 title: story.get("title"),
                 description: story.get("description"),
-                image: story.get("image"),
                 distance: 0,
                 duration: 0,
             })

@@ -48,18 +48,19 @@ CREATE TABLE steps (
   uuid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   story_uuid UUID NOT NULL,
   waypoint_uuid UUID,
+  asset_id VARCHAR(254),
   description VARCHAR(120) NOT NULL,
   media_type MEDIATYPE,
-  src TEXT NOT NULL,
   title VARCHAR(120) NOT NULL
 );
 
 CREATE TABLE stories (
   uuid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  active BOOLEAN NOT NULL DEFAULT FALSE,
+  asset_id VARCHAR(254),
+  cms_id VARCHAR(254),
   description VARCHAR(120) NOT NULL,
-  title VARCHAR(120) NOT NULL,
-  image TEXT NOT NULL,
-  active BOOLEAN NOT NULL DEFAULT FALSE
+  title VARCHAR(120) NOT NULL
 );
 
 CREATE TABLE waypoints (

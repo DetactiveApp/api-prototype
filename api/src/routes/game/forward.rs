@@ -85,14 +85,14 @@ pub async fn get_request(
                 {
                     Ok(row) => Some(DWaypoint {
                         uuid: step_waypoint_uuid.1.unwrap(),
-                        coordinates: near(
+                        coordinates: Some(near(
                             row.get("place_type"),
                             params.lat,
                             params.lon,
                             row.get("place_override"),
                         )
                         .await
-                        .unwrap_or(DCoord { lat: 0.0, lon: 0.0 }),
+                        .unwrap_or(DCoord { lat: 0.0, lon: 0.0 })),
                     }),
                     Err(_) => None,
                 };
@@ -100,8 +100,14 @@ pub async fn get_request(
                 sqlx::query("INSERT INTO user_story_steps (user_story_uuid, step_uuid, latitude, longitude) VALUES ($1, $2, $3, $4);")
                     .bind(user_story_uuid)
                     .bind(step_waypoint_uuid.0)
-                    .bind(&waypoint.as_ref().unwrap().coordinates.lat)
-                    .bind(&waypoint.as_ref().unwrap().coordinates.lon)
+                    .bind(match Some(&waypoint.as_ref().unwrap().coordinates) {
+                        Some(v) => v.as_ref().unwrap().lat,
+                        None => params.lat,
+                    })
+                    .bind(match Some(&waypoint.as_ref().unwrap().coordinates) {
+                        Some(v) => v.as_ref().unwrap().lon,
+                        None => params.lon,
+                    })
                     .execute(&ctx.detactive_db)
                     .await
                     .map_err(|_| DError::from("Failed to create step entry.", 0))?;
@@ -168,7 +174,7 @@ pub async fn get_request(
         {
             Ok(row) => Some(DWaypoint {
                 uuid: waypoint_uuid.unwrap(),
-                coordinates: near(
+                coordinates: Some(near(
                     row.get("place_type"),
                     params.lat,
                     params.lon,
@@ -177,7 +183,7 @@ pub async fn get_request(
                 .await
                 .map_err(|_| {
                     DError::from("Failed to gather place_type of next potential waypoint.", 0)
-                })?,
+                })?),
             }),
             Err(_) => None,
         };
@@ -185,8 +191,14 @@ pub async fn get_request(
     sqlx::query("INSERT INTO user_story_steps (user_story_uuid, step_uuid, latitude, longitude) VALUES ($1, $2, $3, $4);")
         .bind(user_story_uuid)
         .bind(step_uuid)
-        .bind(&waypoint.as_ref().unwrap().coordinates.lat)
-        .bind(&waypoint.as_ref().unwrap().coordinates.lon)
+        .bind(match Some(&waypoint.as_ref().unwrap_or(&DWaypoint { uuid: Uuid::new_v4(), coordinates: (Some(DCoord { lat: params.lat, lon: params.lon})) }).coordinates) {
+            Some(v) => v.as_ref().unwrap().lat,
+            None => params.lat,
+        })
+        .bind(match Some(&waypoint.as_ref().unwrap_or(&DWaypoint { uuid: Uuid::new_v4(), coordinates: (Some(DCoord { lat: params.lat, lon: params.lon})) }).coordinates) {
+            Some(v) => v.as_ref().unwrap().lon,
+            None => params.lon,
+        })
         .execute(&ctx.detactive_db)
         .await
         .map_err(|_| DError::from("Failed to create step entry.", 0))?;
