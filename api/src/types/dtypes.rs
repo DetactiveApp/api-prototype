@@ -40,19 +40,19 @@ pub struct DStep {
     pub uuid: Uuid,
     pub description: String,
     pub media_type: Option<MediaType>,
-    pub asset_id: Option<String>,
+    pub src: Option<String>,
     pub title: String,
     pub decisions: Vec<DDecision>,
     pub waypoint: Option<DWaypoint>,
 }
 
 impl DStep {
-    pub fn from(row: &PgRow, decisions: Vec<DDecision>, waypoint: Option<DWaypoint>) -> Self {
+    pub fn from(row: &PgRow, decisions: Vec<DDecision>, waypoint: Option<DWaypoint>, src: Option<String>) -> Self {
         Self {
             uuid: row.get("uuid"),
             description: row.get("description"),
             media_type: row.get("media_type"),
-            asset_id: row.get("asset_id"),
+            src: src,
             title: row.get("title"),
             decisions: decisions,
             waypoint: waypoint,

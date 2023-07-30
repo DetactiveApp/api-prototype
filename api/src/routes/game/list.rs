@@ -17,8 +17,7 @@ pub struct GetQuery {
 #[derive(Serialize, Deserialize)]
 pub struct GetResponse {
     uuid: Uuid,
-    asset_id: String,
-    cms_id: String,
+    image: String,
     title: String,
     description: String,
     distance: u8,
@@ -28,7 +27,7 @@ pub struct GetResponse {
 pub async fn get_request(
     Query(query): Query<GetQuery>,
     Extension(ctx): Extension<ApiContext>,
-) -> Result<Json<Vec<GetResponse>>, DError> {
+) -> Result<Json<Vec<GetResponse>>, DError> {    
     let location_tags = get_tags(&query.lat, &query.lon).await?;
     let mut stories: Vec<GetResponse> = vec![];
 
@@ -72,6 +71,8 @@ pub async fn get_request(
             }
         }
 
+
+
         if story_tags
             .iter()
             .all(|tag: &String| location_tags.contains(tag))
@@ -82,10 +83,21 @@ pub async fn get_request(
                 .await
                 .map_err(|_| DError::from("Could not find any stories.", 0))?;
 
+            let url = format!("https://cdn.contentful.com/spaces/tiy4aehfiie3/environments/master/assets/{}?access_token=tXYkihfE1tHStKMQ-2OrZYbwGjgYslyCm61lQjd_pDA", story.get::<String, _>("asset_id"));
+
+            let response = reqwest::get(&url)
+                .await
+                .map_err(|_| DError::from("Could not find asset.", 0))?
+                .json::<serde_json::Value>()
+                .await
+                .map_err(|_| DError::from("Could not find asset.", 0))?;
+
+                
+            println!("URL: https:{}", response["fields"]["file"]["url"].as_str().unwrap());        
+
             stories.push(GetResponse {
                 uuid: story.get("uuid"),
-                asset_id: story.get("asset_id"),
-                cms_id: story.get("cms_id"),
+                image: format!("https:{}", response["fields"]["file"]["url"].as_str().unwrap()),
                 title: story.get("title"),
                 description: story.get("description"),
                 distance: 0,

@@ -6,7 +6,7 @@ use axum::{
 };
 
 use serde::{Deserialize, Serialize};
-use sqlx::Row;
+use sqlx::{Row, postgres};
 use uuid::Uuid;
 
 use crate::{
@@ -97,14 +97,16 @@ pub async fn get_request(
                     Err(_) => None,
                 };
 
+
+                
                 sqlx::query("INSERT INTO user_story_steps (user_story_uuid, step_uuid, latitude, longitude) VALUES ($1, $2, $3, $4);")
                     .bind(user_story_uuid)
                     .bind(step_waypoint_uuid.0)
-                    .bind(match Some(&waypoint.as_ref().unwrap().coordinates) {
+                    .bind(match Some(&waypoint.as_ref().unwrap_or(&DWaypoint { uuid: Uuid::new_v4(), coordinates: (Some(DCoord { lat: params.lat, lon: params.lon})) }).coordinates) {
                         Some(v) => v.as_ref().unwrap().lat,
                         None => params.lat,
                     })
-                    .bind(match Some(&waypoint.as_ref().unwrap().coordinates) {
+                    .bind(match Some(&waypoint.as_ref().unwrap_or(&DWaypoint { uuid: Uuid::new_v4(), coordinates: (Some(DCoord { lat: params.lat, lon: params.lon})) }).coordinates) {
                         Some(v) => v.as_ref().unwrap().lon,
                         None => params.lon,
                     })
@@ -117,7 +119,26 @@ pub async fn get_request(
                     .fetch_one(&ctx.detactive_db)
                     .await
                 {
-                    Ok(row) => Ok(Json(DStep::from(&row, next_decisions, waypoint))),
+                    Ok(row) => {
+                        if (!row.try_get::<String, _>("asset_id").is_err()) {
+                            println!("asset_id {:?}", row.get::<String, _>("asset_id"));
+
+                            let url = format!("https://cdn.contentful.com/spaces/tiy4aehfiie3/environments/master/assets/{}?access_token=tXYkihfE1tHStKMQ-2OrZYbwGjgYslyCm61lQjd_pDA", row.get::<String, _>("asset_id"));
+
+                            let response = reqwest::get(&url)
+                                .await
+                                .map_err(|_| DError::from("Could not find asset for story.", 0))?
+                                .json::<serde_json::Value>()
+                                .await
+                                .map_err(|_| DError::from("Could not find asset for story.", 0))?;
+
+                            println!("URL: https:{}", response["fields"]["file"]["url"].as_str().unwrap()); 
+
+                            return Ok(Json(DStep::from(&row, next_decisions, waypoint, response["fields"]["file"]["url"].as_str().map(|s| format!("https:{}", s.to_string())))))
+                        }
+
+                        return Ok(Json(DStep::from(&row, next_decisions, waypoint, None)))
+                    },
                     Err(_) => Err(DError::from("No step found.", 0)),
                 };
             }
@@ -208,7 +229,28 @@ pub async fn get_request(
         .fetch_one(&ctx.detactive_db)
         .await
     {
-        Ok(row) => Ok(Json(DStep::from(&row, next_decisions, waypoint))),
+        Ok(row) => {
+
+            if (!row.try_get::<String, _>("asset_id").is_err()) {
+                println!("asset_id {:?}", row.get::<String, _>("asset_id"));
+
+                let url = format!("https://cdn.contentful.com/spaces/tiy4aehfiie3/environments/master/assets/{}?access_token=tXYkihfE1tHStKMQ-2OrZYbwGjgYslyCm61lQjd_pDA", row.get::<String, _>("asset_id"));
+
+                let response = reqwest::get(&url)
+                    .await
+                    .map_err(|_| DError::from("Could not find asset for story.", 0))?
+                    .json::<serde_json::Value>()
+                    .await
+                    .map_err(|_| DError::from("Could not find asset for story.", 0))?;
+
+                println!("URL: https:{}", response["fields"]["file"]["url"].as_str().unwrap()); 
+
+                return Ok(Json(DStep::from(&row, next_decisions, waypoint, response["fields"]["file"]["url"].as_str().map(|s| format!("https:{}", s.to_string())))))
+            }
+
+            return Ok(Json(DStep::from(&row, next_decisions, waypoint, None)))
+
+        },
         Err(_) => Err(DError::from("No story found.", 0)),
     };
 }
