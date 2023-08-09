@@ -31,6 +31,9 @@ pub async fn get_request(
         .await
         .is_ok();
 
+    println!("uuid: {}", user_story_uuid);
+    println!("firstStep: {}", first_step);
+
     if first_step {
         let story_uuid: Uuid = sqlx::query("SELECT story_uuid FROM user_stories WHERE uuid = $1;")
             .bind(user_story_uuid)
@@ -38,6 +41,8 @@ pub async fn get_request(
             .await
             .map_err(|_| DError::from("No step found.", 0))?
             .get("story_uuid");
+
+            println!("story_uuid: {}", story_uuid);
 
         let step_waypoint_uuids: HashMap<Uuid, Option<Uuid>> =
             sqlx::query("SELECT uuid, waypoint_uuid FROM steps WHERE story_uuid = $1;")

@@ -33,6 +33,13 @@ VALUES (
     /* place_override */    TRUE
 );
 
+INSERT INTO waypoints (uuid, place_type, place_override) 
+VALUES (
+    /* uuid */              '4fa1b998-bc77-4c8a-bc50-af8288581ffd', 
+    /* place_type */        'random', 
+    /* place_override */    TRUE
+);
+
 INSERT INTO steps (uuid, story_uuid, waypoint_uuid, description, media_type, asset_id, title) 
 VALUES (
     /* uuid */          '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f1', 
@@ -122,6 +129,28 @@ VALUES (
     /* title */         'story.museum_heist.step.forensic_results.title'
 );
 
+INSERT INTO steps (uuid, story_uuid, waypoint_uuid, description, media_type, asset_id, title) 
+VALUES (
+    /* uuid */          '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f9', 
+    /* story_uuid */    '9e125477-3a9e-4d39-ae63-5a09a50b614a', 
+    /* waypoint_uuid */ NULL,
+    /* description */   'story.museum_heist.step.art_lover_found.description',
+    /* media_type */    NULL,
+    /* asset_id */      NULL,
+    /* title */         'story.museum_heist.step.art_lover_found.title'
+);
+
+INSERT INTO steps (uuid, story_uuid, waypoint_uuid, description, media_type, asset_id, title) 
+VALUES (
+    /* uuid */          '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e310', 
+    /* story_uuid */    '9e125477-3a9e-4d39-ae63-5a09a50b614a', 
+    /* waypoint_uuid */ '4fa1b998-bc77-4c8a-bc50-af8288581ffd',
+    /* description */   'story.museum_heist.step.go_to_autorepairshop.description',
+    /* media_type */    NULL,
+    /* asset_id */      NULL,
+    /* title */         'story.museum_heist.step.go_to_autorepairshop.title'
+);
+
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
 VALUES (
     /* uuid */              '27d8e03d-c025-4e7d-9c31-eb38d5e2adc1', 
@@ -176,5 +205,30 @@ VALUES (
     /* step_input_uuid */   '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f7', 
     /* step_output_uuid */  '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f8', 
     /* title */             'story.museum_heist.decision.accept_show_forensic_results.title'
+);
+
+
+INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
+VALUES (
+    /* uuid */              '27d8e03d-c025-4e7d-9c31-eb38d5e2adc8', 
+    /* step_input_uuid */   '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f8', 
+    /* step_output_uuid */  '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f9', 
+    /* title */             'story.museum_heist.decision.accept_dna_analysis.title'
+);
+
+INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
+VALUES (
+    /* uuid */              '27d8e03d-c025-4e7d-9c31-eb38d5e2adc9', 
+    /* step_input_uuid */   '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f9', 
+    /* step_output_uuid */  '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e310', 
+    /* title */             'story.museum_heist.decision.accept_go_to_autorepairshop.title'
+);
+
+INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
+VALUES (
+    /* uuid */              '27d8e03d-c025-4e7d-9c31-eb38d5e2ad10', 
+    /* step_input_uuid */   '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e310', 
+    /* step_output_uuid */  NULL, 
+    /* title */             'story.museum_heist.decision.arrest.title'
 );
 /* >> MUSEUM HEIST ************************************/
