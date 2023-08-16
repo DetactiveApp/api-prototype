@@ -6,7 +6,7 @@ Version: 1 <br /> Prefix: /api/v1
 
 ## GET /game/list?lat={}&lon={}
 
-Gets list of potential stories that are playable around given coordinates.
+Gets list of potential "games" that are playable around given coordinates.
 
 ### Response Example:
 
