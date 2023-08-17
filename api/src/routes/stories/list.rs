@@ -4,7 +4,7 @@ use sqlx::Row;
 use uuid::Uuid;
 
 use crate::{
-    types::{ApiContext, DError},
+    types::{ApiContext, DError, DStory},
     utils::geo::get_tags,
 };
 
@@ -14,22 +14,12 @@ pub struct GetQuery {
     lon: f64,
 }
 
-#[derive(Serialize, Deserialize)]
-pub struct GetResponse {
-    uuid: Uuid,
-    image: String,
-    title: String,
-    description: String,
-    distance: u8,
-    duration: u16,
-}
-
 pub async fn get_request(
     Query(query): Query<GetQuery>,
     Extension(ctx): Extension<ApiContext>,
-) -> Result<Json<Vec<GetResponse>>, DError> {    
+) -> Result<Json<Vec<DStory>>, DError> {
     let location_tags = get_tags(&query.lat, &query.lon).await?;
-    let mut stories: Vec<GetResponse> = vec![];
+    let mut stories: Vec<DStory> = vec![];
 
     let story_uuids: Vec<Uuid> = sqlx::query("SELECT uuid FROM stories WHERE active = true;")
         .fetch_all(&ctx.detactive_db)
@@ -38,8 +28,6 @@ pub async fn get_request(
         .iter()
         .map(|row| row.get("uuid"))
         .collect();
-
-    println!("Story Uuids: {:?}", story_uuids);
 
     for story_uuid in &story_uuids {
         let waypoint_uuids: Vec<Uuid> = sqlx::query(
@@ -71,8 +59,6 @@ pub async fn get_request(
             }
         }
 
-
-
         if story_tags
             .iter()
             .all(|tag: &String| location_tags.contains(tag))
@@ -92,12 +78,17 @@ pub async fn get_request(
                 .await
                 .map_err(|_| DError::from("Could not find asset.", 0))?;
 
-                
-            println!("URL: https:{}", response["fields"]["file"]["url"].as_str().unwrap());        
+            println!(
+                "URL: https:{}",
+                response["fields"]["file"]["url"].as_str().unwrap()
+            );
 
-            stories.push(GetResponse {
+            stories.push(DStory {
                 uuid: story.get("uuid"),
-                image: format!("https:{}", response["fields"]["file"]["url"].as_str().unwrap()),
+                image: format!(
+                    "https:{}",
+                    response["fields"]["file"]["url"].as_str().unwrap()
+                ),
                 title: story.get("title"),
                 description: story.get("description"),
                 distance: 0,

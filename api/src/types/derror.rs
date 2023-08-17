@@ -2,7 +2,7 @@ use axum::{response::IntoResponse, Json};
 use reqwest::StatusCode;
 use serde::Serialize;
 
-#[derive(Serialize)]
+#[derive(Serialize, Debug)]
 pub struct DError {
     pub code: u16,
     pub reason: String,
