@@ -58,7 +58,6 @@ CREATE TABLE stories (
   uuid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   active BOOLEAN NOT NULL DEFAULT FALSE,
   asset_id VARCHAR(254),
-  cms_id VARCHAR(254),
   description VARCHAR(120) NOT NULL,
   title VARCHAR(120) NOT NULL
 );

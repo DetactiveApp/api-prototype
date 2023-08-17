@@ -2,13 +2,12 @@
 INSERT INTO users (uuid) VALUES ('87c44130-af78-4c38-9d58-63d5266bde4a');
 
 /* << MUSEUM HEIST ************************************/
-INSERT INTO stories (uuid, cms_id, description, title, asset_id, active) 
+INSERT INTO stories (uuid, description, title, asset_id, active) 
 VALUES (
     /* uuid */          '9e125477-3a9e-4d39-ae63-5a09a50b614a', 
-    /* cmsId */         '7LLlD5gQ6MnPn1BAkU9cwZ', 
     /* description */   'story.museumheist.description', 
     /* title */         'story.museumheist.title', 
-    /* asset_id */       '5NLEPQsYuaOsr3hMeotJfZ',
+    /* asset_id */      '5NLEPQsYuaOsr3hMeotJfZ',
     /* active */        TRUE
 );
 

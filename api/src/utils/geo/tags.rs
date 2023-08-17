@@ -44,7 +44,7 @@ pub async fn get_tags(lat: &f64, lon: &f64) -> Result<Vec<String>, DError> {
                         }
                     })
             })
-            .expect("Cannot extract features");
+            .expect("Cannot extract features.");
     }
 
     Ok(location_tags)

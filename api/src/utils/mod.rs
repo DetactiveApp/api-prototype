@@ -1,3 +1,4 @@
+pub mod contentful;
 pub mod db;
 pub mod geo;
 mod http;
