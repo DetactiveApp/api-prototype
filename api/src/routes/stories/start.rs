@@ -33,6 +33,7 @@ pub async fn post_story_start(
     .map_err(|_| DError::from("Failed to find first step of current story.", 0))?
     .get("steps.uuid");
 
+    // Returns the new step
     Ok(Json(
         DStep::from_db(
             step_uuid,

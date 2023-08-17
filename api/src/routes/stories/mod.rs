@@ -9,6 +9,7 @@ use crate::types::{ApiContext, DError, DStory};
 
 mod forward;
 mod list;
+mod quit;
 mod start;
 
 async fn get_story(
