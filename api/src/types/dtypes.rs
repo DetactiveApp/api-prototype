@@ -71,25 +71,36 @@ impl DStep {
     pub async fn from_db(uuid: Uuid, db_pool: &PgPool) -> Result<Self, DError> {
         sqlx::query(
             "SELECT * FROM steps
+            JOIN decisions ON steps.uuid = decisions.step_input_uuid
             JOIN waypoints ON steps.waypoint_uuid = waypoints.uuid
-            WHERE steps.uuid = $1",
+            WHERE steps.uuid = $1;",
         )
         .bind(uuid)
-        .fetch_one(db_pool)
+        .fetch_all(db_pool)
         .await
         .map_err(|_| DError::from(format!("Could not find step: {}.", uuid).as_str(), 0))
-        .map(|row| DStep {
+        .map(|rows| DStep {
             uuid: uuid,
-            description: row
+            description: rows[0]
                 .try_get("steps.description")
                 .unwrap_or("Not Found".to_string()),
-            media_type: row.try_get("steps.media_type").unwrap_or(None),
-            src: row.try_get("steps.src").unwrap_or(None),
-            title: row
+            media_type: rows[0].try_get("steps.media_type").unwrap_or(None),
+            src: rows[0].try_get("steps.src").unwrap_or(None),
+            title: rows[0]
                 .try_get("steps.title")
                 .unwrap_or("Not Found".to_string()),
-            decisions: vec![],
-            waypoint: row
+            decisions: rows
+                .iter()
+                .map(|row| DDecision {
+                    uuid: row.try_get("decisions.uuid").unwrap_or(Uuid::nil()),
+                    step_input_uuid: row.try_get("decisions.uuid").unwrap_or(None),
+                    step_output_uuid: row.try_get("decisions.uuid").unwrap_or(None),
+                    title: row
+                        .try_get("decisions.title")
+                        .unwrap_or("Not Found".to_string()),
+                })
+                .collect(),
+            waypoint: rows[0]
                 .try_get("waypoints.uuid")
                 .map(|uuid| {
                     Some(DWaypoint {
