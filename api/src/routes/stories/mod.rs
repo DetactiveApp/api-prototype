@@ -22,8 +22,8 @@ async fn get_story(
 
 pub async fn story_router() -> Router {
     Router::new()
-        .route("/:id", get(get_story))
+        .route("/:uuid", get(get_story))
         .route("/list", get(list::get_request))
-        .route("/start", post(start::post_story_start))
-        .route("/:id/forward", get(forward::get_request))
+        .route("/:uuid/start", post(start::post_story_start))
+        .route("/:uuid/forward", get(forward::get_request))
 }
