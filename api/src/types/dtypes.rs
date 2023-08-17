@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 use sqlx::{PgPool, Row};
 use uuid::Uuid;
 
-use crate::utils::geo::near;
+use crate::utils::{contentful, geo::near};
 
 use super::{DError, MediaType};
 
@@ -53,19 +53,22 @@ pub struct DStep {
 
 impl DStory {
     pub async fn from_db(uuid: Uuid, db_pool: &PgPool) -> Result<Self, DError> {
-        sqlx::query("SELECT * FROM stories WHERE uuid = $1;")
+        let row = sqlx::query("SELECT * FROM stories WHERE uuid = $1;")
             .bind(uuid)
             .fetch_one(db_pool)
             .await
-            .map_err(|_| DError::from(format!("Could not find story: {}.", uuid).as_str(), 0))
-            .map(|row| DStory {
-                uuid,
-                image: row.get("image"),
-                title: row.get("title"),
-                description: row.get("description"),
-                distance: rand::thread_rng().gen_range(800..5000),
-                duration: rand::thread_rng().gen_range(5..40),
-            })
+            .map_err(|_| DError::from(format!("Could not find story: {}.", uuid).as_str(), 0))?;
+
+        let image_url = contentful::url(row.get("image")).await?;
+
+        Ok(DStory {
+            uuid,
+            image: image_url,
+            title: row.get("title"),
+            description: row.get("description"),
+            distance: rand::thread_rng().gen_range(800..5000),
+            duration: rand::thread_rng().gen_range(5..40),
+        })
     }
 }
 
@@ -126,12 +129,14 @@ impl DStep {
         .await
         .unwrap();
 
+        let src = contentful::url(rows[0].get("steps.asset_id")).await?;
+
         // Builds DStep
         let step: DStep = DStep {
             uuid: step_uuid,
             description: rows[0].get("steps.description"),
             media_type: rows[0].get("steps.media_type"),
-            src: rows[0].get("steps.src"),
+            src: Some(src),
             title: rows[0].get("steps.title"),
             decisions,
             waypoint: Some(DWaypoint {
