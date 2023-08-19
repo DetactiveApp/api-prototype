@@ -79,15 +79,6 @@ impl DStep {
         user_coordinates: DCoord,
         db_pool: &PgPool,
     ) -> Result<Self, DError> {
-        // Close old user story step with current timestamp
-        sqlx::query(
-            "UPDATE user_story_steps SET finished_at = CURRENT_TIMESTAMP WHERE user_story_uuid = $1 AND finished_at IS null;",
-        )
-        .bind(game_uuid)
-        .execute(db_pool)
-        .await
-        .map_err(|_| DError::from("Failed to close previous step.", 0))?;
-
         // SQL Query for receiving nested step data
         let rows = sqlx::query(
             "SELECT steps.asset_id AS step_asset_id,
@@ -162,8 +153,17 @@ impl DStep {
             .bind(user_coordinates.lon)
             .execute(db_pool)
             .await
-            .map_err(|_| DError::from("Failed to open new step in DB.", 0))
-            .unwrap();
+            .map_err(|_| DError::from("Step already played.", 0))?;
+
+        // Close old user story step with current timestamp
+        sqlx::query(
+            "UPDATE user_story_steps SET finished_at = CURRENT_TIMESTAMP WHERE user_story_uuid = $1 AND finished_at IS null AND step_uuid != $2;",
+            )
+            .bind(game_uuid)
+            .bind(step_uuid)
+            .execute(db_pool)
+            .await
+            .map_err(|_| DError::from("Failed to close previous step.", 0))?;
 
         Ok(step)
     }
