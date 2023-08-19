@@ -101,7 +101,6 @@ Gets next step for the user in the current & active story. Optionally you can us
   "lat": 52.51678368791737,
   "lon": 13.385774895470805,
   "to": "27d8e03d-c025-4e7d-9c31-eb38d5e2adc3"
-
 }
 ```
 
