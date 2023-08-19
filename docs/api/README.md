@@ -1,6 +1,6 @@
 # API Documentation
 
-Version: 1 <br /> Prefix: /api/v1
+Version: 1 <br /> Prefix: /v1
 
 # Routes:
 
