@@ -109,7 +109,7 @@ Gets next step for the user in the current & active story.
   "uuid": "7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f3",
   "description": "story.museumheist.step.examinecrimescene.description",
   "mediaType": "VIDEO",
-  "src": "\"//videos.ctfassets.net/tiy4aehfiie3/3WHnU7SCQdr4jRZ781LVAk/0cdd5ea48045b3bc665b3f1488d06429/missing-painting_museum-heist.mp4\"",
+  "src": "https://videos.ctfassets.net/tiy4aehfiie3/3WHnU7SCQdr4jRZ781LVAk/0cdd5ea48045b3bc665b3f1488d06429/missing-painting_museum-heist.mp4",
   "title": "story.museumheist.step.examinecrimescene.description",
   "decisions": [
     {

@@ -10,11 +10,11 @@ pub async fn url(asset_id: Option<String>) -> Result<Option<String>, DError> {
         return Ok(None);
     }
 
-    Ok(Some(reqwest::get(format!("https://cdn.contentful.com/spaces/tiy4aehfiie3/environments/master/assets/{}?access_token={}", asset_id.unwrap(), contentful_token))
+    Ok(Some(String::from("https:") + reqwest::get(format!("https://cdn.contentful.com/spaces/tiy4aehfiie3/environments/master/assets/{}?access_token={}", asset_id.unwrap(), contentful_token))
         .await
         .map_err(|_| DError::from("Could not find asset.", 0))?
         .json::<serde_json::Value>()
         .await
         .map_err(|_| DError::from("Could not find asset.", 0))?
-        ["fields"]["file"]["url"].to_string()))
+        ["fields"]["file"]["url"].as_str().unwrap()))
 }
