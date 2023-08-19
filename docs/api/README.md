@@ -4,8 +4,6 @@ Version: 1 <br /> Prefix: /v1
 
 # Routes:
 
-Query params that starts with an underscore are optional. E.g. /route?query={_param}
-
 ## GET /story/list?lat={}&lon={}
 
 Gets list of potential "games" that are playable around given coordinates.
@@ -93,15 +91,17 @@ Registers a new story to play for the user at given story uuid in the url and us
 
 ---
 
-## POST /story/forward?to={_step_uuid}
+## POST /story/forward
 
-Gets next step for the user in the current & active story. Optionally you can use the ?to query param to decide what next step to use, if there are multiple available.
+Gets next step for the user in the current & active story. Optionally you can use the "to" entry to decide what next step to use, if there are multiple available.
 
 ### Body Example:
 ```json
 {
   "lat": 52.51678368791737,
-  "lon": 13.385774895470805
+  "lon": 13.385774895470805,
+  "to": "27d8e03d-c025-4e7d-9c31-eb38d5e2adc3"
+
 }
 ```
 

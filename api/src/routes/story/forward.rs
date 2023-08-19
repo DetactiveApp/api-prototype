@@ -1,29 +1,30 @@
 use crate::types::{ApiContext, DCoord, DError, DStep};
-use axum::{extract::Query, Extension, Json};
+use axum::{Extension, Json};
 use serde::{Deserialize, Serialize};
 use sqlx::Row;
 use uuid::Uuid;
 
 #[derive(Serialize, Deserialize)]
-pub struct QueryParams {
+pub struct Body {
+    lat: f64,
+    lon: f64,
     to: Option<Uuid>,
 }
 
 pub async fn post_forward(
     Extension(ctx): Extension<ApiContext>,
-    Query(params): Query<QueryParams>,
-    Json(user_coordinates): Json<DCoord>,
+    Json(body): Json<Body>,
 ) -> Result<Json<DStep>, DError> {
     let user_uuid = Uuid::parse_str("87c44130-af78-4c38-9d58-63d5266bde4a").unwrap();
 
-    let (game_uuid, step_uuid) = if let Some(params_to) = params.to {
+    let (game_uuid, step_uuid) = if let Some(body_to) = body.to {
         let row = sqlx::query("SELECT uuid AS game_uuid FROM user_stories WHERE user_uuid = $1")
             .bind(user_uuid)
             .fetch_one(&ctx.detactive_db)
             .await
             .map_err(|_| DError::from("Could not receive step from existing story.", 0))?;
 
-        (row.get("game_uuid"), params_to)
+        (row.get("game_uuid"), body_to)
     } else {
         let row = sqlx::query(
             "SELECT user_stories.uuid AS game_uuid, decisions.step_output_uuid AS step_uuid
@@ -42,6 +43,15 @@ pub async fn post_forward(
     };
 
     Ok(Json(
-        DStep::from_db(step_uuid, game_uuid, user_coordinates, &ctx.detactive_db).await?,
+        DStep::from_db(
+            step_uuid,
+            game_uuid,
+            DCoord {
+                lat: body.lat,
+                lon: body.lon,
+            },
+            &ctx.detactive_db,
+        )
+        .await?,
     ))
 }
