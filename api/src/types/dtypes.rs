@@ -59,7 +59,7 @@ impl DStory {
             .await
             .map_err(|_| DError::from(format!("Could not find story: {}.", uuid).as_str(), 0))?;
 
-        let image_url = contentful::url(row.get("image")).await?.unwrap();
+        let image_url = contentful::url(row.get("asset_id")).await?.unwrap();
 
         Ok(DStory {
             uuid,
