@@ -122,22 +122,6 @@ impl DStep {
             decisions.push(decision);
         }
 
-        // Check if story is finished
-        if decisions
-            .iter()
-            .any(|decision| decision.step_output_uuid.is_none())
-        {
-            sqlx::query(
-                "UPDATE user_stories SET finished_at = CURRENT_TIMESTAMP WHERE finished_at IS null AND deleted_at IS NOT null AND uuid = $1;",
-                )
-                .bind(game_uuid)
-                .execute(db_pool)
-                .await
-                .map_err(|_| DError::from("Failed to complete story.", 0))?;
-
-            return Err(DError::from("Story complete.", 999));
-        }
-
         let coordinates: Option<DCoord> = near(
             rows[0].get("waypoint_place_type"),
             user_coordinates.lat,

@@ -22,7 +22,7 @@ pub async fn post_forward(
             .bind(user_uuid)
             .fetch_one(&ctx.detactive_db)
             .await
-            .map_err(|_| DError::from("Could not receive step from existing story.", 0))?;
+            .map_err(|_| DError::from("No content.", 999))?;
 
         (row.get("game_uuid"), body_to)
     } else {
@@ -40,9 +40,13 @@ pub async fn post_forward(
         .bind(user_uuid)
         .fetch_one(&ctx.detactive_db)
         .await
-        .map_err(|_| DError::from("Could not receive step.", 0))?;
+        .map_err(|_| DError::from("No content.", 999))?;
 
-        (row.get("game_uuid"), row.get("step_uuid"))
+        (
+            row.get("game_uuid"),
+            row.try_get("step_uuid")
+                .map_err(|_| DError::from("No content.", 999))?,
+        )
     };
 
     Ok(Json(
