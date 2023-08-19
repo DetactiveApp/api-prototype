@@ -27,7 +27,7 @@ Gets list of potential "games" that are playable around given coordinates.
 
 ---
 
-## GET /story/{story_uuid} [PLANNED]
+## GET /story/{story_uuid}
 
 Gets information about story for given story uuid in the url. [Progress tracker planned]
 
