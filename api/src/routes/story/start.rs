@@ -32,8 +32,11 @@ pub async fn post_story_start(
     .bind(story_uuid)
     .fetch_one(&ctx.detactive_db)
     .await
-    .map_err(|_| DError::from("Failed to find first step of current story.", 0))?
-    .get("steps.uuid");
+    .map_err(|err| {
+        println!("{}", err);
+        DError::from("Failed to fetch first step of the current story.", 0)
+    })?
+    .get("uuid");
 
     // Returns the new step
     Ok(Json(

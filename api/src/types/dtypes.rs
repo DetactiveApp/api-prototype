@@ -59,7 +59,7 @@ impl DStory {
             .await
             .map_err(|_| DError::from(format!("Could not find story: {}.", uuid).as_str(), 0))?;
 
-        let image_url = contentful::url(row.get("image")).await?;
+        let image_url = contentful::url(row.get("image")).await?.unwrap();
 
         Ok(DStory {
             uuid,
@@ -90,9 +90,20 @@ impl DStep {
 
         // SQL Query for receiving nested step data
         let rows = sqlx::query(
-            "SELECT * FROM steps
+            "SELECT steps.asset_id AS step_asset_id,
+                steps.description AS step_description,
+                steps.media_type AS step_media_type,
+                steps.title AS step_title,
+                decisions.uuid AS decision_uuid,
+                decisions.step_input_uuid AS decision_step_input_uuid,
+                decisions.step_output_uuid AS decision_step_output_uuid,
+                decisions.title AS decision_title,
+                waypoints.uuid AS waypoint_uuid,
+                waypoints.place_type AS waypoint_place_type,
+                waypoints.place_override AS waypoint_place_override
+            FROM steps
             JOIN decisions ON steps.uuid = decisions.step_input_uuid
-            JOIN waypoints ON steps.waypoint_uuid = waypoints.uuid
+            LEFT JOIN waypoints ON steps.waypoint_uuid = waypoints.uuid
             WHERE steps.uuid = $1;",
         )
         .bind(step_uuid)
@@ -112,45 +123,43 @@ impl DStep {
         let mut decisions = Vec::new();
         for row in rows.iter() {
             let decision = DDecision {
-                uuid: row.get("decisions.uuid"),
-                step_input_uuid: row.get("decisions.step_input_uuid"),
-                step_output_uuid: row.get("decisions.step_output_uuid"),
-                title: row.get("decisions.title"),
+                uuid: row.get("decision_uuid"),
+                step_input_uuid: row.get("decision_step_input_uuid"),
+                step_output_uuid: row.get("decision_step_output_uuid"),
+                title: row.get("decision_title"),
             };
             decisions.push(decision);
         }
 
-        let coordinates: DCoord = near(
-            rows[0].get("waypoints.place_type"),
+        let coordinates: Option<DCoord> = near(
+            rows[0].get("waypoint_place_type"),
             user_coordinates.lat,
             user_coordinates.lon,
-            rows[0].get("waypoints.place_override"),
+            rows[0].get("waypoint_place_override"),
         )
-        .await
-        .unwrap();
+        .await?;
+        let src = contentful::url(rows[0].get("step_asset_id")).await?;
 
-        let src = contentful::url(rows[0].get("steps.asset_id")).await?;
+        let waypoint_uuid: Option<Uuid> = rows[0].get("waypoint_uuid");
+        let waypoint: Option<DWaypoint> = waypoint_uuid.map(|uuid| DWaypoint { uuid, coordinates });
 
         // Builds DStep
         let step: DStep = DStep {
             uuid: step_uuid,
-            description: rows[0].get("steps.description"),
-            media_type: rows[0].get("steps.media_type"),
-            src: Some(src),
-            title: rows[0].get("steps.title"),
+            description: rows[0].get("step_description"),
+            media_type: rows[0].get("step_media_type"),
+            src: src,
+            title: rows[0].get("step_title"),
             decisions,
-            waypoint: Some(DWaypoint {
-                uuid: rows[0].get("waypoints.uuid"),
-                coordinates: Some(coordinates.clone()),
-            }),
+            waypoint: waypoint,
         };
 
         // Open new step at user story steps
         sqlx::query("INSERT INTO user_story_steps (user_story_uuid, step_uuid, latitude, longitude) VALUES ($1, $2, $3, $4);")
             .bind(game_uuid)
             .bind(step_uuid)
-            .bind(coordinates.lat)
-            .bind(coordinates.lon)
+            .bind(user_coordinates.lat)
+            .bind(user_coordinates.lon)
             .execute(db_pool)
             .await
             .map_err(|_| DError::from("Failed to open new step in DB.", 0))

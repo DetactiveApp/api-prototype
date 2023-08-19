@@ -1,9 +1,8 @@
 use std::{collections::HashMap, env};
 
 use rand::seq::SliceRandom;
-use reqwest::StatusCode;
 
-use crate::types::DCoord;
+use crate::types::{DCoord, DError};
 
 use super::latlon;
 
@@ -11,11 +10,16 @@ const SEARCH_RADIUS_M: f64 = 500.0;
 
 // This fuction returns only one poi or random point for the given inputs
 pub async fn near(
-    tag: String,
+    tag: Option<String>,
     lat: f64,
     lon: f64,
-    place_override: bool,
-) -> Result<DCoord, StatusCode> {
+    place_override: Option<bool>,
+) -> Result<Option<DCoord>, DError> {
+    if tag.is_none() || place_override.is_none() {
+        return Ok(None);
+    }
+    let tag = tag.unwrap();
+
     let mapbox_token = &env::var("MAPBOX_TOKEN").expect("Mapbox access token not found.");
 
     if tag != "random" {
@@ -31,10 +35,10 @@ pub async fn near(
 
             let response = reqwest::get(&url)
                 .await
-                .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?
+                .map_err(|_| DError::from("Could not contact Mapbox.", 0))?
                 .json::<serde_json::Value>()
                 .await
-                .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+                .map_err(|_| DError::from("Could not contact Mapbox.", 0))?;
 
             response
                 .get("features")
@@ -64,12 +68,12 @@ pub async fn near(
         }
 
         if features.contains_key(&tag) {
-            return Ok(features.get(&tag).unwrap().clone());
+            return Ok(Some(features.get(&tag).unwrap().clone()));
         }
     }
 
     // Check if the tag is "random" and returns a random user accessible coordinate
-    if tag == "random" || place_override {
+    if tag == "random" || place_override.unwrap() {
         let mut coordinates: Vec<DCoord> = vec![];
         for coord in latlon::quad(lat, lon, SEARCH_RADIUS_M).iter() {
             let lon: &f64 = coord.get(1).unwrap();
@@ -81,10 +85,10 @@ pub async fn near(
 
             let response = reqwest::get(&url)
                 .await
-                .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?
+                .map_err(|_| DError::from("Could not contact Mapbox.", 0))?
                 .json::<serde_json::Value>()
                 .await
-                .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+                .map_err(|_| DError::from("Could not contact Mapbox.", 0))?;
 
             response
                 .get("features")
@@ -105,8 +109,10 @@ pub async fn near(
                     coordinates.push(feature_coordinates.unwrap());
                 });
         }
-        return Ok(coordinates.choose(&mut rand::thread_rng()).unwrap().clone());
+        return Ok(Some(
+            coordinates.choose(&mut rand::thread_rng()).unwrap().clone(),
+        ));
     }
 
-    Err(StatusCode::NOT_FOUND)
+    Err(DError::from("Could not find near by features.", 0))
 }

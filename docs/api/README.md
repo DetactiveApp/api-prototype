@@ -4,7 +4,7 @@ Version: 1 <br /> Prefix: /api/v1
 
 # Routes:
 
-## GET /game/list?lat={}&lon={}
+## GET /story/list?lat={}&lon={}
 
 Gets list of potential "games" that are playable around given coordinates.
 
@@ -17,32 +17,60 @@ Gets list of potential "games" that are playable around given coordinates.
     "title": "Der Banküberfall",
     "image": "https://avatars.githubusercontent.com/u/124081268",
     "description": "Finde den Täter ...",
-    "distance": 2,
-    "duration": 20
+    "distance": 2, // in meters
+    "duration": 20 // in minutes
   }
 ]
 ```
 
 ---
 
-## GET /game/start?story_uuid={}
+## GET /story/{story_uuid}
 
-Gets the game uuid for forwarding through the single steps of the story. The
-input uuid must be a story uuid.
+Gets information about story for given story uuid in the url. [Progress pointer planned]
+
+### Response Example:
+
+```json
+[
+  {
+    "uuid": "4799b75f-50c8-4086-9b65-a12352165ca7",
+    "title": "Der Banküberfall",
+    "image": "https://avatars.githubusercontent.com/u/124081268",
+    "description": "Finde den Täter ...",
+    "distance": 2, // in meters
+    "duration": 20 // in minutes
+  }
+]
+```
+
+---
+
+## POST /story/{story_uuid}/start
+
+Registers a new story to play for the user at given story uuid in the url and using the users current position for the body payload.
+
+### Body:
+```json
+{
+  "lat": 0.0,
+  "lon": 0.0
+}
+```
 
 ### Response Example:
 
 ```json
 {
-  "game_uuid": "24f80d43-2580-4f48-8328-15fbb288ebb8"
+  
 }
 ```
 
 ---
 
-## GET /game/{}/forward?lat={}&lon={}
+## POST /story/forward
 
-Gets next step at given game uuid.
+Gets next step for the user in the current & active story.
 
 ### Response Example:
 
