@@ -25,7 +25,7 @@ Gets list of potential "games" that are playable around given coordinates.
 
 ---
 
-## GET /story/{story_uuid}
+## GET /game/{story_uuid}
 
 Gets information about story for given story uuid in the url. [Progress tracker planned]
 
@@ -50,7 +50,7 @@ Gets information about story for given story uuid in the url. [Progress tracker 
 
 ---
 
-## POST /story/{story_uuid}/start
+## POST /game/{story_uuid}/start
 
 Registers a new story to play for the user at given story uuid in the url and using the users current position for the body payload.
 
@@ -91,7 +91,7 @@ Registers a new story to play for the user at given story uuid in the url and us
 
 ---
 
-## POST /story/forward
+## POST /game/forward
 
 Gets next step for the user in the current & active story. Optionally you can use the "to" entry to decide what next step to use, if there are multiple available.
 
@@ -125,6 +125,6 @@ Gets next step for the user in the current & active story. Optionally you can us
 ```
 ---
 
-## POST /story/quit
+## DELETE /game/delete
 
-Closes the active story. Returns an 202 when successful. 
+Closes the active game. Returns an 202 when successful. 

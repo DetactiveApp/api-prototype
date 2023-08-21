@@ -15,7 +15,7 @@ pub struct QueryParams {
     lon: f64,
 }
 
-pub async fn get_list(
+pub async fn get_game_list(
     Query(query): Query<QueryParams>,
     Extension(ctx): Extension<ApiContext>,
 ) -> Result<Json<Vec<DStory>>, DError> {

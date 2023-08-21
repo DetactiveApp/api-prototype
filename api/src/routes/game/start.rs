@@ -4,7 +4,7 @@ use uuid::Uuid;
 
 use crate::types::{ApiContext, DCoord, DError, DStep};
 
-pub async fn post_story_start(
+pub async fn post_game_start(
     Extension(ctx): Extension<ApiContext>,
     Path(story_uuid): Path<Uuid>,
     Json(user_coordinates): Json<DCoord>,

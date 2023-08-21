@@ -12,7 +12,7 @@ pub struct Body {
     to: Option<Uuid>,
 }
 
-pub async fn post_forward(
+pub async fn post_game_forward(
     Extension(ctx): Extension<ApiContext>,
     Json(body): Json<Body>,
 ) -> Result<Json<DStep>, DError> {
