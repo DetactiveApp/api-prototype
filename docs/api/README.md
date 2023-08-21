@@ -4,7 +4,7 @@ Version: 1 <br /> Prefix: /v1
 
 # Routes:
 
-## GET /story/list?lat={}&lon={}
+## GET /game/list?lat={}&lon={}
 
 Gets list of potential "games" that are playable around given coordinates.
 
