@@ -27,7 +27,7 @@ Gets list of potential "games" that are playable around given coordinates.
 
 ## GET /game/{story_uuid}
 
-Gets information about story for given story uuid in the url. [Progress tracker planned]
+Gets information about story and game progress for given story uuid in the url. [game progress tracker planned]
 
 ### Response Example:
 
@@ -52,7 +52,7 @@ Gets information about story for given story uuid in the url. [Progress tracker 
 
 ## POST /game/{story_uuid}/start
 
-Registers a new story to play for the user at given story uuid in the url and using the users current position for the body payload.
+Registers a new game to play for the user at given story_uuid in the url and using the users current position for the body payload.
 
 ### Body Example:
 ```json
@@ -93,7 +93,7 @@ Registers a new story to play for the user at given story uuid in the url and us
 
 ## POST /game/forward
 
-Gets next step for the user in the current & active story. Optionally you can use the "to" entry to decide what next step to use, if there are multiple available.
+Gets next step for the user in the current & active game. Optionally you can use the "to" entry to decide what next step to use, if there are multiple available.
 
 ### Body Example:
 ```json
