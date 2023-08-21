@@ -80,7 +80,7 @@ VALUES (
     /* description */   'story.museumheist.step.suspiciouscarnews.description',
     /* media_type */    'audio',
     /* asset_id */      '3bUfBK9VECS0hBRBKeg2RA',
-    /* title */         'story.museumheist.step.suspiciouscarnews.description'
+    /* title */         'story.museumheist.step.suspiciouscarnews.title'
 );
 
 INSERT INTO steps (uuid, story_uuid, waypoint_uuid, description, media_type, asset_id, title) 
@@ -148,6 +148,19 @@ VALUES (
     /* media_type */    NULL,
     /* asset_id */      NULL,
     /* title */         'story.museumheist.step.gotoautorepairshop.title'
+);
+
+-- TODO falsche Übersetzung
+
+INSERT INTO steps (uuid, story_uuid, waypoint_uuid, description, media_type, asset_id, title) 
+VALUES (
+    /* uuid */          '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e311', 
+    /* story_uuid */    '9e125477-3a9e-4d39-ae63-5a09a50b614a', 
+    /* waypoint_uuid */ NULL,
+    /* description */   'story.museumheist.step.finished.description',
+    /* media_type */    'image',
+    /* asset_id */      '5wRyGrBPwwQtaagIljrXXz',
+    /* title */         'story.museumheist.step.finished.title'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -227,7 +240,15 @@ INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title)
 VALUES (
     /* uuid */              '27d8e03d-c025-4e7d-9c31-eb38d5e2ad10', 
     /* step_input_uuid */   '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e310', 
-    /* step_output_uuid */  NULL, 
+    /* step_output_uuid */  '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e310', 
     /* title */             'story.museumheist.step.gotoautorepairshop.decision.arrest.title'
+);
+
+INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
+VALUES (
+    /* uuid */              '27d8e03d-c025-4e7d-9c31-eb38d5e2ad11', 
+    /* step_input_uuid */   '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e311', 
+    /* step_output_uuid */  NULL, 
+    /* title */             'story.museumheist.step.arrest.decision.finished.title'
 );
 /* >> MUSEUM HEIST ************************************/
