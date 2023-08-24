@@ -60,7 +60,7 @@ pub async fn post_game_forward(
         }
     };
 
-    let dstep = DStep::from_db(
+    let step = DStep::from_db(
         step_uuid,
         game_uuid,
         DCoord {
@@ -71,7 +71,7 @@ pub async fn post_game_forward(
     )
     .await?;
 
-    Ok(Json(dstep))
+    Ok(Json(step))
 }
 
 async fn finish_story(user_uuid: Uuid, ctx: ApiContext) -> Result<(), DError> {

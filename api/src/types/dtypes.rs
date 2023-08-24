@@ -24,33 +24,6 @@ pub struct DStory {
     pub duration: u16,
 }
 
-#[derive(Serialize, Deserialize)]
-pub struct DWaypoint {
-    pub uuid: Uuid,
-    pub coordinates: Option<DCoord>,
-}
-
-#[derive(Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct DDecision {
-    pub uuid: Uuid,
-    pub step_input_uuid: Option<Uuid>,
-    pub step_output_uuid: Option<Uuid>,
-    pub title: String,
-}
-
-#[derive(Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct DStep {
-    pub uuid: Uuid,
-    pub description: String,
-    pub media_type: Option<MediaType>,
-    pub src: Option<String>,
-    pub title: String,
-    pub decisions: Vec<DDecision>,
-    pub waypoint: Option<DWaypoint>,
-}
-
 impl DStory {
     pub async fn from_db(uuid: Uuid, db_pool: &PgPool) -> Result<Self, DError> {
         let row = sqlx::query("SELECT * FROM stories WHERE uuid = $1;")
@@ -70,6 +43,94 @@ impl DStory {
             duration: rand::thread_rng().gen_range(5..40),
         })
     }
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct DWaypoint {
+    pub uuid: Uuid,
+    pub coordinates: Option<DCoord>,
+}
+
+impl DWaypoint {
+    pub async fn from_db(
+        step_uuid: Uuid,
+        user_coordinates: DCoord,
+        db_pool: &PgPool,
+    ) -> Result<Option<Self>, DError> {
+        match sqlx::query(
+            "SELECT
+                waypoints.uuid,
+                waypoints.place_type,
+                waypoints.place_override
+            FROM steps
+            JOIN waypoints ON steps.waypoint_uuid = waypoints.uuid
+            WHERE steps.uuid = $1;",
+        )
+        .bind(step_uuid)
+        .fetch_one(db_pool)
+        .await
+        {
+            Ok(row) => Ok(Some(DWaypoint {
+                uuid: row.get("uuid"),
+                coordinates: near(
+                    row.get("place_type"),
+                    user_coordinates.lat,
+                    user_coordinates.lon,
+                    row.get("place_override"),
+                )
+                .await?,
+            })),
+            _ => Ok(None),
+        }
+    }
+}
+
+#[derive(Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct DDecision {
+    pub uuid: Uuid,
+    pub step_input_uuid: Option<Uuid>,
+    pub step_output_uuid: Option<Uuid>,
+    pub title: String,
+}
+
+impl DDecision {
+    pub async fn from_db(step_uuid: Uuid, db_pool: &PgPool) -> Result<Vec<Self>, DError> {
+        Ok(sqlx::query(
+            "SELECT
+                decisions.uuid,
+                decisions.step_input_uuid,
+                decisions.step_output_uuid,
+                decisions.title
+            FROM steps
+            JOIN decisions ON steps.uuid = decisions.step_input_uuid
+            WHERE steps.uuid = $1;",
+        )
+        .bind(step_uuid)
+        .fetch_all(db_pool)
+        .await
+        .map_err(|_| DError::from("Failed to fetch decisions.", 0))?
+        .iter()
+        .map(|row| DDecision {
+            uuid: row.get("uuid"),
+            step_input_uuid: row.get("step_input_uuid"),
+            step_output_uuid: row.get("step_output_uuid"),
+            title: row.get("title"),
+        })
+        .collect())
+    }
+}
+
+#[derive(Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct DStep {
+    pub uuid: Uuid,
+    pub description: String,
+    pub media_type: Option<MediaType>,
+    pub src: Option<String>,
+    pub title: String,
+    pub decisions: Vec<DDecision>,
+    pub waypoint: Option<DWaypoint>,
 }
 
 impl DStep {
