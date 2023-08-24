@@ -91,7 +91,7 @@ Registers a new game to play for the user at given story_uuid in the url and usi
 
 ---
 
-## POST /game/forward
+## POST /game/{story_uuid}/forward
 
 Gets next step for the user in the current & active game. Optionally you can use the "to" entry to decide what next step to use, if there are multiple available.
 
@@ -100,7 +100,7 @@ Gets next step for the user in the current & active game. Optionally you can use
 {
   "lat": 52.51678368791737,
   "lon": 13.385774895470805,
-  "to": "27d8e03d-c025-4e7d-9c31-eb38d5e2adc3"
+  "to": "27d8e03d-c025-4e7d-9c31-eb38d5e2adc3" // step uuid
 }
 ```
 
@@ -125,6 +125,6 @@ Gets next step for the user in the current & active game. Optionally you can use
 ```
 ---
 
-## DELETE /game/delete
+## DELETE /game/{story_uuid}/delete
 
 Closes the active game. Returns an 202 when successful. 

@@ -19,7 +19,8 @@ pub async fn post_game_start(
     WHERE user_stories.finished_at IS null
     AND user_stories.deleted_at IS null
     AND user_stories.user_uuid = $1
-    AND user_stories.story_uuid = $2;
+    AND user_stories.story_uuid = $2
+    AND user_story_steps.finished_at IS null;
     ")
         .bind(user_uuid)
         .bind(story_uuid)

@@ -1,5 +1,5 @@
 use crate::types::{ApiContext, DCoord, DError, DStep};
-use axum::{Extension, Json};
+use axum::{extract::Path, Extension, Json};
 use serde::{Deserialize, Serialize};
 use sqlx::Row;
 use tokio::task;
@@ -14,15 +14,19 @@ pub struct Body {
 
 pub async fn post_game_forward(
     Extension(ctx): Extension<ApiContext>,
+    Path(story_uuid): Path<Uuid>,
     Json(body): Json<Body>,
 ) -> Result<Json<DStep>, DError> {
     let user_uuid = Uuid::parse_str("87c44130-af78-4c38-9d58-63d5266bde4a").unwrap();
 
     let (game_uuid, step_uuid) = if let Some(body_to) = body.to {
-        match sqlx::query("SELECT uuid AS game_uuid FROM user_stories WHERE user_uuid = $1")
-            .bind(user_uuid)
-            .fetch_one(&ctx.detactive_db)
-            .await
+        match sqlx::query(
+            "SELECT uuid AS game_uuid FROM user_stories WHERE story_uuid = $1 AND user_uuid = $2;",
+        )
+        .bind(story_uuid)
+        .bind(user_uuid)
+        .fetch_one(&ctx.detactive_db)
+        .await
         {
             Ok(row) => (row.get("game_uuid"), body_to),
             Err(_) => {
@@ -36,11 +40,13 @@ pub async fn post_game_forward(
             FROM user_stories
             LEFT JOIN user_story_steps ON user_stories.uuid = user_story_steps.user_story_uuid
             JOIN decisions ON user_story_steps.step_uuid = decisions.step_input_uuid
-            WHERE user_stories.user_uuid = $1
+            WHERE user_stories.story_uuid = $1
+            AND user_stories.user_uuid = $2
             AND user_story_steps.finished_at IS null
             AND user_stories.deleted_at IS null
             AND user_stories.finished_at IS null;",
         )
+        .bind(story_uuid)
         .bind(user_uuid)
         .fetch_one(&ctx.detactive_db)
         .await
