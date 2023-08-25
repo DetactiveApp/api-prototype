@@ -72,47 +72,42 @@ pub async fn near(
         }
     }
 
-    // Check if the tag is "random" and returns a random user accessible coordinate
-    if tag == "random" || place_override.unwrap() {
-        let mut coordinates: Vec<DCoord> = vec![];
-        for coord in latlon::quad(lat, lon, SEARCH_RADIUS_M).iter() {
-            let lon: &f64 = coord.get(1).unwrap();
-            let lat: &f64 = coord.get(0).unwrap();
+    let mut coordinates: Vec<DCoord> = vec![];
+    for coord in latlon::quad(lat, lon, SEARCH_RADIUS_M).iter() {
+        let lon: &f64 = coord.get(1).unwrap();
+        let lat: &f64 = coord.get(0).unwrap();
 
-            let url = format!(
+        let url = format!(
                     "https://api.mapbox.com/v4/mapbox.mapbox-streets-v8/tilequery/{lon},{lat}.json?radius=1000&limit=50&layers=road&access_token={mapbox_token}"
             );
 
-            let response = reqwest::get(&url)
-                .await
-                .map_err(|_| DError::from("Could not contact Mapbox.", 0))?
-                .json::<serde_json::Value>()
-                .await
-                .map_err(|_| DError::from("Could not contact Mapbox.", 0))?;
+        let response = reqwest::get(&url)
+            .await
+            .map_err(|_| DError::from("Could not contact Mapbox.", 0))?
+            .json::<serde_json::Value>()
+            .await
+            .map_err(|_| DError::from("Could not contact Mapbox.", 0))?;
 
-            response
-                .get("features")
-                .and_then(|_features| _features.as_array())
-                .unwrap()
-                .iter()
-                .for_each(|feature| {
-                    let feature_coordinates = feature
-                        .get("geometry")
-                        .and_then(|geometry| geometry.get("coordinates"))
-                        .and_then(|coordinates| coordinates.as_array())
-                        .and_then(|coordinates| {
-                            Some(DCoord {
-                                lat: coordinates.get(1).and_then(|lat| lat.as_f64()).unwrap(),
-                                lon: coordinates.get(0).and_then(|lon| lon.as_f64()).unwrap(),
-                            })
-                        });
-                    coordinates.push(feature_coordinates.unwrap());
-                });
-        }
-        return Ok(Some(
-            coordinates.choose(&mut rand::thread_rng()).unwrap().clone(),
-        ));
+        response
+            .get("features")
+            .and_then(|_features| _features.as_array())
+            .unwrap()
+            .iter()
+            .for_each(|feature| {
+                let feature_coordinates = feature
+                    .get("geometry")
+                    .and_then(|geometry| geometry.get("coordinates"))
+                    .and_then(|coordinates| coordinates.as_array())
+                    .and_then(|coordinates| {
+                        Some(DCoord {
+                            lat: coordinates.get(1).and_then(|lat| lat.as_f64()).unwrap(),
+                            lon: coordinates.get(0).and_then(|lon| lon.as_f64()).unwrap(),
+                        })
+                    });
+                coordinates.push(feature_coordinates.unwrap());
+            });
     }
-
-    Err(DError::from("Could not find near by features.", 0))
+    Ok(Some(
+        coordinates.choose(&mut rand::thread_rng()).unwrap().clone(),
+    ))
 }

@@ -24,8 +24,8 @@ async fn get_game(
 pub async fn game_router() -> Router {
     Router::new()
         .route("/:uuid/delete", delete(delete::delete_game_delete))
-        .route("/:uuid/forward", post(forward::post_game_forward))
+        .route("/:uuid/steps/forward", post(forward::post_game_forward))
         .route("/:uuid/start", post(start::post_game_start))
-        .route("/list", get(list::get_game_list))
+        .route("/near", get(list::get_game_list))
         .route("/:uuid", get(get_game))
 }

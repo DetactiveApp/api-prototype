@@ -4,7 +4,7 @@ Version: 1 <br /> Prefix: /v1
 
 # Routes:
 
-## GET /game/list?lat={}&lon={}
+## GET /game/near?lat={}&lon={}
 
 Gets list of potential "games" that are playable around given coordinates.
 
@@ -91,7 +91,7 @@ Registers a new game to play for the user at given story_uuid in the url and usi
 
 ---
 
-## POST /game/{story_uuid}/forward
+## POST /game/{story_uuid}/steps/forward
 
 Gets next step for the user in the current & active game. Optionally you can use the "to" entry to decide what next step to use, if there are multiple available.
 
