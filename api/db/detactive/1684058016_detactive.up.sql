@@ -38,6 +38,7 @@ CREATE TABLE user_story_steps (
   user_story_uuid UUID,
   step_uuid UUID,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;
   finished_at TIMESTAMP,
   latitude DOUBLE PRECISION NOT NULL,
   longitude DOUBLE PRECISION NOT NULL,
