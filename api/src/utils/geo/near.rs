@@ -1,14 +1,66 @@
+use super::latlon::{distance_to_latitude, distance_to_longitude};
+use crate::types::{DCoord, DError};
+use rand::{seq::SliceRandom, Rng};
+use reqwest;
 use std::{collections::HashMap, env};
 
-use rand::seq::SliceRandom;
+const FALLBACK_RANDOM_RADIUS_M: f64 = 10.0;
 
-use crate::types::{DCoord, DError};
+async fn fetch_features(
+    lat: f64,
+    lon: f64,
+    mapbox_token: &str,
+) -> Result<HashMap<String, DCoord>, DError> {
+    let mut features: HashMap<String, DCoord> = HashMap::new();
 
-use super::latlon;
+    let url = format!(
+        "https://api.mapbox.com/v4/mapbox.mapbox-streets-v8/tilequery/{lon},{lat}.json?radius=1000&limit=50&layers=poi_label&access_token={mapbox_token}",
+        lat = lat,
+        lon = lon,
+        mapbox_token = mapbox_token
+    );
 
-const SEARCH_RADIUS_M: f64 = 500.0;
+    let response = reqwest::get(&url)
+        .await
+        .map_err(|_| DError::from("Could not contact Mapbox.", 0))?
+        .json::<serde_json::Value>()
+        .await
+        .map_err(|_| DError::from("Could not contact Mapbox.", 0))?;
 
-// This fuction returns only one poi or random point for the given inputs
+    if let Some(features_array) = response.get("features").and_then(|f| f.as_array()) {
+        for feature in features_array {
+            let maki = feature
+                .get("properties")
+                .and_then(|properties| properties.get("maki"))
+                .and_then(|maki| maki.as_str())
+                .unwrap_or_default();
+
+            let feature_coordinates = feature
+                .get("geometry")
+                .and_then(|geometry| geometry.get("coordinates"))
+                .and_then(|coordinates| coordinates.as_array())
+                .and_then(|coordinates| {
+                    Some(DCoord {
+                        lat: coordinates
+                            .get(1)
+                            .and_then(|lat| lat.as_f64())
+                            .unwrap_or_default(),
+                        lon: coordinates
+                            .get(0)
+                            .and_then(|lon| lon.as_f64())
+                            .unwrap_or_default(),
+                    })
+                });
+
+            if let Some(coord) = feature_coordinates {
+                features.insert(maki.to_string(), coord);
+            }
+        }
+    }
+
+    Ok(features)
+}
+
 pub async fn near(
     tag: Option<String>,
     lat: f64,
@@ -18,96 +70,31 @@ pub async fn near(
     if tag.is_none() || place_override.is_none() {
         return Ok(None);
     }
-    let tag = tag.unwrap();
 
     let mapbox_token = &env::var("MAPBOX_TOKEN").expect("Mapbox access token not found.");
+    let tag = tag.unwrap();
+    let features = fetch_features(lat, lon, mapbox_token).await?;
 
-    if tag != "random" {
-        // Filters tags out of the requests for each quad coordinates
-        let mut features: HashMap<String, DCoord> = HashMap::new();
-        for coord in latlon::quad(lat, lon, SEARCH_RADIUS_M).iter() {
-            let lon: &f64 = coord.get(1).unwrap();
-            let lat: &f64 = coord.get(0).unwrap();
-
-            let url = format!(
-                "https://api.mapbox.com/v4/mapbox.mapbox-streets-v8/tilequery/{lon},{lat}.json?radius=1000&limit=50&layers=poi_label&access_token={mapbox_token}"
-        );
-
-            let response = reqwest::get(&url)
-                .await
-                .map_err(|_| DError::from("Could not contact Mapbox.", 0))?
-                .json::<serde_json::Value>()
-                .await
-                .map_err(|_| DError::from("Could not contact Mapbox.", 0))?;
-
-            response
-                .get("features")
-                .and_then(|_features| _features.as_array())
-                .unwrap()
-                .iter()
-                .for_each(|feature| {
-                    let maki = feature
-                        .get("properties")
-                        .and_then(|properties| properties.get("maki"))
-                        .and_then(|maki| maki.as_str())
-                        .unwrap();
-
-                    let coordinates = feature
-                        .get("geometry")
-                        .and_then(|geometry| geometry.get("coordinates"))
-                        .and_then(|coordinates| coordinates.as_array())
-                        .and_then(|coordinates| {
-                            Some(DCoord {
-                                lat: coordinates.get(1).and_then(|lat| lat.as_f64()).unwrap(),
-                                lon: coordinates.get(0).and_then(|lon| lon.as_f64()).unwrap(),
-                            })
-                        });
-
-                    features.insert(maki.to_string(), coordinates.unwrap());
-                });
-        }
-
-        if features.contains_key(&tag) {
-            return Ok(Some(features.get(&tag).unwrap().clone()));
-        }
+    if tag != "random" && features.contains_key(&tag) {
+        return Ok(features.get(&tag).cloned());
     }
 
-    let mut coordinates: Vec<DCoord> = vec![];
-    for coord in latlon::quad(lat, lon, SEARCH_RADIUS_M).iter() {
-        let lon: &f64 = coord.get(1).unwrap();
-        let lat: &f64 = coord.get(0).unwrap();
+    let mut rng = rand::thread_rng();
+    let fallback_coord = features
+        .values()
+        .map(|value| value.to_owned())
+        .collect::<Vec<DCoord>>()
+        .choose(&mut rng)
+        .cloned()
+        .unwrap_or_else(|| {
+            let lat: f64 = lat
+                + (distance_to_latitude(FALLBACK_RANDOM_RADIUS_M)
+                    * if rng.gen_bool(0.5) { -1.0 } else { 1.0 });
+            let lon: f64 = lon
+                + (distance_to_longitude(FALLBACK_RANDOM_RADIUS_M, lat)
+                    * if rng.gen_bool(0.5) { -1.0 } else { 1.0 });
+            DCoord { lat: lat, lon: lon }
+        });
 
-        let url = format!(
-                    "https://api.mapbox.com/v4/mapbox.mapbox-streets-v8/tilequery/{lon},{lat}.json?radius=1000&limit=50&layers=road&access_token={mapbox_token}"
-            );
-
-        let response = reqwest::get(&url)
-            .await
-            .map_err(|_| DError::from("Could not contact Mapbox.", 0))?
-            .json::<serde_json::Value>()
-            .await
-            .map_err(|_| DError::from("Could not contact Mapbox.", 0))?;
-
-        response
-            .get("features")
-            .and_then(|_features| _features.as_array())
-            .unwrap()
-            .iter()
-            .for_each(|feature| {
-                let feature_coordinates = feature
-                    .get("geometry")
-                    .and_then(|geometry| geometry.get("coordinates"))
-                    .and_then(|coordinates| coordinates.as_array())
-                    .and_then(|coordinates| {
-                        Some(DCoord {
-                            lat: coordinates.get(1).and_then(|lat| lat.as_f64()).unwrap(),
-                            lon: coordinates.get(0).and_then(|lon| lon.as_f64()).unwrap(),
-                        })
-                    });
-                coordinates.push(feature_coordinates.unwrap());
-            });
-    }
-    Ok(Some(
-        coordinates.choose(&mut rand::thread_rng()).unwrap().clone(),
-    ))
+    Ok(Some(fallback_coord))
 }
