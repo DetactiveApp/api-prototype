@@ -55,26 +55,15 @@ VALUES (
     /* uuid */          '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f2', 
     /* story_uuid */    '9e125477-3a9e-4d39-ae63-5a09a50b614a', 
     /* waypoint_uuid */ '4fa1b998-bc77-4c8a-bc50-af8288581ffa',
-    /* description */   'story.museumheist.step.gotomuseum.description',
-    /* media_type */    NULL,
-    /* asset_id */      NULL,
-    /* title */         'story.museumheist.step.gotomuseum.title'
+    /* description */   'story.museumheist.step.examinecrimescene.description',
+    /* media_type */    'video',
+    /* asset_id */      '3WHnU7SCQdr4jRZ781LVAk',
+    /* title */         'story.museumheist.step.examinecrimescene.title'
 );
 
 INSERT INTO steps (uuid, story_uuid, waypoint_uuid, description, media_type, asset_id, title) 
 VALUES (
     /* uuid */          '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f3', 
-    /* story_uuid */    '9e125477-3a9e-4d39-ae63-5a09a50b614a', 
-    /* waypoint_uuid */ NULL,
-    /* description */   'story.museumheist.step.examinecrimescene.description',
-    /* media_type */    'video',
-    /* asset_id */      '3WHnU7SCQdr4jRZ781LVAk',
-    /* title */         'story.museumheist.step.examinecrimescene.description'
-);
-
-INSERT INTO steps (uuid, story_uuid, waypoint_uuid, description, media_type, asset_id, title) 
-VALUES (
-    /* uuid */          '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f4', 
     /* story_uuid */    '9e125477-3a9e-4d39-ae63-5a09a50b614a', 
     /* waypoint_uuid */ NULL,
     /* description */   'story.museumheist.step.suspiciouscarnews.description',
@@ -85,20 +74,9 @@ VALUES (
 
 INSERT INTO steps (uuid, story_uuid, waypoint_uuid, description, media_type, asset_id, title) 
 VALUES (
-    /* uuid */          '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f5', 
+    /* uuid */          '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f4', 
     /* story_uuid */    '9e125477-3a9e-4d39-ae63-5a09a50b614a', 
     /* waypoint_uuid */ '4fa1b998-bc77-4c8a-bc50-af8288581ffb',
-    /* description */   'story.museumheist.step.gotosuspiciouscar.description',
-    /* media_type */    NULL,
-    /* asset_id */      NULL,
-    /* title */         'story.museumheist.step.gotosuspiciouscar.title'
-);
-
-INSERT INTO steps (uuid, story_uuid, waypoint_uuid, description, media_type, asset_id, title) 
-VALUES (
-    /* uuid */          '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f6', 
-    /* story_uuid */    '9e125477-3a9e-4d39-ae63-5a09a50b614a', 
-    /* waypoint_uuid */ NULL,
     /* description */   'story.museumheist.step.collectevidence.description',
     /* media_type */    'video',
     /* asset_id */      '6OL5xzmG5o7olCGSphaYQx',
@@ -107,9 +85,9 @@ VALUES (
 
 INSERT INTO steps (uuid, story_uuid, waypoint_uuid, description, media_type, asset_id, title) 
 VALUES (
-    /* uuid */          '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f7', 
+    /* uuid */          '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f5', 
     /* story_uuid */    '9e125477-3a9e-4d39-ae63-5a09a50b614a', 
-    /* waypoint_uuid */ '4fa1b998-bc77-4c8a-bc50-af8288581ffc',
+    /* waypoint_uuid */ NULL,
     /* description */   'story.museumheist.step.gotoforensicslab.description',
     /* media_type */    NULL,
     /* asset_id */      NULL,
@@ -119,9 +97,9 @@ VALUES (
 
 INSERT INTO steps (uuid, story_uuid, waypoint_uuid, description, media_type, asset_id, title) 
 VALUES (
-    /* uuid */          '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f8', 
+    /* uuid */          '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f6', 
     /* story_uuid */    '9e125477-3a9e-4d39-ae63-5a09a50b614a', 
-    /* waypoint_uuid */ NULL,
+    /* waypoint_uuid */ '4fa1b998-bc77-4c8a-bc50-af8288581ffc',
     /* description */   'story.museumheist.step.forensicresults.description',
     /* media_type */    'image',
     /* asset_id */      '74GqGc6raMnMByXTeEG16A',
@@ -130,7 +108,7 @@ VALUES (
 
 INSERT INTO steps (uuid, story_uuid, waypoint_uuid, description, media_type, asset_id, title) 
 VALUES (
-    /* uuid */          '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f9', 
+    /* uuid */          '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f7', 
     /* story_uuid */    '9e125477-3a9e-4d39-ae63-5a09a50b614a', 
     /* waypoint_uuid */ NULL,
     /* description */   'story.museumheist.step.artloverfound.description',
@@ -141,26 +119,13 @@ VALUES (
 
 INSERT INTO steps (uuid, story_uuid, waypoint_uuid, description, media_type, asset_id, title) 
 VALUES (
-    /* uuid */          '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e310', 
+    /* uuid */          '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f8', 
     /* story_uuid */    '9e125477-3a9e-4d39-ae63-5a09a50b614a', 
     /* waypoint_uuid */ '4fa1b998-bc77-4c8a-bc50-af8288581ffd',
-    /* description */   'story.museumheist.step.gotoautorepairshop.description',
-    /* media_type */    NULL,
-    /* asset_id */      NULL,
-    /* title */         'story.museumheist.step.gotoautorepairshop.title'
-);
-
--- TODO falsche Übersetzung
-
-INSERT INTO steps (uuid, story_uuid, waypoint_uuid, description, media_type, asset_id, title) 
-VALUES (
-    /* uuid */          '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e311', 
-    /* story_uuid */    '9e125477-3a9e-4d39-ae63-5a09a50b614a', 
-    /* waypoint_uuid */ NULL,
-    /* description */   'story.museumheist.step.finished.description',
+    /* description */   'story.museumheist.step.arrest.description',
     /* media_type */    'image',
     /* asset_id */      '5wRyGrBPwwQtaagIljrXXz',
-    /* title */         'story.museumheist.step.finished.title'
+    /* title */         'story.museumheist.step.arrest.title'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -176,7 +141,7 @@ VALUES (
     /* uuid */              '27d8e03d-c025-4e7d-9c31-eb38d5e2adc2', 
     /* step_input_uuid */   '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f1', 
     /* step_output_uuid */  '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f2', 
-    /* title */             'story.museumheist.step.gotomuseum.decision.acceptentercrimescene.title'
+    /* title */             'story.museumheist.step.thrillingnews.decision.examinecrimescene.title'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -184,7 +149,7 @@ VALUES (
     /* uuid */              '27d8e03d-c025-4e7d-9c31-eb38d5e2adc3', 
     /* step_input_uuid */   '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f2', 
     /* step_output_uuid */  '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f3', 
-    /* title */             'story.museumheist.step.examinecrimescene.decision.acceptleavecrimescene.title'
+    /* title */             'story.museumheist.step.examinecrimescene.decision.suspiciouscarnews.title'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -200,7 +165,7 @@ VALUES (
     /* uuid */              '27d8e03d-c025-4e7d-9c31-eb38d5e2adc5', 
     /* step_input_uuid */   '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f4', 
     /* step_output_uuid */  '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f5',
-    /* title */             'story.museumheist.step.gotosuspiciouscar.decision.acceptcollectevidence.title'
+    /* title */             'story.museumheist.step.collectevidence.decision.gotoforensicslab.title'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -208,7 +173,7 @@ VALUES (
     /* uuid */              '27d8e03d-c025-4e7d-9c31-eb38d5e2adc6', 
     /* step_input_uuid */   '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f5', 
     /* step_output_uuid */  '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f6', 
-    /* title */             'story.museumheist.step.collectevidence.decision.acceptgotoforensiclab.title'
+    /* title */             'story.museumheist.step.gotoforensicslab.decision.acceptgotoforensiclab.title'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -216,7 +181,7 @@ VALUES (
     /* uuid */              '27d8e03d-c025-4e7d-9c31-eb38d5e2adc7', 
     /* step_input_uuid */   '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f6', 
     /* step_output_uuid */  '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f7', 
-    /* title */             'story.museumheist.step.gotoforensicslab.decision.acceptshowforensicresults.title'
+    /* title */             'story.museumheist.step.forensicresults.decision.artlover.title'
 );
 
 
@@ -225,38 +190,14 @@ VALUES (
     /* uuid */              '27d8e03d-c025-4e7d-9c31-eb38d5e2adc8', 
     /* step_input_uuid */   '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f7', 
     /* step_output_uuid */  '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f8', 
-    /* title */             'story.museumheist.step.gotoforensicslab.decision.acceptdnaanalysis.title'
+    /* title */             'story.museumheist.step.arrest.decision.finish.title'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
 VALUES (
     /* uuid */              '27d8e03d-c025-4e7d-9c31-eb38d5e2adc9', 
     /* step_input_uuid */   '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f8', 
-    /* step_output_uuid */  '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f9', 
-    /* title */             'story.museumheist.step.artloverfound.decision.acceptgotoautorepairshop.title'
-);
-
-INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
-VALUES (
-    /* uuid */              '27d8e03d-c025-4e7d-9c31-eb38d5e2ad10', 
-    /* step_input_uuid */   '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f9', 
-    /* step_output_uuid */  '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e310', 
-    /* title */             'story.museumheist.step.gotoautorepairshop.decision.arrest.title'
-);
-
-INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
-VALUES (
-    /* uuid */              '27d8e03d-c025-4e7d-9c31-eb38d5e2ad11', 
-    /* step_input_uuid */   '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e310', 
-    /* step_output_uuid */  '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e311', 
-    /* title */             'story.museumheist.step.arrest.decision.finished.title'
-);
-
-INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
-VALUES (
-    /* uuid */              '27d8e03d-c025-4e7d-9c31-eb38d5e2ad12', 
-    /* step_input_uuid */   '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e311', 
     /* step_output_uuid */  NULL, 
-    /* title */             'story.museumheist.step.arrest.decision.finished.title'
+    /* title */             'story.museumheist.step.finish.decision.finished.title'
 );
 /* >> MUSEUM HEIST ************************************/
