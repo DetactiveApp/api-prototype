@@ -24,6 +24,7 @@ pub struct DStory {
     pub duration: u16,
 }
 
+#[allow(dead_code)]
 impl DStory {
     pub async fn from_db(uuid: Uuid, db_pool: &PgPool) -> Result<Self, DError> {
         let row = sqlx::query("SELECT * FROM stories WHERE uuid = $1;")

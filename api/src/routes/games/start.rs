@@ -30,6 +30,14 @@ pub async fn post_game_start(
             Ok(row) => {
                 if row.try_get::<Uuid, &str>("uuid").is_ok() {
                     let step_uuid: Uuid = row.get("uuid");
+
+                    sqlx::query("UPDATE user_story_steps SET updated_at = CURRENT_TIMESTAMP WHERE step_uuid = $1 AND story_uuid = $2;")
+                    .bind(step_uuid)
+                    .bind(story_uuid)
+                    .execute(&ctx.detactive_db)
+                    .await
+                    .map_err(|_| DError::from("Failed to update current step.", 0))?;
+
                     return Ok(Json(DStep{ 
                             uuid: step_uuid, 
                             description: row.get("description"), 

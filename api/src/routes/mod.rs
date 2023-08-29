@@ -3,11 +3,13 @@ use tower_http::add_extension::AddExtensionLayer;
 
 mod games;
 mod sticker;
+mod stories;
 mod storystudio;
 mod user;
 
 use games::game_router;
 use sticker::sticker_router;
+use stories::stories_router;
 use storystudio::storystudio_router;
 use user::user_router;
 
@@ -29,6 +31,7 @@ pub async fn api() -> Router {
         .nest("/user", user_router().await)
         .route_layer(middleware::from_fn(guard))
         .nest("/games", game_router().await)
+        .nest("/stories", stories_router().await)
         .nest("/storystudio", storystudio_router().await)
         .nest("/sticker", sticker_router().await)
         .route("/error", get(error))

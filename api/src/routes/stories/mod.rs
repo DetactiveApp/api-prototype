@@ -1,4 +1,4 @@
-use axum::{extract::Query, Extension, Json};
+use axum::{extract::Query, routing::get, Extension, Json, Router};
 use rand::Rng;
 use serde::{Deserialize, Serialize};
 use sqlx::Row;
@@ -9,13 +9,23 @@ use crate::{
     utils::{contentful, geo::get_tags},
 };
 
+pub async fn stories_router() -> Router {
+    Router::new()
+        .route("/:uuid", get(get_story))
+        .route("/", get(get_stories))
+}
+
+pub async fn get_story() {
+    todo!()
+}
+
 #[derive(Serialize, Deserialize)]
 pub struct QueryParams {
     lat: f64,
     lon: f64,
 }
 
-pub async fn get_game_list(
+pub async fn get_stories(
     Query(query): Query<QueryParams>,
     Extension(ctx): Extension<ApiContext>,
 ) -> Result<Json<Vec<DStory>>, DError> {
