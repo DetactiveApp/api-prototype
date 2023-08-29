@@ -15,8 +15,8 @@ pub async fn stories_router() -> Router {
         .route("/", get(get_stories))
 }
 
-pub async fn get_story() {
-    todo!()
+pub async fn get_story() -> &'static str {
+    "Coming Soon."
 }
 
 #[derive(Serialize, Deserialize)]

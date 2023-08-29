@@ -10,7 +10,7 @@ pub struct Body {
     lon: f64,
 }
 
-pub async fn post_game_forward(
+pub async fn post_game_steps(
     Extension(ctx): Extension<ApiContext>,
     Path(story_uuid): Path<Uuid>,
     Path(step_uuid): Path<Uuid>,

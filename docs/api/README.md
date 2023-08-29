@@ -4,7 +4,7 @@ Version: 1 <br /> Prefix: /v1
 
 # Routes:
 
-## GET /game/near?lat={}&lon={}
+## GET /stories?lat={}&lon={}
 
 Gets list of potential "games" that are playable around given coordinates.
 
@@ -25,7 +25,7 @@ Gets list of potential "games" that are playable around given coordinates.
 
 ---
 
-## GET /game/{story_uuid}
+## GET /stories/{story_uuid}
 
 Gets information about story and game progress for given story uuid in the url. [game progress tracker planned]
 
@@ -91,7 +91,7 @@ Registers a new game to play for the user at given story_uuid in the url and usi
 
 ---
 
-## POST /game/{story_uuid}/steps/forward
+## POST /games/{story_uuid}/steps/forward
 
 Gets next step for the user in the current & active game. Optionally you can use the "to" entry to decide what next step to use, if there are multiple available.
 
@@ -125,6 +125,6 @@ Gets next step for the user in the current & active game. Optionally you can use
 ```
 ---
 
-## DELETE /game/{story_uuid}/delete
+## DELETE /games/{story_uuid}/delete
 
 Closes the active game. Returns an 202 when successful. 
