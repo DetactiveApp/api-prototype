@@ -91,7 +91,7 @@ Registers a new game to play for the user at given story_uuid in the url and usi
 
 ---
 
-## POST /games/{story_uuid}/steps/forward
+## POST /games/{story_uuid}/steps
 
 Gets next step for the user in the current & active game. Optionally you can use the "to" entry to decide what next step to use, if there are multiple available.
 
