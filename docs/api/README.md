@@ -50,7 +50,7 @@ Gets information about story and game progress for given story uuid in the url. 
 
 ---
 
-## POST /game/{story_uuid}/start
+## POST /games/{story_uuid}/start
 
 Registers a new game to play for the user at given story_uuid in the url and using the users current position for the body payload.
 
@@ -91,7 +91,7 @@ Registers a new game to play for the user at given story_uuid in the url and usi
 
 ---
 
-## POST /games/{story_uuid}/steps
+## POST /games/{story_uuid}/steps/{step_uuid}
 
 Gets next step for the user in the current & active game. Optionally you can use the "to" entry to decide what next step to use, if there are multiple available.
 
@@ -99,8 +99,7 @@ Gets next step for the user in the current & active game. Optionally you can use
 ```json
 {
   "lat": 52.51678368791737,
-  "lon": 13.385774895470805,
-  "to": "27d8e03d-c025-4e7d-9c31-eb38d5e2adc3" // step uuid
+  "lon": 13.385774895470805
 }
 ```
 

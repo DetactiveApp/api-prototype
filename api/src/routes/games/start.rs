@@ -12,7 +12,7 @@ pub async fn post_game_start(
     let user_uuid: Uuid = Uuid::parse_str("87c44130-af78-4c38-9d58-63d5266bde4a").unwrap();
 
     // Checks if the is paused by the user
-    match sqlx::query("SELECT steps.uuid, steps.story_uuid, steps.waypoint_uuid, steps.asset_id, steps.description, steps.media_type, steps.title
+    match sqlx::query("SELECT steps.uuid, steps.story_uuid, steps.waypoint_uuid, steps.asset_id, steps.description, steps.media_type, steps.title, user_stories.uuid as game_uuid
     FROM user_stories
     JOIN user_story_steps ON user_story_steps.user_story_uuid = user_stories.uuid
     JOIN steps ON user_story_steps.step_uuid = steps.uuid
@@ -29,11 +29,12 @@ pub async fn post_game_start(
         .map_err(|_| DError::from("Failed to check for existing progress.", 0)) {
             Ok(row) => {
                 if row.try_get::<Uuid, &str>("uuid").is_ok() {
+                    let game_uuid: Uuid = row.get("game_uuid");
                     let step_uuid: Uuid = row.get("uuid");
 
-                    sqlx::query("UPDATE user_story_steps SET updated_at = CURRENT_TIMESTAMP WHERE step_uuid = $1 AND story_uuid = $2;")
+                    sqlx::query("UPDATE user_story_steps SET updated_at = CURRENT_TIMESTAMP WHERE step_uuid = $1 AND user_story_uuid = $2;")
                     .bind(step_uuid)
-                    .bind(story_uuid)
+                    .bind(game_uuid)
                     .execute(&ctx.detactive_db)
                     .await
                     .map_err(|_| DError::from("Failed to update current step.", 0))?;

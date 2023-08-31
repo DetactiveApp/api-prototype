@@ -5,13 +5,13 @@ mod games;
 mod sticker;
 mod stories;
 mod storystudio;
-mod user;
+mod users;
 
 use games::game_router;
 use sticker::sticker_router;
 use stories::stories_router;
 use storystudio::storystudio_router;
-use user::user_router;
+use users::user_router;
 
 use crate::{
     types::{ApiContext, DError},
@@ -28,7 +28,7 @@ async fn error() -> DError {
 
 pub async fn api() -> Router {
     return Router::new()
-        .nest("/user", user_router().await)
+        .nest("/users", user_router().await)
         .route_layer(middleware::from_fn(guard))
         .nest("/games", game_router().await)
         .nest("/stories", stories_router().await)

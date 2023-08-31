@@ -10,10 +10,9 @@ pub struct Body {
     lon: f64,
 }
 
-pub async fn post_game_steps(
+pub async fn post_game_next_step(
     Extension(ctx): Extension<ApiContext>,
-    Path(story_uuid): Path<Uuid>,
-    Path(step_uuid): Path<Uuid>,
+    Path((story_uuid, step_uuid)): Path<(Uuid, Uuid)>,
     Json(body): Json<Body>,
 ) -> Result<Json<DStep>, DError> {
     let user_uuid = Uuid::parse_str("87c44130-af78-4c38-9d58-63d5266bde4a").unwrap();
@@ -45,6 +44,14 @@ pub async fn post_game_steps(
         &ctx.detactive_db,
     )
     .await?;
+
+    if step
+        .decisions
+        .iter()
+        .any(|decision| decision.step_output_uuid.is_none())
+    {
+        finish_story(user_uuid, ctx).await?;
+    }
 
     Ok(Json(step))
 }
