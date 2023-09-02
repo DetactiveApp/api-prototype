@@ -7,6 +7,11 @@ use crate::utils::{contentful, geo::near};
 
 use super::{DError, MediaType};
 
+#[derive(Serialize, Deserialize)]
+pub struct DUser {
+    pub uuid: Uuid,
+}
+
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq)]
 pub struct DCoord {
     pub lat: f64,

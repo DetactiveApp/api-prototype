@@ -4,6 +4,27 @@ Version: 1 <br /> Prefix: /v1
 
 # Routes:
 
+## POST /users/register
+
+Registers a new user in the Detactive ecosystem.
+
+### Body Example:
+```json
+{
+  "uuid": "87c44130-af78-4c38-9d58-63d5266bde4a"
+}
+```
+
+### Response Example:
+
+```json
+{
+  "uuid": "87c44130-af78-4c38-9d58-63d5266bde4a"
+}
+```
+
+---
+
 ## GET /stories?lat={}&lon={}
 
 Gets list of potential "games" that are playable around given coordinates.

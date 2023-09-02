@@ -7,7 +7,7 @@ mod delete;
 mod start;
 mod steps;
 
-pub async fn game_router() -> Router {
+pub async fn games_router() -> Router {
     Router::new()
         .route("/:uuid/delete", delete(delete::delete_game_delete))
         .route("/:uuid/steps/:uuid", post(steps::post_game_next_step))

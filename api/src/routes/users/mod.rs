@@ -1,5 +1,7 @@
-use axum::Router;
+use axum::{routing::post, Router};
 
-pub async fn user_router() -> Router {
-    return Router::new();
+mod register;
+
+pub async fn users_router() -> Router {
+    return Router::new().route("register", post(register::post_users_register));
 }
