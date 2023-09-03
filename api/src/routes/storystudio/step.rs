@@ -39,7 +39,7 @@ pub async fn post_request(
         Ok(result) => Ok(Json(PostResponse {
             uuid: result.get("uuid"),
         })),
-        Err(_) => Err(DError::from("Could not upload step.", 0))
+        Err(_) => Err(DError::from("Could not upload step.", StatusCode::INTERNAL_SERVER_ERROR))
     };
 }
 

@@ -1,5 +1,6 @@
 use axum::{extract::Query, routing::get, Extension, Json, Router};
 use rand::Rng;
+use reqwest::StatusCode;
 use serde::{Deserialize, Serialize};
 use sqlx::Row;
 use uuid::Uuid;
@@ -40,7 +41,7 @@ pub async fn get_stories(
     )
     .fetch_all(&ctx.detactive_db)
     .await
-    .map_err(|_| DError::from("Could not receive stories.", 0))?;
+    .map_err(|_| DError::from("Could not receive stories.", StatusCode::INTERNAL_SERVER_ERROR))?;
 
     for row in stories.iter() {
         let story_uuid: Uuid = row.get("uuid");
@@ -56,9 +57,12 @@ pub async fn get_stories(
             || row.get::<&str, &str>("place_type") == "random"
             || location_tags.contains(&row.get::<String, &str>("place_type"))
         {
-            let image_url = contentful::url(row.get("asset_id"))
-                .await
-                .map_err(|_| DError::from("Could not reference asset.", 0))?;
+            let image_url = contentful::url(row.get("asset_id")).await.map_err(|_| {
+                DError::from(
+                    "Could not reference asset.",
+                    StatusCode::INTERNAL_SERVER_ERROR,
+                )
+            })?;
 
             filtered_stories.push(DStory {
                 uuid: story_uuid,

@@ -1,7 +1,7 @@
 use super::latlon::{distance_to_latitude, distance_to_longitude};
 use crate::types::{DCoord, DError};
 use rand::{seq::SliceRandom, Rng};
-use reqwest;
+use reqwest::{self, StatusCode};
 use std::{collections::HashMap, env};
 
 const FALLBACK_RANDOM_RADIUS_M: f64 = 10.0;
@@ -22,10 +22,20 @@ async fn fetch_features(
 
     let response = reqwest::get(&url)
         .await
-        .map_err(|_| DError::from("Could not contact Mapbox.", 0))?
+        .map_err(|_| {
+            DError::from(
+                "Could not contact Mapbox.",
+                StatusCode::INTERNAL_SERVER_ERROR,
+            )
+        })?
         .json::<serde_json::Value>()
         .await
-        .map_err(|_| DError::from("Could not contact Mapbox.", 0))?;
+        .map_err(|_| {
+            DError::from(
+                "Could not contact Mapbox.",
+                StatusCode::INTERNAL_SERVER_ERROR,
+            )
+        })?;
 
     if let Some(features_array) = response.get("features").and_then(|f| f.as_array()) {
         for feature in features_array {

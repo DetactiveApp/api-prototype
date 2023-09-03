@@ -1,5 +1,6 @@
 use crate::types::{ApiContext, DCoord, DError, DStep};
 use axum::{extract::Path, Extension, Json};
+use reqwest::StatusCode;
 use serde::{Deserialize, Serialize};
 use sqlx::Row;
 use uuid::Uuid;
@@ -26,12 +27,12 @@ pub async fn post_game_next_step(
     .await
     .map_err(|_| {
         tokio::task::spawn(finish_story(user_uuid, ctx.clone()));
-        DError::from("No content.", 999)
+        DError::from("No content.", StatusCode::NO_CONTENT)
     })?
     .try_get("game_uuid")
     .map_err(|_| {
         tokio::task::spawn(finish_story(user_uuid, ctx.clone()));
-        DError::from("No content.", 999)
+        DError::from("No content.", StatusCode::NO_CONTENT)
     })?;
 
     let step = DStep::from_db(
@@ -63,7 +64,7 @@ async fn finish_story(user_uuid: Uuid, ctx: ApiContext) -> Result<(), DError> {
     .bind(user_uuid)
     .execute(&ctx.detactive_db)
     .await
-    .map_err(|_| DError::from("Failed to close previous step.", 0))?;
+    .map_err(|_| DError::from("Failed to close previous step.", StatusCode::INTERNAL_SERVER_ERROR))?;
 
     Ok(())
 }

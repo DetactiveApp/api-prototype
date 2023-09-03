@@ -36,7 +36,7 @@ pub async fn post_request(
         Ok(result) => Ok(Json(PostResponse {
             uuid: result.get("uuid"),
         })),
-        Err(_) => Err(DError::from("Could not upload story.", 0)),
+        Err(_) => Err(DError::from("Could not upload story.", StatusCode::INTERNAL_SERVER_ERROR)),
     };
 }
 
@@ -107,7 +107,12 @@ pub async fn get_request(
             response.description = row.get("description");
             response.active = row.get("active");
         }
-        Err(_) => return Err(DError::from("Could not receive given story.", 0)),
+        Err(_) => {
+            return Err(DError::from(
+                "Could not receive given story.",
+                StatusCode::INTERNAL_SERVER_ERROR,
+            ))
+        }
     }
 
     match sqlx::query("SELECT * FROM steps WHERE story_uuid = $1;")
@@ -128,7 +133,12 @@ pub async fn get_request(
                 })
             }
         }
-        Err(_) => return Err(DError::from("Could not receive steps for given story. ", 0)),
+        Err(_) => {
+            return Err(DError::from(
+                "Could not receive steps for given story. ",
+                StatusCode::INTERNAL_SERVER_ERROR,
+            ))
+        }
     }
 
     return Ok(Json(response));

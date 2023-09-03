@@ -1,4 +1,5 @@
-use axum::{middleware, routing::get, Router};
+use axum::{middleware, routing::get, Extension, Router};
+use reqwest::StatusCode;
 use tower_http::add_extension::AddExtensionLayer;
 
 mod games;
@@ -18,23 +19,24 @@ use crate::{
     utils::guard,
 };
 
-async fn moai() -> &'static str {
+async fn moai(Extension(ctx): Extension<ApiContext>) -> &'static str {
+    println!("{:?}", ctx.user);
     "🗿"
 }
 
 async fn error() -> DError {
-    DError::from("This is a test error.", 1024)
+    DError::from("This is a test error.", StatusCode::INTERNAL_SERVER_ERROR)
 }
 
 pub async fn api() -> Router {
     return Router::new()
-        .nest("/users", users_router().await)
-        .route_layer(middleware::from_fn(guard))
         .nest("/games", games_router().await)
         .nest("/stories", stories_router().await)
+        .route_layer(middleware::from_fn(guard))
+        .nest("/users", users_router().await)
         .nest("/storystudio", storystudio_router().await)
         .nest("/sticker", sticker_router().await)
-        .route("/error", get(error))
         .route("/moai", get(moai))
+        .route("/error", get(error))
         .layer(AddExtensionLayer::new(ApiContext::new().await));
 }

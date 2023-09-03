@@ -1,5 +1,7 @@
 use std::env;
 
+use reqwest::StatusCode;
+
 use crate::types::DError;
 
 use super::latlon;
@@ -21,10 +23,20 @@ pub async fn get_tags(lat: &f64, lon: &f64) -> Result<Vec<String>, DError> {
 
         let response = reqwest::get(&url)
             .await
-            .map_err(|_| DError::from("Failed to connect to MapBox.", 0))?
+            .map_err(|_| {
+                DError::from(
+                    "Failed to connect to MapBox.",
+                    StatusCode::INTERNAL_SERVER_ERROR,
+                )
+            })?
             .json::<serde_json::Value>()
             .await
-            .map_err(|_| DError::from("Failed to connect to MapBox.", 0))?;
+            .map_err(|_| {
+                DError::from(
+                    "Failed to connect to MapBox.",
+                    StatusCode::INTERNAL_SERVER_ERROR,
+                )
+            })?;
 
         response
             .get("features")

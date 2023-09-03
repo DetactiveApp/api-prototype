@@ -4,7 +4,7 @@ Version: 1 <br /> Prefix: /v1
 
 # Routes:
 
-## POST /users/register
+## POST /users
 
 Registers a new user in the Detactive ecosystem.
 

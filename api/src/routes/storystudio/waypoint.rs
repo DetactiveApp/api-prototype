@@ -1,4 +1,5 @@
 use axum::{Extension, Json};
+use reqwest::StatusCode;
 use serde::{Deserialize, Serialize};
 use sqlx::Row;
 use uuid::Uuid;
@@ -32,7 +33,7 @@ pub async fn new_request(
         Ok(result) => Ok(Json(PostResponse {
             uuid: result.get("uuid"),
         })),
-        Err(_) => Err(DError::from("Could not upload waypoint for given story.", 0))
+        Err(_) => Err(DError::from("Could not upload waypoint for given story.", StatusCode::INTERNAL_SERVER_ERROR))
     };
 }
 

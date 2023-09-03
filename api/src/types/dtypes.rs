@@ -1,4 +1,5 @@
 use rand::Rng;
+use reqwest::StatusCode;
 use serde::{Deserialize, Serialize};
 use sqlx::{PgPool, Row};
 use uuid::Uuid;
@@ -7,7 +8,7 @@ use crate::utils::{contentful, geo::near};
 
 use super::{DError, MediaType};
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct DUser {
     pub uuid: Uuid,
 }
@@ -36,7 +37,12 @@ impl DStory {
             .bind(uuid)
             .fetch_one(db_pool)
             .await
-            .map_err(|_| DError::from(format!("Could not find story: {}.", uuid).as_str(), 0))?;
+            .map_err(|_| {
+                DError::from(
+                    format!("Could not find story: {}.", uuid).as_str(),
+                    StatusCode::INTERNAL_SERVER_ERROR,
+                )
+            })?;
 
         let image_url = contentful::url(row.get("asset_id")).await?.unwrap();
 
@@ -115,7 +121,7 @@ impl DDecision {
         .bind(step_uuid)
         .fetch_all(db_pool)
         .await
-        .map_err(|_| DError::from("Failed to fetch decisions.", 0))?
+        .map_err(|_| DError::from("Failed to fetch decisions.", StatusCode::NOT_FOUND))?
         .iter()
         .map(|row| DDecision {
             uuid: row.get("uuid"),
@@ -167,13 +173,18 @@ impl DStep {
         .bind(step_uuid)
         .fetch_all(db_pool)
         .await
-        .map_err(|_| DError::from(format!("Could not find step: {}.", step_uuid).as_str(), 0))?;
+        .map_err(|_| {
+            DError::from(
+                format!("Could not find step: {}.", step_uuid).as_str(),
+                StatusCode::INTERNAL_SERVER_ERROR,
+            )
+        })?;
 
         // Checks if necessary Step-Data is contained in DB
         if rows.is_empty() {
             return Err(DError::from(
                 format!("Could not find step: {}.", step_uuid).as_str(),
-                0,
+                StatusCode::INTERNAL_SERVER_ERROR,
             ));
         }
 
@@ -220,7 +231,7 @@ impl DStep {
             .bind(user_coordinates.lon)
             .execute(db_pool)
             .await
-            .map_err(|_| DError::from("Step already played.", 0))?;
+            .map_err(|_| DError::from("Step already played.", StatusCode::INTERNAL_SERVER_ERROR))?;
 
         // Close old user story step with current timestamp
         sqlx::query(
@@ -230,7 +241,7 @@ impl DStep {
             .bind(step_uuid)
             .execute(db_pool)
             .await
-            .map_err(|_| DError::from("Failed to close previous step.", 0))?;
+            .map_err(|_| DError::from("Failed to close previous step.", StatusCode::INTERNAL_SERVER_ERROR))?;
 
         Ok(step)
     }

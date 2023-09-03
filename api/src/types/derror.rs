@@ -1,28 +1,22 @@
-use axum::{response::IntoResponse, Json};
+use axum::response::IntoResponse;
 use reqwest::StatusCode;
-use serde::Serialize;
 
-#[derive(Serialize, Debug)]
+#[derive(Debug, Clone)]
 pub struct DError {
-    pub code: u16,
+    pub status_code: StatusCode,
     pub reason: String,
 }
 
 impl IntoResponse for DError {
     fn into_response(self) -> axum::response::Response {
-        let status_code: StatusCode = match self.code {
-            999 => StatusCode::NO_CONTENT,
-            _ => StatusCode::INTERNAL_SERVER_ERROR,
-        };
-
-        (status_code, Json(self)).into_response()
+        (self.status_code, self.reason).into_response()
     }
 }
 
 impl DError {
-    pub fn from(reason: &str, code: u16) -> Self {
+    pub fn from(reason: &str, status_code: StatusCode) -> Self {
         Self {
-            code: code,
+            status_code,
             reason: reason.to_string(),
         }
     }

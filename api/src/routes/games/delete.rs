@@ -17,7 +17,7 @@ pub async fn delete_game_delete(
         .bind(user_uuid)
         .execute(&ctx.detactive_db)
         .await
-        .map_err(|_| DError::from("Failed to close previous step.", 0))?;
+        .map_err(|_| DError::from("Failed to close previous step.", StatusCode::INTERNAL_SERVER_ERROR))?;
 
     Ok(StatusCode::ACCEPTED)
 }

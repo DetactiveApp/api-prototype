@@ -1,4 +1,5 @@
 use axum::{Extension, Json};
+use reqwest::StatusCode;
 use serde::{Deserialize, Serialize};
 use sqlx::Row;
 use uuid::Uuid;
@@ -27,6 +28,6 @@ pub async fn get_request(
                 })
                 .collect(),
         )),
-        Err(_) => Err(DError::from("Could not get story.", 0)),
+        Err(_) => Err(DError::from("Could not get story.", StatusCode::NOT_FOUND)),
     };
 }
