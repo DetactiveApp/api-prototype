@@ -14,10 +14,9 @@ pub struct Claims {
     iat: usize,
 }
 
-#[allow(dead_code)]
-pub fn encode(user_uuid: Uuid) -> Result<String, DError> {
+pub fn encode(user_uuid: Uuid, duration: Duration) -> Result<String, DError> {
     let datetime_iat = Utc::now();
-    let datetime_exp = datetime_iat + Duration::seconds(30);
+    let datetime_exp = datetime_iat + duration;
 
     let timestamp_iat = datetime_iat.timestamp() as usize;
     let timestamp_exp = datetime_exp.timestamp() as usize;

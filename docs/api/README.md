@@ -8,13 +8,6 @@ Version: 1 <br /> Prefix: /v1
 
 Registers a new user in the Detactive ecosystem.
 
-### Body Example:
-```json
-{
-  "uuid": "87c44130-af78-4c38-9d58-63d5266bde4a"
-}
-```
-
 ### Response Example:
 
 ```json
@@ -23,6 +16,20 @@ Registers a new user in the Detactive ecosystem.
 }
 ```
 
+---
+
+## GET /users/{user_uuid}/token
+
+Gets a corresponding token for given user.
+The token is valid for 30 minutes.
+
+### Response Example:
+
+```json
+{
+  "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxOWI5NWE1ZC1iZTRhLTQ4YmEtOGRkOC1hOTAwZTY1M2Q4MDMiLCJleHAiOjE2OTM3NDk5MDksImlhdCI6MTY5Mzc0ODEwOX0.9NG_1cjAJpNqzk9AV-HXrMmLYWN-k_D9GYfqDb4aHTc"
+}
+```
 ---
 
 ## GET /stories?lat={}&lon={}
