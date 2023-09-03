@@ -10,7 +10,7 @@ pub async fn post_game_start(
     Path(story_uuid): Path<Uuid>,
     Json(user_coordinates): Json<DCoord>,
 ) -> Result<Json<DStep>, DError> {
-    let user_uuid: Uuid = Uuid::parse_str("87c44130-af78-4c38-9d58-63d5266bde4a").unwrap();
+    let user_uuid: &Uuid = &ctx.user.unwrap().uuid;
 
     // Checks if the is paused by the user
     match sqlx::query("SELECT steps.uuid, steps.story_uuid, steps.waypoint_uuid, steps.asset_id, steps.description, steps.media_type, steps.title, user_stories.uuid as game_uuid

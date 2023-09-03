@@ -16,7 +16,7 @@ pub async fn post_game_next_step(
     Path((story_uuid, step_uuid)): Path<(Uuid, Uuid)>,
     Json(body): Json<Body>,
 ) -> Result<Json<DStep>, DError> {
-    let user_uuid = Uuid::parse_str("87c44130-af78-4c38-9d58-63d5266bde4a").unwrap();
+    let user_uuid: Uuid = ctx.user.unwrap().uuid;
 
     let game_uuid = sqlx::query(
         "SELECT uuid AS game_uuid FROM user_stories WHERE story_uuid = $1 AND user_uuid = $2;",

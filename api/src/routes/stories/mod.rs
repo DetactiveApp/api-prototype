@@ -1,4 +1,9 @@
-use axum::{extract::Query, routing::get, Extension, Json, Router};
+use axum::{
+    extract::{Path, Query},
+    routing::get,
+    Extension, Json, Router,
+};
+use chrono::{DateTime, Utc};
 use rand::Rng;
 use reqwest::StatusCode;
 use serde::{Deserialize, Serialize};
@@ -16,8 +21,31 @@ pub async fn stories_router() -> Router {
         .route("/", get(get_stories))
 }
 
-pub async fn get_story() -> &'static str {
-    "Coming Soon."
+#[derive(Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct Progress {
+    pub started_at: DateTime<Utc>,
+    pub finished_at: Option<DateTime<Utc>>,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct Response {
+    story: DStory,
+    progress: Option<Progress>,
+}
+
+pub async fn get_story(
+    Extension(ctx): Extension<ApiContext>,
+    Path(story_uuid): Path<Uuid>,
+) -> Result<Json<Response>, DError> {
+    let _user_uuid: Uuid = ctx.clone().user.unwrap().uuid;
+
+    let story = DStory::from_db(story_uuid, &ctx.detactive_db).await?;
+
+    Ok(Json(Response {
+        story: story,
+        progress: None,
+    }))
 }
 
 #[derive(Serialize, Deserialize)]

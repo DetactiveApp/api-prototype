@@ -8,7 +8,7 @@ pub async fn delete_game_delete(
     Extension(ctx): Extension<ApiContext>,
     Path(story_uuid): Path<Uuid>,
 ) -> Result<StatusCode, DError> {
-    let user_uuid: Uuid = Uuid::parse_str("87c44130-af78-4c38-9d58-63d5266bde4a").unwrap();
+    let user_uuid: &Uuid = &ctx.user.unwrap().uuid;
 
     sqlx::query(
         "UPDATE user_stories SET deleted_at = CURRENT_TIMESTAMP WHERE deleted_at IS null AND finished_at IS null AND story_uuid = $1 AND user_uuid = $2;",

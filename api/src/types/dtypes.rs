@@ -8,7 +8,7 @@ use crate::utils::{contentful, geo::near};
 
 use super::{DError, MediaType};
 
-#[derive(Debug, Serialize, Deserialize, Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone, Copy)]
 pub struct DUser {
     pub uuid: Uuid,
 }
