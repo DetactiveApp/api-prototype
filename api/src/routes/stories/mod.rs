@@ -3,7 +3,7 @@ use axum::{
     routing::get,
     Extension, Json, Router,
 };
-use chrono::{DateTime, Utc};
+use chrono::NaiveDateTime;
 use rand::Rng;
 use reqwest::StatusCode;
 use serde::{Deserialize, Serialize};
@@ -23,28 +23,39 @@ pub async fn stories_router() -> Router {
 
 #[derive(Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct Progress {
-    pub started_at: DateTime<Utc>,
-    pub finished_at: Option<DateTime<Utc>>,
+pub struct UserActivity {
+    pub started_at: NaiveDateTime,
+    pub finished_at: Option<NaiveDateTime>,
 }
 
 #[derive(Serialize, Deserialize)]
 pub struct Response {
     story: DStory,
-    progress: Option<Progress>,
+    user_activities: Vec<UserActivity>,
 }
 
 pub async fn get_story(
     Extension(ctx): Extension<ApiContext>,
     Path(story_uuid): Path<Uuid>,
 ) -> Result<Json<Response>, DError> {
-    let _user_uuid: Uuid = ctx.clone().user.unwrap().uuid;
+    let user_uuid: Uuid = ctx.clone().user.unwrap().uuid;
 
-    let story = DStory::from_db(story_uuid, &ctx.detactive_db).await?;
+    let story: DStory = DStory::from_db(story_uuid, &ctx.detactive_db).await?;
+
+    let user_activities: Vec<UserActivity> =
+        sqlx::query("SELECT * FROM user_stories WHERE story_uuid = $1 AND user_uuid = $2 AND deleted_at IS null;")
+        .bind(story_uuid)
+        .bind(user_uuid)
+        .fetch_all(&ctx.detactive_db)
+        .await
+        .unwrap()
+        .iter()
+        .map(|row| UserActivity{started_at: row.get("created_at"), finished_at: row.try_get("finished_at").ok()})
+        .collect();
 
     Ok(Json(Response {
         story: story,
-        progress: None,
+        user_activities: user_activities,
     }))
 }
 

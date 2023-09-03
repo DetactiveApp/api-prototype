@@ -69,9 +69,12 @@ Gets information about story and game progress for given story uuid in the url. 
       "distance": 2, // in meters
       "duration": 20 // in minutes
     },
-    "progress": {
-      ...
-    }
+    "user_activities": [
+      {
+        "startedAt": ,
+        "finishedAt": ,
+      }
+    ]
   }
 
 ```
