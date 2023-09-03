@@ -71,8 +71,12 @@ Gets information about story and game progress for given story uuid in the url. 
     },
     "user_activities": [
       {
-        "startedAt": ,
-        "finishedAt": ,
+        "startedAt": "2023-09-03T15:04:54.366847",
+        "finishedAt": null
+      },
+      {
+        "startedAt": "2023-09-01T15:04:54.366847",
+        "finishedAt": "2023-09-02T15:04:54.366847"
       }
     ]
   }
