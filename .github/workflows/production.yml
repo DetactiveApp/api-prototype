@@ -15,7 +15,7 @@ jobs:
 
       - name: Delete unused Docker images
         run: |
-          docker system prune
+          docker system prune -f
 
       - name: Install/Setup dependencies
         run: |
