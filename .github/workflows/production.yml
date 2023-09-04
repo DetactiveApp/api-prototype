@@ -24,8 +24,9 @@ jobs:
             echo "Web network already exists... Skipping Step"
           fi
 
-          sudo docker rm -f env_traefik_1
-          sudo docker rm -f env_detactive_api_1
+      - name: Delete unused Docker images
+        run: |
+          docker image prune -f --filter "until=24h"
 
       - name: Start production services
         run: |

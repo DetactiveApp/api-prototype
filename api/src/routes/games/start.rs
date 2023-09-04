@@ -15,7 +15,7 @@ pub async fn post_game_start(
     // Checks if the is paused by the user
     match sqlx::query("SELECT steps.uuid, steps.story_uuid, steps.waypoint_uuid, steps.asset_id, steps.description, steps.media_type, steps.title, user_stories.uuid as game_uuid
     FROM user_stories
-    JOIN user_story_steps ON user_story_steps.user_story_uuid = user_stories.uuid
+    LEFT JOIN user_story_steps ON user_story_steps.user_story_uuid = user_stories.uuid
     JOIN steps ON user_story_steps.step_uuid = steps.uuid
     WHERE user_stories.finished_at IS null
     AND user_stories.deleted_at IS null
