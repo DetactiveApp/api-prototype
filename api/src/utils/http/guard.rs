@@ -4,6 +4,7 @@ use axum::{
     middleware::Next,
     response::Response,
 };
+use log::error;
 use reqwest::StatusCode;
 
 use crate::{
@@ -33,7 +34,10 @@ pub async fn guard<T>(mut request: Request<T>, next: Next<T>) -> Result<Response
         .bind(claims.sub)
         .fetch_one(&ctx.detactive_db)
         .await
-        .map_err(|_| DError::from("User not found.", StatusCode::NOT_FOUND))?;
+        .map_err(|_| {
+            error!("User {} not found.", claims.sub);
+            DError::from("User not found.", StatusCode::NOT_FOUND)
+        })?;
 
     request
         .extensions_mut()

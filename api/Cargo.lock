@@ -444,6 +444,7 @@ dependencies = [
  "chrono",
  "dropshot",
  "jsonwebtoken",
+ "log",
  "rand",
  "reqwest",
  "serde",
