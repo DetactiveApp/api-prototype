@@ -1,6 +1,5 @@
 use chrono::{Duration, Utc};
 use jsonwebtoken::{DecodingKey, EncodingKey, Header, Validation};
-use log::error;
 use reqwest::StatusCode;
 use serde::{Deserialize, Serialize};
 use std::env;
@@ -41,29 +40,18 @@ pub fn verify(token: &str) -> Result<Claims, DError> {
     let secret = &env::var("JWT_SECRET").unwrap();
     let key = DecodingKey::from_secret(secret.as_bytes());
 
-    let result = jsonwebtoken::decode::<Claims>(
+    let claims = jsonwebtoken::decode::<Claims>(
         token,
         &key,
         &Validation::new(jsonwebtoken::Algorithm::HS256),
-    );
-
-    match result {
-        Ok(decoded) => Ok(decoded.claims),
-        Err(err) => {
-            let sub = decode_token_sub(token, &key).unwrap_or("N/A".to_string());
-            error!("Error for user {}: {:?}", sub, err);
-
-            match err.kind() {
-                jsonwebtoken::errors::ErrorKind::ExpiredSignature => {
-                    Err(DError::from("Token expired.", StatusCode::UNAUTHORIZED))
-                }
-                _ => Err(DError::from("Unauthorized.", StatusCode::UNAUTHORIZED)),
-            }
+    )
+    .map_err(|err| match err.kind() {
+        jsonwebtoken::errors::ErrorKind::ExpiredSignature => {
+            DError::from("Token expired.", StatusCode::UNAUTHORIZED)
         }
-    }
-}
+        _ => DError::from("Unauthorized.", StatusCode::UNAUTHORIZED),
+    })?
+    .claims;
 
-fn decode_token_sub(token: &str, key: &DecodingKey) -> Result<String, jsonwebtoken::errors::Error> {
-    jsonwebtoken::decode::<Claims>(token, key, &Validation::new(jsonwebtoken::Algorithm::HS256))
-        .map(|token_data| token_data.claims.sub.to_string())
+    Ok(claims)
 }

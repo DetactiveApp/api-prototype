@@ -1,6 +1,3 @@
-/* USERS */
-INSERT INTO users (uuid) VALUES ('87c44130-af78-4c38-9d58-63d5266bde4a');
-
 /* << MUSEUM HEIST ************************************/
 INSERT INTO stories (uuid, description, title, asset_id, active) 
 VALUES (
