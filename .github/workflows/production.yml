@@ -26,7 +26,7 @@ jobs:
 
       - name: Delete unused Docker images
         run: |
-          docker image prune -f --filter "until=24h"
+          docker system prune -f --filter "until=24h"
 
       - name: Start production services
         run: |
