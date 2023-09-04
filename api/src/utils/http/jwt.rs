@@ -49,7 +49,7 @@ pub fn verify(token: &str) -> Result<Claims, DError> {
         jsonwebtoken::errors::ErrorKind::ExpiredSignature => {
             DError::from("Token expired.", StatusCode::UNAUTHORIZED)
         }
-        _ => DError::from("Internal Server Error.", StatusCode::INTERNAL_SERVER_ERROR),
+        _ => DError::from("Unauthorized.", StatusCode::UNAUTHORIZED),
     })?
     .claims;
 
