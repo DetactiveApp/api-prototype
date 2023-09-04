@@ -18,6 +18,7 @@ async fn root() -> String {
 async fn main() {
     println!("Detactive API v{}", env!("CARGO_PKG_VERSION"));
 
+    env_logger::init();
     migrate_db().await;
 
     let addr = SocketAddr::from(([0, 0, 0, 0], 3000));

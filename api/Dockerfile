@@ -23,4 +23,6 @@ FROM rust:latest
 
 COPY --from=build /detactive-api/target/release/detactive-api .
 
+ARG RUST_LOG=info ./detactive_api
+
 CMD ["./detactive-api"]
