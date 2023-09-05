@@ -24,12 +24,12 @@ jobs:
           else
             echo "Web network already exists... Skipping Step"
           fi
-
+          
+      - name: Start production services
+        run: |
+          sudo docker-compose -f ./env/docker-compose.production.yml up --build -d
 
       - name: Delete unused Docker images
         run: |
           docker system prune -f
-
-      - name: Start production services
-        run: |
-          sudo docker-compose -f ./env/docker-compose.production.yml up --build -d
+  
