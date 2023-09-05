@@ -24,8 +24,6 @@ pub async fn get_user_token(
         .bind(user_uuid)
         .fetch_one(&ctx.detactive_db)
         .await
-        .unwrap()
-        .try_get("uuid")
         .map_err(|_| {
             error!("User {} not found.", user_uuid);
             DError::from("User not found.", StatusCode::NOT_FOUND)
