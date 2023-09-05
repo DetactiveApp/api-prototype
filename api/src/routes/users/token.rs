@@ -3,7 +3,6 @@ use chrono::Duration;
 use log::error;
 use reqwest::StatusCode;
 use serde::Serialize;
-use sqlx::Row;
 use uuid::Uuid;
 
 use crate::{

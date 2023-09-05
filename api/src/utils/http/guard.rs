@@ -6,7 +6,6 @@ use axum::{
 };
 use log::error;
 use reqwest::StatusCode;
-use sqlx::Row;
 
 use crate::{
     types::{ApiContext, DError, DUser},

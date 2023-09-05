@@ -19,7 +19,7 @@ pub async fn post_game_next_step(
     let user_uuid: Uuid = ctx.user.unwrap().uuid;
 
     let game_uuid = sqlx::query(
-        "SELECT uuid AS game_uuid FROM user_stories WHERE story_uuid = $1 AND user_uuid = $2;",
+        "SELECT uuid AS game_uuid FROM user_stories WHERE story_uuid = $1 AND user_uuid = $2 AND finished_at IS null AND deleted_at IS null;",
     )
     .bind(story_uuid)
     .bind(user_uuid)
