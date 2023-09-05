@@ -13,9 +13,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Delete unused Docker images
-        run: |
-          docker system prune -f
 
       - name: Install/Setup dependencies
         run: |
@@ -27,6 +24,11 @@ jobs:
           else
             echo "Web network already exists... Skipping Step"
           fi
+
+
+      - name: Delete unused Docker images
+        run: |
+          docker system prune -f
 
       - name: Start production services
         run: |
