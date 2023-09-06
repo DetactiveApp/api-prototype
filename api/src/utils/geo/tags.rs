@@ -7,6 +7,7 @@ use crate::types::DError;
 use super::latlon;
 
 // Uses the MapBox Tilequery API to reqeust POI's (or Tags).
+#[allow(dead_code)]
 pub async fn get_tags(lat: &f64, lon: &f64) -> Result<Vec<String>, DError> {
     let mapbox_token = &env::var("MAPBOX_TOKEN").expect("Mapbox access token not found.");
     let mut location_tags: Vec<String> = Vec::new();
