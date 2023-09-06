@@ -74,7 +74,7 @@ async fn finish_story(user_uuid: Uuid, ctx: ApiContext) -> Result<(), DError> {
 pub struct StepCard {
     title: String,
     description: String,
-    finished_at: NaiveDateTime,
+    finished_at: Option<NaiveDateTime>,
 }
 
 pub async fn get_stories_history(

@@ -164,14 +164,31 @@ Gets next step for the user in the current & active game. Optionally you can use
 ---
 ## GET /games/{story_uuid}/steps/history
 
-Gets a history of all played steps in current mission.
+Gets a history of all played steps + the current objective in present mission.
 
 ### Response Example:
 
 ```json
 [
   {
-    
+    "title": "story.museumheist.step.thrillingnews.title",
+    "description": "story.museumheist.step.thrillingnews.description",
+    "finished_at": "2023-09-06T18:47:21.825942"
+  },
+  {
+    "title": "story.museumheist.step.examinecrimescene.title",
+    "description": "story.museumheist.step.examinecrimescene.description",
+    "finished_at": "2023-09-06T18:47:24.925614"
+  },
+  {
+    "title": "story.museumheist.step.suspiciouscarnews.title",
+    "description": "story.museumheist.step.suspiciouscarnews.description",
+    "finished_at": "2023-09-06T18:47:29.230178"
+  },
+  {
+    "title": "story.museumheist.step.collectevidence.title",
+    "description": "story.museumheist.step.collectevidence.description",
+    "finished_at": null
   }
 ]
 ```
