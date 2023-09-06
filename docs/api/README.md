@@ -30,6 +30,7 @@ The token is valid for 30 minutes.
   "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxOWI5NWE1ZC1iZTRhLTQ4YmEtOGRkOC1hOTAwZTY1M2Q4MDMiLCJleHAiOjE2OTM3NDk5MDksImlhdCI6MTY5Mzc0ODEwOX0.9NG_1cjAJpNqzk9AV-HXrMmLYWN-k_D9GYfqDb4aHTc"
 }
 ```
+
 ---
 
 ## GET /stories?lat={}&lon={}
@@ -60,27 +61,26 @@ Gets information about story and game progress for given story uuid in the url. 
 ### Response Example:
 
 ```json
-  {
-    "story": {
-      "uuid": "4799b75f-50c8-4086-9b65-a12352165ca7",
-      "title": "Der Banküberfall",
-      "image": "https://avatars.githubusercontent.com/u/124081268",
-      "description": "Finde den Täter ...",
-      "distance": 2, // in meters
-      "duration": 20 // in minutes
+{
+  "story": {
+    "uuid": "4799b75f-50c8-4086-9b65-a12352165ca7",
+    "title": "Der Banküberfall",
+    "image": "https://avatars.githubusercontent.com/u/124081268",
+    "description": "Finde den Täter ...",
+    "distance": 2, // in meters
+    "duration": 20 // in minutes
+  },
+  "user_activities": [
+    {
+      "startedAt": "2023-09-03T15:04:54.366847",
+      "finishedAt": null
     },
-    "user_activities": [
-      {
-        "startedAt": "2023-09-03T15:04:54.366847",
-        "finishedAt": null
-      },
-      {
-        "startedAt": "2023-09-01T15:04:54.366847",
-        "finishedAt": "2023-09-02T15:04:54.366847"
-      }
-    ]
-  }
-
+    {
+      "startedAt": "2023-09-01T15:04:54.366847",
+      "finishedAt": "2023-09-02T15:04:54.366847"
+    }
+  ]
+}
 ```
 
 ---
@@ -90,6 +90,7 @@ Gets information about story and game progress for given story uuid in the url. 
 Registers a new game to play for the user at given story_uuid in the url and using the users current position for the body payload.
 
 ### Body Example:
+
 ```json
 {
   "lat": 52.51678368791737,
@@ -131,6 +132,7 @@ Registers a new game to play for the user at given story_uuid in the url and usi
 Gets next step for the user in the current & active game. Optionally you can use the "to" entry to decide what next step to use, if there are multiple available.
 
 ### Body Example:
+
 ```json
 {
   "lat": 52.51678368791737,
@@ -139,6 +141,7 @@ Gets next step for the user in the current & active game. Optionally you can use
 ```
 
 ### Response Example:
+
 ```json
 {
   "uuid": "7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f3",
@@ -157,8 +160,23 @@ Gets next step for the user in the current & active game. Optionally you can use
   "waypoint": null
 }
 ```
+
+---
+## GET /games/{story_uuid}/steps/history
+
+Gets a history of all played steps in current mission.
+
+### Response Example:
+
+```json
+[
+  {
+    
+  }
+]
+```
 ---
 
 ## DELETE /games/{story_uuid}/delete
 
-Closes the active game. Returns an 202 when successful. 
+Closes the active game. Returns an 202 when successful.
