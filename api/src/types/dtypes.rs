@@ -23,7 +23,7 @@ pub struct DCoord {
 #[derive(Serialize, Deserialize)]
 pub struct DStory {
     pub uuid: Uuid,
-    pub image: String,
+    pub image: Option<String>,
     pub title: String,
     pub description: String,
     pub distance: u16,
@@ -44,7 +44,7 @@ impl DStory {
                 )
             })?;
 
-        let image_url = contentful::url(row.get("asset_id")).await?.unwrap();
+        let image_url = contentful::url(row.get("asset_id")).await?;
 
         Ok(DStory {
             uuid,

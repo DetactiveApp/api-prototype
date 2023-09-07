@@ -6,7 +6,10 @@ use serde::{Deserialize, Serialize};
 use sqlx::Row;
 use uuid::Uuid;
 
-use crate::types::{ApiContext, DError, DStory};
+use crate::{
+    types::{ApiContext, DError, DStory},
+    utils::contentful,
+};
 
 pub async fn stories_router() -> Router {
     Router::new()
@@ -55,7 +58,8 @@ pub async fn get_story(
 pub async fn get_stories(
     Extension(ctx): Extension<ApiContext>,
 ) -> Result<Json<Vec<DStory>>, DError> {
-    let stories = sqlx::query(
+    let mut stories: Vec<DStory> = vec![];
+    let rows = sqlx::query(
         "SELECT * FROM stories
         WHERE active = true;",
     )
@@ -66,17 +70,18 @@ pub async fn get_stories(
             "Could not receive stories.",
             StatusCode::INTERNAL_SERVER_ERROR,
         )
-    })?
-    .iter()
-    .map(|row| DStory {
-        uuid: row.get("uuid"),
-        image: String::new(),
-        title: row.get("title"),
-        description: row.get("description"),
-        distance: rand::thread_rng().gen_range(800..5000),
-        duration: rand::thread_rng().gen_range(5..40),
-    })
-    .collect();
+    })?;
+
+    for row in rows {
+        stories.push(DStory {
+            uuid: row.get("uuid"),
+            image: contentful::url(row.get("asset_id")).await?,
+            title: row.get("title"),
+            description: row.get("description"),
+            distance: rand::thread_rng().gen_range(800..5000),
+            duration: rand::thread_rng().gen_range(5..40),
+        })
+    }
 
     Ok(Json(stories))
 }
