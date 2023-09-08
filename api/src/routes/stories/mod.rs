@@ -25,6 +25,7 @@ pub struct UserActivity {
 }
 
 #[derive(Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Response {
     story: DStory,
     user_activities: Vec<UserActivity>,
