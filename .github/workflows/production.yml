@@ -1,8 +1,6 @@
 name: API Server Release Build
 
 on:
-  push:
-    branches: ["release-0.0.1"]
   pull_request:
     branches: ["release-0.0.1"]
 
