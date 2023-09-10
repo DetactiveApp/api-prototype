@@ -4,7 +4,7 @@ use rand::{seq::SliceRandom, Rng};
 use reqwest::{self, StatusCode};
 use std::{collections::HashMap, env};
 
-const POI_SEARCH_RADIUS_M: f64 = 2000.0;
+const POI_SEARCH_RADIUS_M: f64 = 1000.0;
 const FALLBACK_RANDOM_RADIUS_M: f64 = 10.0;
 
 async fn fetch_features(
@@ -85,7 +85,7 @@ pub async fn near(
     let mapbox_token = &env::var("MAPBOX_TOKEN").expect("Mapbox access token not found.");
     let tag = tag.unwrap();
     let mut total_features: HashMap<String, DCoord> = HashMap::new();
-    let quad_positions: [[f64; 2]; 4] = quad(lat, lon, POI_SEARCH_RADIUS_M);
+    let quad_positions: [[f64; 2]; 4] = quad(lat, lon, POI_SEARCH_RADIUS_M * 0.5);
 
     for position in quad_positions {
         let features: HashMap<String, DCoord> =
