@@ -1,9 +1,10 @@
-use super::latlon::{distance_to_latitude, distance_to_longitude};
+use super::latlon::{distance_to_latitude, distance_to_longitude, quad};
 use crate::types::{DCoord, DError};
 use rand::{seq::SliceRandom, Rng};
 use reqwest::{self, StatusCode};
 use std::{collections::HashMap, env};
 
+const POI_SEARCH_RADIUS_M: f64 = 2000.0;
 const FALLBACK_RANDOM_RADIUS_M: f64 = 10.0;
 
 async fn fetch_features(
@@ -83,14 +84,22 @@ pub async fn near(
 
     let mapbox_token = &env::var("MAPBOX_TOKEN").expect("Mapbox access token not found.");
     let tag = tag.unwrap();
-    let features = fetch_features(lat, lon, mapbox_token).await?;
+    let mut total_features: HashMap<String, DCoord> = HashMap::new();
+    let quad_positions: [[f64; 2]; 4] = quad(lat, lon, POI_SEARCH_RADIUS_M);
 
-    if tag != "random" && features.contains_key(&tag) {
-        return Ok(features.get(&tag).cloned());
+    for position in quad_positions {
+        let features: HashMap<String, DCoord> =
+            fetch_features(position[0], position[1], mapbox_token).await?;
+
+        if tag != "random" && features.contains_key(&tag) {
+            return Ok(features.get(&tag).cloned());
+        }
+
+        total_features.extend(features);
     }
 
     let mut rng = rand::thread_rng();
-    let fallback_coord = features
+    let fallback_coord = total_features
         .values()
         .map(|value| value.to_owned())
         .collect::<Vec<DCoord>>()
