@@ -61,7 +61,7 @@ pub async fn post_game_start(
     .bind(user_uuid)
     .fetch_one(&ctx.detactive_db)
     .await
-    .map_err(|_| DError::from("Failed to start story.", StatusCode::INTERNAL_SERVER_ERROR))?
+    .map_err(|_| DError::from("Story not found.", StatusCode::NOT_FOUND))?
     .get("uuid");
 
     // Receive first step

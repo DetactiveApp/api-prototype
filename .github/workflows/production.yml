@@ -13,7 +13,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-
       - name: Install/Setup dependencies
         run: |
           sudo apt-get update
@@ -24,12 +23,11 @@ jobs:
           else
             echo "Web network already exists... Skipping Step"
           fi
-          
+
       - name: Start production services
         run: |
           sudo docker-compose -f ./env/docker-compose.production.yml up --build -d
 
       - name: Delete unused Docker images
         run: |
-          docker system prune -f
-  
+          docker system prune -f --filter "until=24h"
