@@ -4,8 +4,11 @@ use rand::{seq::SliceRandom, Rng};
 use reqwest::{self, StatusCode};
 use std::{collections::HashMap, env};
 
-const POI_SEARCH_RADIUS_M: f64 = 1000.0;
+const POI_SEARCH_RADIUS_M: f64 = 10.0;
+// DEFAULT 1000.0
+
 const FALLBACK_RANDOM_RADIUS_M: f64 = 10.0;
+// DEFAULT 10.0
 
 async fn fetch_features(
     lat: f64,
