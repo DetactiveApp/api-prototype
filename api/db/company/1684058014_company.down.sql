@@ -9,4 +9,4 @@ DROP CONSTRAINT fk_sticker;
 **----------------- REMOVE TABLES ----------------**
 ***************************************************/
 
-DROP TABLE stickers, sticker_hits, staff;
+DROP TABLE stickers, sticker_hits;
