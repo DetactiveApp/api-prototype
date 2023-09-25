@@ -15,6 +15,7 @@ COPY ./db ./db
 RUN rm ./target/release/deps/detactive_api*
 
 RUN cargo install sqlx-cli
+RUN cargo clean
 RUN sqlx migrate build-script
 
 RUN cargo build --release
