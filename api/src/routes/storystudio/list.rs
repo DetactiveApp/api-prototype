@@ -20,7 +20,8 @@ pub async fn get_story_list(
         sqlx::query("SELECT title, uuid FROM stories;")
             .fetch_all(&ctx.detactive_db)
             .await
-            .map_err(|_| {
+            .map_err(|err| {
+                log::error!("{}", err);
                 DError::from(
                     "Failed to fetch stories.",
                     StatusCode::INTERNAL_SERVER_ERROR,
