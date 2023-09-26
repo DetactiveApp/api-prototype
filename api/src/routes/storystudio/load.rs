@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 use sqlx::Row;
 use uuid::Uuid;
 
-use crate::types::{ApiContext, DError, DWaypoint, StudioState, StudioStep, StudioStory};
+use crate::types::{ApiContext, DError, StudioState, StudioStep, StudioStory, StudioWaypoint};
 
 #[derive(Serialize, Deserialize)]
 pub struct Body {
@@ -43,17 +43,30 @@ pub async fn get_load_story(
         .bind(body.uuid)
         .fetch_all(&ctx.detactive_db)
         .await
-        .map(|row| {
+        .map(|rows| {
             let story: StudioStory = StudioStory {
-                uuid: row[0].get("story_uuid"),
-                title: row[0].get("story_title"),
-                description: row[0].get("story_description"),
-                active: row[0].get("story_active"),
-                asset_id: row[0].get("story_asset_id"),
+                uuid: rows[0].get("story_uuid"),
+                title: rows[0].get("story_title"),
+                description: rows[0].get("story_description"),
+                active: rows[0].get("story_active"),
+                asset_id: rows[0].get("story_asset_id"),
             };
 
-            let waypoints: Vec<DWaypoint> = vec![];
-            let steps: Vec<StudioStep> = vec![];
+            let steps: Vec<StudioStep> = rows
+                .iter()
+                .map(|row| StudioStep {
+                    uuid: row.get("step_uuid"),
+                    title: row.get("step_title"),
+                    description: row.get("step_description"),
+                    media_type: row.get("step_media_type"),
+                    asset_id: row.get("step_asset_id"),
+                    waypoint: Some(StudioWaypoint {
+                        uuid: row.get("waypoint_uuid"),
+                        place_type: row.get("waypoint_place_type"),
+                        place_override: row.get("waypoint_place_override"),
+                    }),
+                })
+                .collect();
 
             StudioState {
                 story: story,
