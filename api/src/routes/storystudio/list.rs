@@ -17,7 +17,7 @@ pub async fn get_story_list(
     Extension(ctx): Extension<ApiContext>,
 ) -> Result<Json<Vec<StoryListElement>>, DError> {
     Ok(Json(
-        sqlx::query("SELECT (title, uuid) FROM stories;")
+        sqlx::query("SELECT title, uuid FROM stories;")
             .fetch_all(&ctx.detactive_db)
             .await
             .map_err(|_| {
