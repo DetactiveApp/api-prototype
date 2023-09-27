@@ -1,4 +1,5 @@
 use axum::{Extension, Json};
+use log::error;
 use reqwest::StatusCode;
 use serde::{Deserialize, Serialize};
 use sqlx::Row;
@@ -38,7 +39,7 @@ pub async fn get_load_story(
             FROM stories
             LEFT JOIN steps ON steps.story_uuid = stories.uuid
             LEFT JOIN waypoints ON waypoints.uuid = steps.waypoint_uuid
-            WHERE uuid = $1;",
+            WHERE stories.uuid = $1;",
         )
         .bind(body.uuid)
         .fetch_all(&ctx.detactive_db)
@@ -60,11 +61,25 @@ pub async fn get_load_story(
                     description: row.get("step_description"),
                     media_type: row.get("step_media_type"),
                     asset_id: row.get("step_asset_id"),
-                    waypoint: Some(StudioWaypoint {
-                        uuid: row.get("waypoint_uuid"),
-                        place_type: row.get("waypoint_place_type"),
-                        place_override: row.get("waypoint_place_override"),
-                    }),
+                    waypoint: row
+                        .try_get::<Uuid, _>("waypoint_uuid")
+                        .ok()
+                        .and_then(|uuid| {
+                            row.try_get::<String, _>("waypoint_place_type")
+                                .ok()
+                                .and_then(|place_type| {
+                                    row.try_get::<bool, _>("waypoint_place_override").ok().map(
+                                        |place_override| {
+                                            Some(StudioWaypoint {
+                                                uuid,
+                                                place_type,
+                                                place_override,
+                                            })
+                                        },
+                                    )
+                                })
+                        })
+                        .unwrap_or(None),
                 })
                 .collect();
 
@@ -73,7 +88,8 @@ pub async fn get_load_story(
                 steps: steps,
             }
         })
-        .map_err(|_| {
+        .map_err(|err| {
+            error!("{}", err);
             DError::from(
                 "Failed to load story from database.",
                 StatusCode::INTERNAL_SERVER_ERROR,

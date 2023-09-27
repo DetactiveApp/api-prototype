@@ -16,7 +16,7 @@ pub struct StudioStory {
     pub title: String,
     pub description: String,
     pub active: bool,
-    pub asset_id: String,
+    pub asset_id: Option<String>,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -25,8 +25,8 @@ pub struct StudioStep {
     pub uuid: Uuid,
     pub title: String,
     pub description: String,
-    pub media_type: MediaType,
-    pub asset_id: String,
+    pub media_type: Option<MediaType>,
+    pub asset_id: Option<String>,
     pub waypoint: Option<StudioWaypoint>,
 }
 
