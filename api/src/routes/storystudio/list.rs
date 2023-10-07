@@ -13,7 +13,7 @@ pub struct StoryListElement {
     uuid: Uuid,
 }
 
-pub async fn get_story_list(
+pub async fn list(
     Extension(ctx): Extension<ApiContext>,
 ) -> Result<Json<Vec<StoryListElement>>, DError> {
     Ok(Json(
