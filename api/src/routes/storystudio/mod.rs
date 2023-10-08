@@ -9,11 +9,12 @@ mod story;
 
 pub async fn storystudio_router() -> Router {
     Router::new()
-        .route("/list", get(list::list))
+        .route("/list/stories", get(list::stories))
+        .route("/list/stories/:uuid/steps", get(list::steps))
         // Story
         .route("/stories/save", post(story::save))
         .route("/stories/:uuid/load", get(story::load))
         // Step
-        .route("/stories/:uuid/steps/save", post(step::save))
-        .route("/stories/:uuid/steps/load", get(step::load))
+        .route("/steps/save", post(step::save))
+        .route("/steps/:uuid/load", get(step::load))
 }

@@ -1,4 +1,4 @@
-use axum::{extract::Path, Extension, Json};
+use axum::{Extension, Json};
 use reqwest::StatusCode;
 use sqlx::Row;
 use uuid::Uuid;
@@ -7,7 +7,6 @@ use crate::types::{ApiContext, DError, StudioStep};
 
 pub async fn save(
     Extension(ctx): Extension<ApiContext>,
-    Path(story_uuid): Path<Uuid>,
     Json(mut step): Json<StudioStep>,
 ) -> Result<Json<StudioStep>, DError> {
     if step.uuid.is_some() {
@@ -91,13 +90,12 @@ pub async fn save(
         }
 
         // UPDATE STEP
-        sqlx::query("UPDATE steps SET waypoint_uuid = $1, asset_id = $2, description = $3, media_type = $4, title = $5 WHERE story_uuid = $6 AND uuid = $7;")
+        sqlx::query("UPDATE steps SET waypoint_uuid = $1, asset_id = $2, description = $3, media_type = $4, title = $5 WHERE uuid = $6;")
             .bind(&step.waypoint.as_ref().and_then(|w| w.uuid))
             .bind(&step.asset_id)
             .bind(&step.description)
             .bind(&step.media_type)
             .bind(&step.title)
-            .bind(&story_uuid)
             .bind(&step.uuid)
             .execute(&ctx.detactive_db)
             .await
@@ -107,8 +105,7 @@ pub async fn save(
     }
 
     // NEW STEP
-    let step_uuid: Uuid = sqlx::query("INSERT INTO steps (uuid, story_uuid, waypoint_uuid, asset_id, description, media_type, title) VALUES (DEFAULT, $1, $2, $3, $4, $5, $6) RETURNING uuid;")
-        .bind(&story_uuid)
+    let step_uuid: Uuid = sqlx::query("INSERT INTO steps (uuid, waypoint_uuid, asset_id, description, media_type, title) VALUES (DEFAULT, $1, $2, $3, $4, $5) RETURNING uuid;")
         .bind(&step.waypoint.as_ref().and_then(|w| w.uuid))
         .bind(&step.asset_id)
         .bind(&step.description)
