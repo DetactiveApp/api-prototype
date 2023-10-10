@@ -22,6 +22,7 @@ pub struct StudioStory {
 #[derive(Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct StudioStep {
+    pub story_uuid: Uuid,
     pub uuid: Option<Uuid>,
     pub title: String,
     pub description: String,

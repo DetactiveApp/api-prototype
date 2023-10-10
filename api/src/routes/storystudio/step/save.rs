@@ -11,13 +11,14 @@ pub async fn save(
 ) -> Result<Json<StudioStep>, DError> {
     if step.uuid.is_some() {
         if let Some(waypoint) = &mut step.waypoint {
-            if waypoint.uuid.is_some() {
+            if let Some(waypoint_uuid) = waypoint.uuid {
                 // UPDATE WAYPOINT
                 sqlx::query(
                     "UPDATE waypoints SET place_type = $1, place_override = $2 WHERE uuid = $3;",
                 )
                 .bind(&waypoint.place_type)
                 .bind(&waypoint.place_override)
+                .bind(waypoint_uuid)
                 .execute(&ctx.detactive_db)
                 .await
                 .map_err(|err| DError::from(&err.to_string(), StatusCode::INTERNAL_SERVER_ERROR))?;
@@ -62,19 +63,6 @@ pub async fn save(
             }
         }
 
-        if let Some(waypoint) = &mut step.waypoint {
-            // NEW WAYPOINT
-            let waypoint_uuid: Uuid = sqlx::query("INSERT INTO waypoints (uuid, place_type, place_override) VALUES (DEFAULT, $1, $2) RETURNING uuid;")
-                .bind(&waypoint.place_type)
-                .bind(&waypoint.place_override)
-                .fetch_one(&ctx.detactive_db)
-                .await
-                .map_err(|err| DError::from(&err.to_string(), StatusCode::INTERNAL_SERVER_ERROR))?
-                .get("uuid");
-
-            waypoint.uuid = Some(waypoint_uuid);
-        }
-
         for decision in &mut step.decisions {
             // NEW DECISION
             let decision_uuid: Uuid = sqlx::query("INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) VALUES (DEFAULT, $1, $2, $3) RETURNING uuid;")
@@ -104,9 +92,22 @@ pub async fn save(
         return Ok(Json(step));
     }
 
+    let mut waypoint_uuid: Option<Uuid> = None;
+    if let Some(waypoint) = &mut step.waypoint {
+        // NEW WAYPOINT
+        waypoint_uuid = sqlx::query("INSERT INTO waypoints (uuid, place_type, place_override) VALUES (DEFAULT, $1, $2) RETURNING uuid;")
+            .bind(&waypoint.place_type)
+            .bind(&waypoint.place_override)
+            .fetch_one(&ctx.detactive_db)
+            .await
+            .map_err(|err| DError::from(&err.to_string(), StatusCode::INTERNAL_SERVER_ERROR))?
+            .get("uuid");
+    }
+
     // NEW STEP
-    let step_uuid: Uuid = sqlx::query("INSERT INTO steps (uuid, waypoint_uuid, asset_id, description, media_type, title) VALUES (DEFAULT, $1, $2, $3, $4, $5) RETURNING uuid;")
-        .bind(&step.waypoint.as_ref().and_then(|w| w.uuid))
+    let step_uuid: Uuid = sqlx::query("INSERT INTO steps (uuid, story_uuid, waypoint_uuid, asset_id, description, media_type, title) VALUES (DEFAULT, $1, $2, $3, $4, $5, $6) RETURNING uuid;")
+        .bind(&step.story_uuid)
+        .bind(waypoint_uuid)
         .bind(&step.asset_id)
         .bind(&step.description)
         .bind(&step.media_type)

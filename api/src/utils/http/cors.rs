@@ -11,7 +11,7 @@ pub fn cors() -> CorsLayer {
             header::CONTENT_LANGUAGE,
             header::CONTENT_TYPE,
         ])
-        .allow_methods(vec![Method::POST, Method::GET, Method::PUT, Method::DELETE])
+        .allow_methods(vec![Method::POST, Method::GET, Method::DELETE])
         .allow_origin(Any)
         .max_age(Duration::from_secs(60 * 60));
 }

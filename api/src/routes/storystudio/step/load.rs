@@ -12,6 +12,7 @@ pub async fn load(
     let rows = sqlx::query(
         "SELECT
         steps.uuid as step_uuid,
+        steps.story_uuid as story_uuid,
         steps.title as step_title,
         steps.description as step_description,
         steps.media_type as step_media_type,
@@ -48,6 +49,7 @@ pub async fn load(
 
     let decisions: Vec<StudioDecision> = rows
         .iter()
+        .filter(|row| row.try_get::<Uuid, _>("decision_uuid").is_ok())
         .map(|row| StudioDecision {
             uuid: row.get("decision_uuid"),
             title: row.get("decision_title"),
@@ -57,6 +59,7 @@ pub async fn load(
         .collect();
 
     Ok(Json(StudioStep {
+        story_uuid: rows[0].get("story_uuid"),
         uuid: rows[0].get("step_uuid"),
         title: rows[0].get("step_title"),
         description: rows[0].get("step_description"),
