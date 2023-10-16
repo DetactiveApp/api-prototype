@@ -45,6 +45,7 @@ pub async fn save(
                     .bind(&decision.step_input_uuid)
                     .bind(&decision.step_output_uuid)
                     .bind(&decision.title)
+                    .bind(&decision.uuid)
                     .execute(&ctx.detactive_db)
                     .await
                     .map_err(|err| DError::from(&err.to_string(), StatusCode::INTERNAL_SERVER_ERROR))?;
@@ -61,20 +62,6 @@ pub async fn save(
 
                 decision.uuid = Some(decision_uuid);
             }
-        }
-
-        for decision in &mut step.decisions {
-            // NEW DECISION
-            let decision_uuid: Uuid = sqlx::query("INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) VALUES (DEFAULT, $1, $2, $3) RETURNING uuid;")
-                .bind(&decision.step_input_uuid)
-                .bind(&decision.step_output_uuid)
-                .bind(&decision.title)
-                .fetch_one(&ctx.detactive_db)
-                .await
-                .map_err(|err| DError::from(&err.to_string(), StatusCode::INTERNAL_SERVER_ERROR))?
-                .get("uuid");
-
-            decision.uuid = Some(decision_uuid);
         }
 
         // UPDATE STEP
