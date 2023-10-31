@@ -103,14 +103,6 @@ VALUES (
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
 VALUES (
-    /* uuid */              '46a2a2e2-729d-11ee-b962-0242ac120002', 
-    /* step_input_uuid */   NULL, 
-    /* step_output_uuid */  '1c253264-729d-11ee-b962-0242ac120002', 
-    /* title */             'Alles klar.'
-);
-
-INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
-VALUES (
     /* uuid */              '5bd82344-729d-11ee-b962-0242ac120002', 
     /* step_input_uuid */   '1c253264-729d-11ee-b962-0242ac120002', 
     /* step_output_uuid */  '27180a02-729d-11ee-b962-0242ac120002', 
@@ -135,22 +127,6 @@ VALUES (
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
 VALUES (
-    /* uuid */              '68eb98c2-729d-11ee-b962-0242ac120002', 
-    /* step_input_uuid */   '27180a02-729d-11ee-b962-0242ac120002', 
-    /* step_output_uuid */  NULL, 
-    /* title */             'Alles klar.'
-);
-
-INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
-VALUES (
-    /* uuid */              '6c9486b4-729d-11ee-b962-0242ac120002', 
-    /* step_input_uuid */   '2c091344-729d-11ee-b962-0242ac120002', 
-    /* step_output_uuid */  NULL, 
-    /* title */             'Alles klar.'
-);
-
-INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
-VALUES (
     /* uuid */              '70b92f06-729d-11ee-b962-0242ac120002', 
     /* step_input_uuid */   '32c20010-729d-11ee-b962-0242ac120002', 
     /* step_output_uuid */  '398704d6-729d-11ee-b962-0242ac120002', 
@@ -162,13 +138,5 @@ VALUES (
     /* uuid */              '74b1195c-729d-11ee-b962-0242ac120002', 
     /* step_input_uuid */   '398704d6-729d-11ee-b962-0242ac120002', 
     /* step_output_uuid */  '3ff05624-729d-11ee-b962-0242ac120002', 
-    /* title */             'Alles klar.'
-);
-
-INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
-VALUES (
-    /* uuid */              '7ae1df0a-729d-11ee-b962-0242ac120002', 
-    /* step_input_uuid */   '3ff05624-729d-11ee-b962-0242ac120002', 
-    /* step_output_uuid */  NULL, 
     /* title */             'Alles klar.'
 );

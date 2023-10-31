@@ -66,10 +66,14 @@ pub async fn post_game_start(
 
     // Receive first step
     let step_uuid: Uuid = sqlx::query(
-        "SELECT steps.uuid FROM steps
-        JOIN decisions ON decisions.step_output_uuid = steps.uuid
-        WHERE steps.story_uuid = $1
-        AND decisions.step_input_uuid IS null;",
+        "SELECT steps.uuid
+        FROM steps
+        WHERE steps.uuid NOT IN (
+            SELECT DISTINCT step_output_uuid
+            FROM decisions
+            WHERE step_output_uuid IS NOT NULL
+        ) AND steps.story_uuid = $1
+        LIMIT 1;",
     )
     .bind(story_uuid)
     .fetch_one(&ctx.detactive_db)
