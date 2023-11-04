@@ -9,10 +9,11 @@ pub async fn remove(
     Path(uuid): Path<Uuid>,
 ) -> Result<StatusCode, DError> {
     sqlx::query(
-        "DELETE FROM waypoints WHERE waypoints.uuid NOT IN (
+        "DELETE FROM waypoints WHERE waypoints.uuid IN (
         SELECT steps.waypoint_uuid FROM steps WHERE steps.story_uuid = $1
     );",
     )
+    .bind(uuid)
     .execute(&ctx.detactive_db)
     .await
     .map_err(|err| DError::from(&err.to_string(), StatusCode::INTERNAL_SERVER_ERROR))?;
