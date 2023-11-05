@@ -37,15 +37,14 @@ pub async fn load(
     .await
     .map_err(|err| DError::from(&err.to_string(), StatusCode::INTERNAL_SERVER_ERROR))?;
 
-    let waypoint: Option<StudioWaypoint> = if let Some(waypoint) = rows[0].get("waypoint_uuid") {
-        Some(StudioWaypoint {
-            uuid: waypoint,
-            place_type: rows[0].get("waypoint_place_type"),
-            place_override: rows[0].get("waypoint_place_override"),
-        })
-    } else {
-        None
-    };
+    let waypoint: Option<StudioWaypoint> =
+        rows[0]
+            .get::<Option<Uuid>, &str>("waypoint_uuid")
+            .map(|_| StudioWaypoint {
+                uuid: rows[0].get("waypoint_uuid"),
+                place_type: rows[0].get("waypoint_place_type"),
+                place_override: rows[0].get("waypoint_place_override"),
+            });
 
     let decisions: Vec<StudioDecision> = rows
         .iter()

@@ -9,7 +9,7 @@ pub async fn load(
     Path(uuid): Path<Uuid>,
 ) -> Result<Json<StudioStory>, DError> {
     let row = sqlx::query("SELECT * FROM stories WHERE uuid = $1;")
-        .bind(&uuid)
+        .bind(uuid)
         .fetch_one(&ctx.detactive_db)
         .await
         .map_err(|err| {

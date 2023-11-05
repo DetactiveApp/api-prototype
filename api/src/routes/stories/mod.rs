@@ -51,8 +51,8 @@ pub async fn get_story(
         .collect();
 
     Ok(Json(Response {
-        story: story,
-        user_activities: user_activities,
+        story,
+        user_activities,
     }))
 }
 

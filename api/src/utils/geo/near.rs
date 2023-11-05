@@ -53,17 +53,15 @@ async fn fetch_features(
                 .get("geometry")
                 .and_then(|geometry| geometry.get("coordinates"))
                 .and_then(|coordinates| coordinates.as_array())
-                .and_then(|coordinates| {
-                    Some(DCoord {
-                        lat: coordinates
-                            .get(1)
-                            .and_then(|lat| lat.as_f64())
-                            .unwrap_or_default(),
-                        lon: coordinates
-                            .get(0)
-                            .and_then(|lon| lon.as_f64())
-                            .unwrap_or_default(),
-                    })
+                .map(|coordinates| DCoord {
+                    lat: coordinates
+                        .get(1)
+                        .and_then(|lat| lat.as_f64())
+                        .unwrap_or_default(),
+                    lon: coordinates
+                        .get(0)
+                        .and_then(|lon| lon.as_f64())
+                        .unwrap_or_default(),
                 });
 
             if let Some(coord) = feature_coordinates {
@@ -115,7 +113,7 @@ pub async fn near(
             let lon: f64 = lon
                 + (distance_to_longitude(FALLBACK_RANDOM_RADIUS_M, lat)
                     * if rng.gen_bool(0.5) { -1.0 } else { 1.0 });
-            DCoord { lat: lat, lon: lon }
+            DCoord { lat, lon }
         });
 
     Ok(Some(fallback_coord))

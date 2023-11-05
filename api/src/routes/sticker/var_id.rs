@@ -15,8 +15,8 @@ pub async fn request(Path(path): Path<String>, Extension(ctx): Extension<ApiCont
                 .execute(&ctx.company_db)
                 .await
                 .unwrap();
-            return sticker.get("redirect_url");
+            sticker.get("redirect_url")
         }
-        Err(_) => return String::from("https://www.detactive.de/"),
-    };
+        Err(_) => String::from("https://www.detactive.de/"),
+    }
 }

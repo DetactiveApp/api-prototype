@@ -12,11 +12,11 @@ pub async fn save(
     if story.uuid.is_some() {
         // UPDATE STORY
         sqlx::query("UPDATE stories SET active = $1, asset_id = $2, description = $3, title = $4 WHERE uuid = $5;")
-        .bind(&story.active)
+        .bind(story.active)
         .bind(&story.asset_id)
         .bind(&story.description)
         .bind(&story.title)
-        .bind(&story.uuid)
+        .bind(story.uuid)
         .execute(&ctx.detactive_db)
         .await
         .map_err(|err| DError::from(&err.to_string(), StatusCode::INTERNAL_SERVER_ERROR))?;
@@ -26,7 +26,7 @@ pub async fn save(
 
     // NEW STORY
     let story_uuid = sqlx::query("INSERT INTO stories (uuid, active, asset_id, description, title) VALUES (DEFAULT, $1, $2, $3, $4) RETURNING uuid;")
-    .bind(&story.active)
+    .bind(story.active)
     .bind(&story.asset_id)
     .bind(&story.description)
     .bind(&story.title)

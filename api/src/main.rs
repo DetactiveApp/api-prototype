@@ -11,7 +11,7 @@ use crate::{
 use axum::{routing::get, Router};
 
 async fn root() -> String {
-    return format!("Detactive API v{}", env!("CARGO_PKG_VERSION"));
+    format!("Detactive API v{}", env!("CARGO_PKG_VERSION"))
 }
 
 #[tokio::main]

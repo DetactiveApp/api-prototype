@@ -4,5 +4,5 @@ mod var_id;
 use var_id::request;
 
 pub async fn sticker_router() -> Router {
-    return Router::new().route("/:id", get(request));
+    Router::new().route("/:id", get(request))
 }

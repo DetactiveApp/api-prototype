@@ -3,7 +3,7 @@ use std::time::Duration;
 use tower_http::cors::{Any, CorsLayer};
 
 pub fn cors() -> CorsLayer {
-    return CorsLayer::new()
+    CorsLayer::new()
         .allow_headers(vec![
             header::ACCEPT,
             header::ACCEPT_LANGUAGE,
@@ -13,5 +13,5 @@ pub fn cors() -> CorsLayer {
         ])
         .allow_methods(vec![Method::POST, Method::GET, Method::DELETE])
         .allow_origin(Any)
-        .max_age(Duration::from_secs(60 * 60));
+        .max_age(Duration::from_secs(60 * 60))
 }

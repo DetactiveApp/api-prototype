@@ -14,8 +14,8 @@ pub async fn get_tags(lat: &f64, lon: &f64) -> Result<Vec<String>, DError> {
 
     // Filters tags out of the requests for each quad coordinates
     for coord in latlon::quad(*lat, *lon, 1000.0).iter() {
+        let lat: &f64 = coord.first().unwrap();
         let lon: &f64 = coord.get(1).unwrap();
-        let lat: &f64 = coord.get(0).unwrap();
 
         // MapBox TileQuery API
         let url = format!(

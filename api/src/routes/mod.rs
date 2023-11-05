@@ -29,7 +29,7 @@ async fn error() -> DError {
 }
 
 pub async fn api() -> Router {
-    return Router::new()
+    Router::new()
         .nest("/games", games_router().await)
         .nest("/stories", stories_router().await)
         .route_layer(middleware::from_fn(guard))
@@ -38,5 +38,5 @@ pub async fn api() -> Router {
         .nest("/sticker", sticker_router().await)
         .route("/moai", get(moai))
         .route("/error", get(error))
-        .layer(AddExtensionLayer::new(ApiContext::new().await));
+        .layer(AddExtensionLayer::new(ApiContext::new().await))
 }
