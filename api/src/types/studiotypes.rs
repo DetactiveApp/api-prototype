@@ -32,7 +32,7 @@ pub struct StudioStep {
     pub decisions: Vec<StudioDecision>,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct StudioWaypoint {
     pub uuid: Option<Uuid>,

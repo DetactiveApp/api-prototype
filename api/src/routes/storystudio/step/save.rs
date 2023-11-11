@@ -10,6 +10,7 @@ pub async fn save(
     Json(mut step): Json<StudioStep>,
 ) -> Result<Json<StudioStep>, DError> {
     let mut step_waypoint_uuid: Option<Uuid> = None;
+    println!("{:?}", step.waypoint);
     if let Some(waypoint) = &mut step.waypoint {
         if let Some(waypoint_uuid) = waypoint.uuid {
             // UPDATE WAYPOINT
@@ -24,7 +25,6 @@ pub async fn save(
             .map_err(|err| DError::from(&err.to_string(), StatusCode::INTERNAL_SERVER_ERROR))?;
 
             step_waypoint_uuid = Some(waypoint_uuid);
-            println!("Update WP: {:?}", step_waypoint_uuid);
         } else {
             // NEW WAYPOINT
             let waypoint_uuid: Uuid = sqlx::query(
@@ -39,7 +39,6 @@ pub async fn save(
 
             waypoint.uuid = Some(waypoint_uuid);
             step_waypoint_uuid = Some(waypoint_uuid);
-            println!("New WP: {:?}", step_waypoint_uuid);
         }
     }
 
