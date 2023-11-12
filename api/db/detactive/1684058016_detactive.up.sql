@@ -16,8 +16,8 @@ CREATE TYPE MEDIATYPE AS ENUM ('audio', 'image', 'video');
 
 CREATE TABLE decisions (
   uuid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-  step_input_uuid UUID,
-  step_output_uuid UUID,
+  step_input_uuid UUID NOT NULL,
+  step_output_uuid UUID NOT NULL,
   title VARCHAR(120) NOT NULL
 );
 

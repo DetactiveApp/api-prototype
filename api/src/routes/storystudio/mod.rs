@@ -1,14 +1,22 @@
 use axum::{
-    routing::{get, post},
+    routing::{delete, get, post},
     Router,
 };
 
 mod list;
-mod load;
-mod save;
+mod step;
+mod story;
 
 pub async fn storystudio_router() -> Router {
     Router::new()
-        .route("/list", get(list::get_story_list))
-        .route("/load", post(load::get_load_story))
+        // List
+        .route("/list/stories", get(list::stories))
+        .route("/list/stories/:uuid/steps", get(list::steps))
+        // Story
+        .route("/stories/save", post(story::save))
+        .route("/stories/:uuid/load", get(story::load))
+        .route("/stories/:uuid/remove", delete(story::remove))
+        // Step
+        .route("/steps/save", post(step::save))
+        .route("/steps/:uuid/load", get(step::load))
 }

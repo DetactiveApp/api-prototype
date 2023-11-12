@@ -217,10 +217,10 @@ impl DStep {
             uuid: step_uuid,
             description: rows[0].get("step_description"),
             media_type: rows[0].get("step_media_type"),
-            src: src,
+            src,
             title: rows[0].get("step_title"),
             decisions,
-            waypoint: waypoint,
+            waypoint,
         };
 
         // Open new step at user story steps

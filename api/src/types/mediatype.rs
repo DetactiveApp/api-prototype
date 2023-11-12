@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 #[sqlx(type_name = "MEDIATYPE")]
 #[sqlx(rename_all = "lowercase")]
 pub enum MediaType {
-    AUDIO,
-    IMAGE,
-    VIDEO,
+    Audio,
+    Image,
+    Video,
 }

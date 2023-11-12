@@ -13,45 +13,42 @@ pub async fn post_game_start(
     let user_uuid: &Uuid = &ctx.user.unwrap().uuid;
 
     // Checks if the is paused by the user
-    match sqlx::query("SELECT steps.uuid, steps.story_uuid, steps.waypoint_uuid, steps.asset_id, steps.description, steps.media_type, steps.title, user_stories.uuid as game_uuid
-    FROM user_stories
-    LEFT JOIN user_story_steps ON user_story_steps.user_story_uuid = user_stories.uuid
-    JOIN steps ON user_story_steps.step_uuid = steps.uuid
-    WHERE user_stories.finished_at IS null
-    AND user_stories.deleted_at IS null
-    AND user_stories.user_uuid = $1
-    AND user_stories.story_uuid = $2
-    AND user_story_steps.finished_at IS null;
-    ")
-        .bind(user_uuid)
-        .bind(story_uuid)
-        .fetch_one(&ctx.detactive_db)
-        .await
-        .map_err(|_| DError::from("Failed to check for existing progress.", StatusCode::INTERNAL_SERVER_ERROR)) {
-            Ok(row) => {
-                if row.try_get::<Uuid, &str>("uuid").is_ok() {
-                    let game_uuid: Uuid = row.get("game_uuid");
-                    let step_uuid: Uuid = row.get("uuid");
-
-                    sqlx::query("UPDATE user_story_steps SET updated_at = CURRENT_TIMESTAMP WHERE step_uuid = $1 AND user_story_uuid = $2;")
-                    .bind(step_uuid)
-                    .bind(game_uuid)
-                    .execute(&ctx.detactive_db)
-                    .await
-                    .map_err(|_| DError::from("Failed to update current step.", StatusCode::INTERNAL_SERVER_ERROR))?;
-
-                    return Ok(Json(DStep{ 
-                            uuid: step_uuid, 
-                            description: row.get("description"), 
-                            media_type: row.get("media_type"), 
-                            src: contentful::url(row.get("asset_id")).await?, 
-                            title: row.get("title"), 
-                            decisions: DDecision::from_db(step_uuid, &ctx.detactive_db).await?, 
-                            waypoint: DWaypoint::from_db(step_uuid, user_coordinates, &ctx.detactive_db).await? }))
-                }
-            },
-            _ => ()
-        }
+    if let Ok(row) = sqlx::query("SELECT steps.uuid, steps.story_uuid, steps.waypoint_uuid, steps.asset_id, steps.description, steps.media_type, steps.title, user_stories.uuid as game_uuid
+     FROM user_stories
+     LEFT JOIN user_story_steps ON user_story_steps.user_story_uuid = user_stories.uuid
+     JOIN steps ON user_story_steps.step_uuid = steps.uuid
+     WHERE user_stories.finished_at IS null
+     AND user_stories.deleted_at IS null
+     AND user_stories.user_uuid = $1
+     AND user_stories.story_uuid = $2
+     AND user_story_steps.finished_at IS null;
+     ")
+         .bind(user_uuid)
+         .bind(story_uuid)
+         .fetch_one(&ctx.detactive_db)
+         .await
+         .map_err(|_| DError::from("Failed to check for existing progress.", StatusCode::INTERNAL_SERVER_ERROR)) {
+         if row.try_get::<Uuid, &str>("uuid").is_ok() {
+             let game_uuid: Uuid = row.get("game_uuid");
+             let step_uuid: Uuid = row.get("uuid");
+ 
+             sqlx::query("UPDATE user_story_steps SET updated_at = CURRENT_TIMESTAMP WHERE step_uuid = $1 AND user_story_uuid = $2;")
+             .bind(step_uuid)
+             .bind(game_uuid)
+             .execute(&ctx.detactive_db)
+             .await
+             .map_err(|_| DError::from("Failed to update current step.", StatusCode::INTERNAL_SERVER_ERROR))?;
+ 
+             return Ok(Json(DStep{ 
+                     uuid: step_uuid, 
+                     description: row.get("description"), 
+                     media_type: row.get("media_type"), 
+                     src: contentful::url(row.get("asset_id")).await?, 
+                     title: row.get("title"), 
+                     decisions: DDecision::from_db(step_uuid, &ctx.detactive_db).await?, 
+                     waypoint: DWaypoint::from_db(step_uuid, user_coordinates, &ctx.detactive_db).await? }))
+         }
+     }
 
     // Opens new story game and returns game uuid
     let game_uuid: Uuid = sqlx::query(
@@ -66,10 +63,14 @@ pub async fn post_game_start(
 
     // Receive first step
     let step_uuid: Uuid = sqlx::query(
-        "SELECT steps.uuid FROM steps
-        JOIN decisions ON decisions.step_output_uuid = steps.uuid
-        WHERE steps.story_uuid = $1
-        AND decisions.step_input_uuid IS null;",
+        "SELECT steps.uuid
+        FROM steps
+        WHERE steps.uuid NOT IN (
+            SELECT DISTINCT step_output_uuid
+            FROM decisions
+            WHERE step_output_uuid IS NOT NULL
+        ) AND steps.story_uuid = $1
+        LIMIT 1;",
     )
     .bind(story_uuid)
     .fetch_one(&ctx.detactive_db)

@@ -29,5 +29,5 @@ pub async fn get_user_token(
         })?;
 
     let token = encode(user_uuid, Duration::minutes(30))?;
-    Ok(Json(Response { token: token }))
+    Ok(Json(Response { token }))
 }

@@ -39,10 +39,9 @@ pub async fn guard<T>(mut request: Request<T>, next: Next<T>) -> Result<Response
             DError::from("User not found.", StatusCode::NOT_FOUND)
         })?;
 
-    request
-        .extensions_mut()
-        .get_mut::<ApiContext>()
-        .map(|ctx| ctx.user = Some(DUser { uuid: claims.sub }));
+    if let Some(ctx) = request.extensions_mut().get_mut::<ApiContext>() {
+        ctx.user = Some(DUser { uuid: claims.sub });
+    }
 
     Ok(next.run(request).await)
 }
