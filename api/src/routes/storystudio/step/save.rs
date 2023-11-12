@@ -10,7 +10,6 @@ pub async fn save(
     Json(mut step): Json<StudioStep>,
 ) -> Result<Json<StudioStep>, DError> {
     let mut step_waypoint_uuid: Option<Uuid> = None;
-    println!("{:?}", step.waypoint);
     if let Some(waypoint) = &mut step.waypoint {
         if let Some(waypoint_uuid) = waypoint.uuid {
             // UPDATE WAYPOINT
