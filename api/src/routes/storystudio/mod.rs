@@ -19,4 +19,5 @@ pub async fn storystudio_router() -> Router {
         // Step
         .route("/steps/save", post(step::save))
         .route("/steps/:uuid/load", get(step::load))
+        .route("/steps/:uuid/remove", delete(step::remove))
 }
