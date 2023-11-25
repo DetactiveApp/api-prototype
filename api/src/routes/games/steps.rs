@@ -30,11 +30,7 @@ pub async fn post_game_next_step(
         tokio::task::spawn(finish_story(user_uuid, ctx.clone()));
         DError::from("No content.", StatusCode::NO_CONTENT)
     })?
-    .try_get("game_uuid")
-    .map_err(|_| {
-        tokio::task::spawn(finish_story(user_uuid, ctx.clone()));
-        DError::from("No content.", StatusCode::NO_CONTENT)
-    })?;
+    .get::<Uuid, &str>("game_uuid");
 
     let step = DStep::from_db(
         step_uuid,
