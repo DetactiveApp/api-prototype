@@ -9,7 +9,8 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
       - name: Install/Setup dependencies
         run: |
@@ -26,6 +27,28 @@ jobs:
         run: |
           sudo docker-compose -f ./env/docker-compose.production.yml up --build -d
 
+      - name: Build and push Docker image
+        run: |
+          docker build -t my-api-image:latest .
+          docker tag my-api-image:latest my-api-image:release-0.0.1
+          docker push my-api-image:latest
+          docker push my-api-image:release-0.0.1
+
       - name: Delete unused Docker images
         run: |
           docker system prune --force --all
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: my-artifact
+          path: path/to/artifact
+
+  cleanup:
+    runs-on: self-hosted
+    needs: build
+    steps:
+      - name: Delete artifacts
+        run: |
+          rm -rf path/to/artifact
+        if: always() # Ensure this step runs even if previous steps fail
