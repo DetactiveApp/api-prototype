@@ -31,7 +31,7 @@ services:
       context: ../api
       dockerfile: ../api/Dockerfile
     restart: always
-    env_file: .env
+    env_file: /etc/.env
     ports:
       - 3000:3000
     labels:
@@ -50,7 +50,7 @@ services:
   db:
     image: postgres
     restart: always
-    env_file: .env
+    env_file: /etc/.env
     ports:
       - 5432:5432
     volumes:
