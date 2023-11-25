@@ -38,7 +38,7 @@ FROM rust:latest
 # Copy the built binary from the build stage
 COPY --from=build /detactive-api/target/release/detactive-api .
 
-# Set environment variable (optional)
+# Set environment variable
 ARG RUST_LOG=info
 
 # Run the application
