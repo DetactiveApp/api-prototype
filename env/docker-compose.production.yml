@@ -45,7 +45,6 @@ services:
       - db
     networks:
       - web
-      - internal
 
   db:
     image: postgres
@@ -56,11 +55,7 @@ services:
     volumes:
       - ../api/db/init.sql:/docker-entrypoint-initdb.d/init.sql
       - ./postgres-data:/var/lib/postgresql/data
-    networks:
-      - internal
 
 networks:
   web:
     external: true
-  internal:
-    external: false
