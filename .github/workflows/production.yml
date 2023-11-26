@@ -2,7 +2,7 @@ name: API Server Release Build
 
 on:
   pull_request:
-    branches: ["release-0.0.1"]
+    branches: ["production"]
 
 jobs:
   build:
