@@ -23,10 +23,6 @@ jobs:
             echo "Web network already exists... Skipping Step"
           fi
 
-      - name: Stop all services
-        run: |
-          sudo docker stop $(docker ps -a -q)
-
       - name: Start production services
         run: |
           sudo docker-compose -f ./env/docker-compose.production.yml up --build -d
