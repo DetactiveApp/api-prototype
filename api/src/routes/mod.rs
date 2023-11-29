@@ -3,13 +3,13 @@ use reqwest::StatusCode;
 use tower_http::add_extension::AddExtensionLayer;
 
 mod games;
-mod sticker;
+//mod sticker;
 mod stories;
 mod storystudio;
 mod users;
 
 use games::games_router;
-use sticker::sticker_router;
+//use sticker::sticker_router;
 use stories::stories_router;
 use storystudio::storystudio_router;
 use users::users_router;
@@ -35,7 +35,7 @@ pub async fn api() -> Router {
         .route_layer(middleware::from_fn(guard))
         .nest("/users", users_router().await)
         .nest("/storystudio", storystudio_router().await)
-        .nest("/sticker", sticker_router().await)
+        //.nest("/sticker", sticker_router().await)
         .route("/moai", get(moai))
         .route("/error", get(error))
         .layer(AddExtensionLayer::new(ApiContext::new().await))
