@@ -3,6 +3,7 @@ services:
   traefik:
     image: traefik:v2.10.1
     restart: always
+    env_file: /etc/.env
     ports:
       - 80:80
       - 443:443
@@ -28,10 +29,10 @@ services:
 
   detactive_api:
     build:
-      context: ./api
-      dockerfile: ./api/Dockerfile
+      context: ../api
+      dockerfile: ../api/Dockerfile
     restart: always
-    env_file: ./api/env
+    env_file: /etc/.env
     ports:
       - 3000:3000
     labels:
@@ -49,11 +50,11 @@ services:
   db:
     image: postgres
     restart: always
-    env_file: ./api/env
+    env_file: /etc/.env
     ports:
       - 5432:5432
     volumes:
-      - ./api/db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ../api/db/init.sql:/docker-entrypoint-initdb.d/init.sql
       - ./postgres-data:/var/lib/postgresql/data
 
 networks:
