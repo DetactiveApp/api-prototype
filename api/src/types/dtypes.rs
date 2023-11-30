@@ -1,7 +1,7 @@
 use rand::Rng;
 use reqwest::StatusCode;
 use serde::{Deserialize, Serialize};
-use sqlx::{PgPool, Row};
+use sqlx::{MySqlPool, Row};
 use uuid::Uuid;
 
 use crate::utils::{contentful, geo::near};
@@ -32,7 +32,7 @@ pub struct DStory {
 
 #[allow(dead_code)]
 impl DStory {
-    pub async fn from_db(uuid: Uuid, db_pool: &PgPool) -> Result<Self, DError> {
+    pub async fn from_db(uuid: Uuid, db_pool: &MySqlPool) -> Result<Self, DError> {
         let row = sqlx::query("SELECT * FROM stories WHERE uuid = $1;")
             .bind(uuid)
             .fetch_one(db_pool)
@@ -67,7 +67,7 @@ impl DWaypoint {
     pub async fn from_db(
         step_uuid: Uuid,
         user_coordinates: DCoord,
-        db_pool: &PgPool,
+        db_pool: &MySqlPool,
     ) -> Result<Option<Self>, DError> {
         match sqlx::query(
             "SELECT
@@ -107,7 +107,7 @@ pub struct DDecision {
 }
 
 impl DDecision {
-    pub async fn from_db(step_uuid: Uuid, db_pool: &PgPool) -> Result<Vec<Self>, DError> {
+    pub async fn from_db(step_uuid: Uuid, db_pool: &MySqlPool) -> Result<Vec<Self>, DError> {
         Ok(sqlx::query(
             "SELECT
                 decisions.uuid,
@@ -150,7 +150,7 @@ impl DStep {
         step_uuid: Uuid,
         game_uuid: Uuid,
         user_coordinates: DCoord,
-        db_pool: &PgPool,
+        db_pool: &MySqlPool,
     ) -> Result<Self, DError> {
         // SQL Query for receiving nested step data
         let rows = sqlx::query(
