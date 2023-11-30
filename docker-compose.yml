@@ -30,6 +30,8 @@ services:
     build:
       context: .
     restart: always
+    env_file:
+      - /etc/.env
     ports:
       - 3000:3000
     labels:
