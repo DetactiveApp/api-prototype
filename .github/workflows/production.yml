@@ -7,9 +7,17 @@ on:
     branches: ["production"]
 
 jobs:
+  cleanup:
+    runs-on: self-hosted
+    steps:
+      - name: Delete all docker artifacts
+        run: |
+          docker system prune --force --all
+        if: always() # Ensure this step runs even if previous steps fail
+
   build:
     runs-on: self-hosted
-
+    needs: cleanup
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -28,19 +36,3 @@ jobs:
       - name: Start production services
         run: |
           sudo docker-compose --env-file /etc/.env -f ./docker-compose.yml up --build -d
-
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: artifact
-          path: /artifacts
-
-  cleanup:
-    runs-on: self-hosted
-    needs: build
-    steps:
-      - name: Delete artifacts
-        run: |
-          rm -rf /artifacts
-          docker system prune --force --all
-        if: always() # Ensure this step runs even if previous steps fail
