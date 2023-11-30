@@ -28,8 +28,8 @@ services:
 
   detactive_api:
     build:
-      context: api
-      dockerfile: api/Dockerfile
+      context: .
+      dockerfile: api
     restart: always
     ports:
       - 3000:3000
