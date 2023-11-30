@@ -28,7 +28,7 @@ services:
 
   detactive_api:
     build:
-      context: api
+      context: .
     restart: always
     ports:
       - 3000:3000

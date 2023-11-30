@@ -1,0 +1,13 @@
+D:\Projects\Detactive\server\api\target\debug\deps\libtoml-5f9f1c4b9fb61af3.rmeta: C:\Users\max\.cargo\registry\src\index.crates.io-6f17d22bba15001f\toml-0.5.11\src\lib.rs C:\Users\max\.cargo\registry\src\index.crates.io-6f17d22bba15001f\toml-0.5.11\src\map.rs C:\Users\max\.cargo\registry\src\index.crates.io-6f17d22bba15001f\toml-0.5.11\src\value.rs C:\Users\max\.cargo\registry\src\index.crates.io-6f17d22bba15001f\toml-0.5.11\src\datetime.rs C:\Users\max\.cargo\registry\src\index.crates.io-6f17d22bba15001f\toml-0.5.11\src\ser.rs C:\Users\max\.cargo\registry\src\index.crates.io-6f17d22bba15001f\toml-0.5.11\src\de.rs C:\Users\max\.cargo\registry\src\index.crates.io-6f17d22bba15001f\toml-0.5.11\src\tokens.rs C:\Users\max\.cargo\registry\src\index.crates.io-6f17d22bba15001f\toml-0.5.11\src\macros.rs C:\Users\max\.cargo\registry\src\index.crates.io-6f17d22bba15001f\toml-0.5.11\src\spanned.rs
+
+D:\Projects\Detactive\server\api\target\debug\deps\toml-5f9f1c4b9fb61af3.d: C:\Users\max\.cargo\registry\src\index.crates.io-6f17d22bba15001f\toml-0.5.11\src\lib.rs C:\Users\max\.cargo\registry\src\index.crates.io-6f17d22bba15001f\toml-0.5.11\src\map.rs C:\Users\max\.cargo\registry\src\index.crates.io-6f17d22bba15001f\toml-0.5.11\src\value.rs C:\Users\max\.cargo\registry\src\index.crates.io-6f17d22bba15001f\toml-0.5.11\src\datetime.rs C:\Users\max\.cargo\registry\src\index.crates.io-6f17d22bba15001f\toml-0.5.11\src\ser.rs C:\Users\max\.cargo\registry\src\index.crates.io-6f17d22bba15001f\toml-0.5.11\src\de.rs C:\Users\max\.cargo\registry\src\index.crates.io-6f17d22bba15001f\toml-0.5.11\src\tokens.rs C:\Users\max\.cargo\registry\src\index.crates.io-6f17d22bba15001f\toml-0.5.11\src\macros.rs C:\Users\max\.cargo\registry\src\index.crates.io-6f17d22bba15001f\toml-0.5.11\src\spanned.rs
+
+C:\Users\max\.cargo\registry\src\index.crates.io-6f17d22bba15001f\toml-0.5.11\src\lib.rs:
+C:\Users\max\.cargo\registry\src\index.crates.io-6f17d22bba15001f\toml-0.5.11\src\map.rs:
+C:\Users\max\.cargo\registry\src\index.crates.io-6f17d22bba15001f\toml-0.5.11\src\value.rs:
+C:\Users\max\.cargo\registry\src\index.crates.io-6f17d22bba15001f\toml-0.5.11\src\datetime.rs:
+C:\Users\max\.cargo\registry\src\index.crates.io-6f17d22bba15001f\toml-0.5.11\src\ser.rs:
+C:\Users\max\.cargo\registry\src\index.crates.io-6f17d22bba15001f\toml-0.5.11\src\de.rs:
+C:\Users\max\.cargo\registry\src\index.crates.io-6f17d22bba15001f\toml-0.5.11\src\tokens.rs:
+C:\Users\max\.cargo\registry\src\index.crates.io-6f17d22bba15001f\toml-0.5.11\src\macros.rs:
+C:\Users\max\.cargo\registry\src\index.crates.io-6f17d22bba15001f\toml-0.5.11\src\spanned.rs:

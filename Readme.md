@@ -1,4 +1,4 @@
-# Server Development
+# Api Development
 
 ## Documentation:
 
@@ -13,10 +13,8 @@ cd api
 cargo run -F dev
 ```
 
-(Make sure that the Docker daemon is running)
-
 ## Local Services:
 
-| Service | Hostname + Port      |
-| ------- | -------------------- |
-| API     | http://localhost:80/ |
+| Service | Hostname + Port        |
+| ------- | ---------------------- |
+| API     | http://localhost:3000/ |

@@ -1,0 +1,3 @@
+cargo:rerun-if-changed=build/main.rs
+cargo:rustc-env=TYPENUM_BUILD_CONSTS=D:\Projects\Detactive\server\api\target\release\build\typenum-b01aaeda1d8f5038\out\consts.rs
+cargo:rustc-env=TYPENUM_BUILD_OP=D:\Projects\Detactive\server\api\target\release\build\typenum-b01aaeda1d8f5038\out\op.rs
