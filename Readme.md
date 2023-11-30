@@ -10,7 +10,7 @@ Make sure to have cargo installed.
 
 ```bash
 cd api
-cargo run
+cargo run -F dev
 ```
 
 (Make sure that the Docker daemon is running)
