@@ -27,7 +27,7 @@ jobs:
 
       - name: Start production services
         run: |
-          sudo docker-compose -f ./docker-compose.yml up --build -d
+          sudo docker-compose --env-file /etc/.env -f ./docker-compose.yml up --build -d
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3

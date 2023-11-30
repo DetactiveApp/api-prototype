@@ -3,7 +3,6 @@ services:
   traefik:
     image: traefik:v2.10.1
     restart: always
-    env_file: /etc/.env
     ports:
       - 80:80
       - 443:443
@@ -29,10 +28,9 @@ services:
 
   detactive_api:
     build:
-      context: ./api
-      dockerfile: ./api/Dockerfile
+      context: api
+      dockerfile: api/Dockerfile
     restart: always
-    env_file: /etc/.env
     ports:
       - 3000:3000
     labels:
