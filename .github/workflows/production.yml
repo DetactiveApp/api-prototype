@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Delete all docker artifacts
         run: |
-          docker system prune --force --all
+          docker system prune --force --all --filter "until=48h"
         if: always() # Ensure this step runs even if previous steps fail
 
   build:
