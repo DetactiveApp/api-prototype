@@ -41,20 +41,8 @@ services:
       - traefik.http.services.detactive_api.loadbalancer.server.port=3000
       - traefik.http.routers.detactive_api.tls.certresolver=le
       - traefik.http.routers.detactive_api.entrypoints=websecure
-    depends_on:
-      - db
     networks:
       - web
-
-  db:
-    image: postgres
-    restart: always
-    env_file: /etc/.env
-    ports:
-      - 5432:5432
-    volumes:
-      - api/db/init.sql:/docker-entrypoint-initdb.d/init.sql
-      - ./postgres-data:/var/lib/postgresql/data
 
 networks:
   web:
