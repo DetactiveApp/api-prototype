@@ -4,4 +4,4 @@ WORKDIR /detactive-api
 COPY . .
 RUN cargo build --release
 ARG RUST_LOG=info
-CMD ["./detactive-api"]
+CMD ["target/release/detactive-api"]
