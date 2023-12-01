@@ -16,7 +16,7 @@ services:
       - --certificatesresolvers.le.email=${LETSENCRYPT_MAIL}
       - --certificatesresolvers.le.storage=/etc/ssl/certs/acme.json
       - --certificatesresolvers.le.tlschallenge=true
-      - --log.level=DEBUG
+      - --log.level=FATAL
       - --log.filePath=/etc/traefik/traefik.log
       - --log.format=json
     volumes:
