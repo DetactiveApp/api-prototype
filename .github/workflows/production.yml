@@ -7,17 +7,8 @@ on:
     branches: ["production"]
 
 jobs:
-  cleanup:
+  install:
     runs-on: self-hosted
-    steps:
-      - name: Delete all docker artifacts
-        run: |
-          docker system prune --force --all --filter "until=24h"
-        if: always() # Ensure this step runs even if previous steps fail
-
-  build:
-    runs-on: self-hosted
-    needs: cleanup
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -33,6 +24,23 @@ jobs:
             echo "Web network already exists... Skipping Step"
           fi
 
+      - name: Start production services
+        run: |
+          sudo docker-compose --env-file /etc/.env -f ./docker-compose.yml up --build -d
+
+  cleanup:
+    runs-on: self-hosted
+    needs: install
+    steps:
+      - name: Delete all docker artifacts
+        run: |
+          docker system prune --force --all --filter "until=48h"
+        if: always() # Ensure this step runs even if previous steps fail
+
+  build:
+    runs-on: self-hosted
+    needs: cleanup
+    steps:
       - name: Start production services
         run: |
           sudo docker-compose --env-file /etc/.env -f ./docker-compose.yml up --build -d
