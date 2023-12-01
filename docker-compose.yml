@@ -13,7 +13,6 @@ services:
       - --entrypoints.web.address=:80
       - --entrypoints.websecure.address=:443
       - --api.insecure=false
-      - --certificatesresolvers.le.email=${LETSENCRYPT_MAIL}
       - --certificatesresolvers.le.storage=/etc/ssl/certs/acme.json
       - --certificatesresolvers.le.tlschallenge=true
       - --log.level=FATAL
