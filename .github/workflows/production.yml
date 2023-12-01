@@ -24,10 +24,6 @@ jobs:
             echo "Web network already exists... Skipping Step"
           fi
 
-      - name: Start production services
-        run: |
-          sudo docker-compose --env-file /etc/.env -f ./docker-compose.yml up --build -d
-
   cleanup:
     runs-on: self-hosted
     needs: install
