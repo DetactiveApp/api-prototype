@@ -71,7 +71,7 @@ services:
       - traefik.http.routers.pgadmin.tls.certresolver=le
       - traefik.http.routers.pgadmin.entrypoints=websecure
     depends_on:
-      - db
+      - postgres
     networks:
       - web
       - internal
