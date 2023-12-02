@@ -1,5 +1,6 @@
 use axum::response::IntoResponse;
 use reqwest::StatusCode;
+use sentry::{capture_message, Level};
 
 #[derive(Debug, Clone)]
 pub struct DError {
@@ -15,6 +16,7 @@ impl IntoResponse for DError {
 
 impl DError {
     pub fn from(reason: &str, status_code: StatusCode) -> Self {
+        capture_message(reason, Level::Error);
         Self {
             status_code,
             reason: reason.to_string(),
