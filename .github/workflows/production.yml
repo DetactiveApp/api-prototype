@@ -38,5 +38,5 @@ jobs:
     steps:
       - name: Delete all docker artifacts
         run: |
-          docker system prune --force --all --filter "until=48h"
+          docker system prune --force --all
     if: always()
