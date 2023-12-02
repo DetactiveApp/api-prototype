@@ -13,7 +13,7 @@ Make sure to have [Docker](https://docs.docker.com/get-docker/) installed.
 To start the development server, just run the following shell:
 
 ```bash
-.\development.sh
+./development.sh
 ```
 
 (Make sure that the Docker daemon is running)
@@ -25,3 +25,11 @@ To start the development server, just run the following shell:
 | API      | http://localhost:3000/ |
 | Postgres | http://localhost:5432/ |
 | PgAdmin  | http://localhost:5050/ |
+=======
+
+## Local Services:
+
+| Service | Hostname + Port        |
+| ------- | ---------------------- |
+| API     | http://localhost:3000/ |
+

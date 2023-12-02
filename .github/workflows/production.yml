@@ -1,13 +1,14 @@
-name: API Server Release Build
+name: API Release Build
 
 on:
+  push:
+    branches: ["production"]
   pull_request:
-    branches: ["release-0.0.1"]
+    branches: ["production"]
 
 jobs:
-  build:
+  install:
     runs-on: self-hosted
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -23,22 +24,19 @@ jobs:
             echo "Web network already exists... Skipping Step"
           fi
 
-      - name: Start production services
-        run: |
-          sudo docker-compose -f ./env/docker-compose.production.yml up --build -d
-
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: artifact
-          path: /artifacts
-
   cleanup:
     runs-on: self-hosted
-    needs: build
+    needs: install
     steps:
-      - name: Delete artifacts
+      - name: Delete all docker artifacts
         run: |
-          rm -rf /artifacts
-          docker system prune --force --all
+          docker system prune --force --all --filter "until=48h"
         if: always() # Ensure this step runs even if previous steps fail
+
+  build:
+    runs-on: self-hosted
+    needs: cleanup
+    steps:
+      - name: Start production services
+        run: |
+          sudo docker-compose --env-file /etc/.env -f ./docker-compose.yml up --build -d

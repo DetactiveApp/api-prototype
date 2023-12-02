@@ -29,9 +29,3 @@ DROP TABLE decisions, users, user_stories, user_story_steps, steps, stories, way
 ***************************************************/
 
 DROP TYPE IF EXISTS MEDIUMTYPE;
-
-/***************************************************
-**--------------- REMOVE EXTENSIONS --------------**
-***************************************************/
-
-DROP EXTENSION IF EXISTS "uuid-ossp";

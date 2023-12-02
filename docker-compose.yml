@@ -1,8 +1,10 @@
 version: '3.5'
 services:
   traefik:
-    image: traefik:v2.10.1
+    image: traefik:v2.10
     restart: always
+    env_file:
+      - /etc/.env
     ports:
       - 80:80
       - 443:443
@@ -16,7 +18,7 @@ services:
       - --certificatesresolvers.le.acme.email=${LETSENCRYPT_MAIL}
       - --certificatesresolvers.le.acme.storage=/etc/ssl/certs/acme.json
       - --certificatesresolvers.le.acme.tlschallenge=true
-      - --log.level=DEBUG
+      - --log.level=FATAL
       - --log.filePath=/etc/traefik/traefik.log
       - --log.format=json
     volumes:
@@ -28,10 +30,10 @@ services:
 
   detactive_api:
     build:
-      context: ../api
-      dockerfile: ../api/Dockerfile
+      context: .
     restart: always
-    env_file: .env
+    env_file:
+      - /etc/.env
     ports:
       - 3000:3000
     labels:
@@ -41,26 +43,9 @@ services:
       - traefik.http.services.detactive_api.loadbalancer.server.port=3000
       - traefik.http.routers.detactive_api.tls.certresolver=le
       - traefik.http.routers.detactive_api.entrypoints=websecure
-    depends_on:
-      - db
     networks:
       - web
-      - internal
-
-  db:
-    image: postgres
-    restart: always
-    env_file: .env
-    ports:
-      - 5432:5432
-    volumes:
-      - ../api/db/init.sql:/docker-entrypoint-initdb.d/init.sql
-      - ./postgres-data:/var/lib/postgresql/data
-    networks:
-      - internal
 
 networks:
   web:
     external: true
-  internal:
-    external: false
