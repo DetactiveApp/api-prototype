@@ -60,7 +60,7 @@ services:
   pgadmin:
     image: dpage/pgadmin4
     restart: always
-    env_file: .env
+    env_file: /etc/.env
     environment:
       - SCRIPT_NAME=/pgadmin
     labels:
