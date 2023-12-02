@@ -1,4 +1,4 @@
-use sqlx::MySqlPool;
+use sqlx::PgPool;
 
 use crate::utils::db;
 
@@ -7,7 +7,7 @@ use super::DUser;
 #[derive(Clone)]
 pub struct ApiContext {
     pub user: Option<DUser>,
-    pub detactive_db: MySqlPool,
+    pub detactive_db: PgPool,
     pub company_db: Option<()>,
 }
 

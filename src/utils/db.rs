@@ -1,8 +1,8 @@
-use sqlx::mysql::{MySqlPool, MySqlPoolOptions};
+use sqlx::postgres::{PgPool, PgPoolOptions};
 use std::env;
 
-pub async fn detactive_pool() -> MySqlPool {
-    MySqlPoolOptions::new()
+pub async fn detactive_pool() -> PgPool {
+    PgPoolOptions::new()
         .max_connections(100)
         .connect(&env::var("DETACTIVE_DB").expect("Could not find DETACTIVE_DB."))
         .await
