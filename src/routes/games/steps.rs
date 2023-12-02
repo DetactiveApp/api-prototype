@@ -61,8 +61,7 @@ async fn finish_story(user_uuid: Uuid, ctx: ApiContext) -> Result<(), DError> {
     .bind(user_uuid)
     .execute(&ctx.detactive_db)
     .await
-    .map_err(|_| DError::from("Failed to close previous step.", StatusCode::INTERNAL_SERVER_ERROR))?;
-
+    .map_err(|err| DError::from(&(String::from("Failed to close previous step: ") + &err.to_string()), StatusCode::INTERNAL_SERVER_ERROR))?;
     Ok(())
 }
 
@@ -92,7 +91,7 @@ pub async fn get_stories_history(
     .bind(story_uuid)
     .fetch_all(&ctx.detactive_db)
     .await
-    .map_err(|_| DError::from("Internal Server Error.", StatusCode::INTERNAL_SERVER_ERROR))?
+    .map_err(|err| DError::from(&err.to_string(), StatusCode::INTERNAL_SERVER_ERROR))?
     .iter()
     .map(|row| StepCard {
         title: row.get("title"),

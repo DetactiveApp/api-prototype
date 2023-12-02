@@ -27,7 +27,7 @@ pub async fn post_game_start(
          .bind(story_uuid)
          .fetch_one(&ctx.detactive_db)
          .await
-         .map_err(|_| DError::from("Failed to check for existing progress.", StatusCode::INTERNAL_SERVER_ERROR)) {
+         .map_err(|err| DError::from(&(String::from("Failed to check for existing progress: ") + &err.to_string()), StatusCode::INTERNAL_SERVER_ERROR)) {
          if row.try_get::<Uuid, &str>("uuid").is_ok() {
              let game_uuid: Uuid = row.get("game_uuid");
              let step_uuid: Uuid = row.get("uuid");
@@ -37,7 +37,7 @@ pub async fn post_game_start(
              .bind(game_uuid)
              .execute(&ctx.detactive_db)
              .await
-             .map_err(|_| DError::from("Failed to update current step.", StatusCode::INTERNAL_SERVER_ERROR))?;
+             .map_err(|err| DError::from(&(String::from("Failed to update current step: ") + &err.to_string()), StatusCode::INTERNAL_SERVER_ERROR))?;
  
              return Ok(Json(DStep{ 
                      uuid: step_uuid, 
@@ -76,8 +76,7 @@ pub async fn post_game_start(
     .fetch_one(&ctx.detactive_db)
     .await
     .map_err(|err| {
-        println!("{}", err);
-        DError::from("Failed to fetch first step of the current story.", StatusCode::INTERNAL_SERVER_ERROR)
+        DError::from(&(String::from("Failed to fetch first step of the current story: ") + &err.to_string()), StatusCode::INTERNAL_SERVER_ERROR)
     })?
     .get("uuid");
 
