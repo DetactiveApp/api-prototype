@@ -28,4 +28,4 @@ DROP TABLE decisions, users, user_stories, user_story_steps, steps, stories, way
 **-------------- REMOVE CUSTOM TYPES -------------**
 ***************************************************/
 
-DROP TYPE IF EXISTS MEDIUMTYPE;
+DROP TYPE IF EXISTS MEDIATYPE;
