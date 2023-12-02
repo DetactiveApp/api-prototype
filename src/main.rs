@@ -4,9 +4,6 @@ mod utils;
 
 use std::net::SocketAddr;
 
-#[cfg(feature = "dev")]
-use dotenv::dotenv;
-
 use crate::{routes::api, utils::cors};
 use axum::{routing::get, Router};
 
