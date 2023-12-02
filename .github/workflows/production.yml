@@ -24,19 +24,19 @@ jobs:
             echo "Web network already exists... Skipping Step"
           fi
 
-  cleanup:
-    runs-on: self-hosted
-    needs: install
-    steps:
-      - name: Delete all docker artifacts
-        run: |
-          docker system prune --force --all --filter "until=48h"
-        if: always() # Ensure this step runs even if previous steps fail
-
   build:
     runs-on: self-hosted
-    needs: cleanup
+    needs: install
     steps:
       - name: Start production services
         run: |
           sudo docker-compose --env-file /etc/.env -f ./docker-compose.yml up --build -d
+
+  cleanup:
+    runs-on: self-hosted
+    needs: build
+    steps:
+      - name: Delete all docker artifacts
+        run: |
+          docker system prune --force --all --filter "until=48h"
+    if: always()
