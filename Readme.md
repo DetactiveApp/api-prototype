@@ -2,7 +2,7 @@
 
 ## Documentation
 
-[API](docs/api/README.md)
+[API](docs/api.md)
 
 ## Local Dependencies
 

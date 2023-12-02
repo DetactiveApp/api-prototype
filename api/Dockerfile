@@ -25,10 +25,6 @@ RUN rm -rf target/debug/deps/*.d \
     && rm -rf target/release/build \
     && rm -rf target/release/incremental
 
-# Install sqlx-cli and build migrations
-RUN cargo install sqlx-cli
-RUN sqlx migrate build-script
-
 # Build the application
 RUN cargo build --release
 

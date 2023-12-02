@@ -16,16 +16,3 @@ pub async fn company_pool() -> PgPool {
         .await
         .expect("Error during company-db connection pool initialization.")
 }
-
-pub async fn migrate_db() {
-    sqlx::migrate!("db/detactive")
-        .run(&detactive_pool().await)
-        .await
-        .expect("Error during migrating data to detactive-db.");
-
-    sqlx::migrate!("db/company")
-        .run(&company_pool().await)
-        .await
-        .map_err(|err| eprintln!("{}", err))
-        .expect("Error during migrating data to company-db.");
-}
