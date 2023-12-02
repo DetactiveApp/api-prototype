@@ -12,7 +12,7 @@ reqwest = { version = "0.11.14", features= ["json"] }
 tower-http = { version = "0.4.0", features= ["full"] }
 serde = { version = "1.0.152", features = ["derive"] }
 axum = { version = "0.6.1", features = ["macros", "headers"] }
-sqlx = { version = "0.6.3", features = [ "runtime-tokio-native-tls", "postgres", "macros", "json", "chrono", "uuid" ] }
+sqlx = { version = "0.6.3", features = [ "runtime-tokio-native-tls", "mysql", "macros", "json", "chrono", "uuid" ] }
 
 log = "0.4"
 rand = "0.8.5"

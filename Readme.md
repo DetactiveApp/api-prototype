@@ -1,26 +1,20 @@
-# Server Development
+# Api Development
 
-## Documentation
+## Documentation:
 
 [API](docs/api.md)
 
-## Local Dependencies
+## Local Development:
 
-Make sure to have [Docker](https://docs.docker.com/get-docker/) installed.
-
-## Local Development
-
-To start the development server, just run the following shell:
+Make sure to have cargo installed.
 
 ```bash
-.\development.sh
+cd api
+cargo run -F dev
 ```
-
-(Make sure that the Docker daemon is running)
 
 ## Local Services:
 
-| Service  | Hostname + Port        |
-| -------- | ---------------------- |
-| API      | http://localhost:3000/ |
-| Postgres | http://localhost:5432/ |
+| Service | Hostname + Port        |
+| ------- | ---------------------- |
+| API     | http://localhost:3000/ |

@@ -15,6 +15,8 @@ async fn root() -> String {
 async fn main() {
     println!("Detactive API v{}", env!("CARGO_PKG_VERSION"));
 
+    #[cfg(feature = "dev")]
+    dotenv().ok();
     env_logger::init();
 
     let addr = SocketAddr::from(([0, 0, 0, 0], 3000));
