@@ -1,3 +1,4 @@
 api/target
+db/db_data
 target
 .env

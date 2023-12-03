@@ -8,8 +8,8 @@ services:
       - ../.env
     ports:
       - 3000:3000
-    networks:
-      - web
+    depends_on:
+      - postgres
 
   postgres:
     image: postgres:16.1
@@ -17,22 +17,14 @@ services:
     env_file:
       - ../.env
     volumes:
-      - /var/lib/postgresql/data:/var/lib/postgresql/data
+      - ../db/db_data:/var/lib/postgresql/data
   
   pgadmin:
     image: dpage/pgadmin4
     restart: always
     env_file:
       - ../.env
-    environment:
-      - SCRIPT_NAME=/pgadmin
     depends_on:
       - postgres
     ports:
-      - 5050:5050
-    networks:
-      - web
-
-networks:
-  web:
-    external: true
+      - 5050:80
