@@ -10,6 +10,7 @@ Make sure to have [Docker](https://docs.docker.com/get-docker/) installed.
 
 ## Local Development
 
+Make sure to have the .env file in place, based on the .env-template file.
 To start the development server, just run the following shell:
 
 ```bash
@@ -25,6 +26,7 @@ To start the development server, just run the following shell:
 | API      | http://localhost:3000/ |
 | Postgres | http://localhost:5432/ |
 | PgAdmin  | http://localhost:5050/ |
+
 =======
 
 ## Local Services:
@@ -32,4 +34,3 @@ To start the development server, just run the following shell:
 | Service | Hostname + Port        |
 | ------- | ---------------------- |
 | API     | http://localhost:3000/ |
-

@@ -30,7 +30,7 @@ jobs:
     steps:
       - name: Start production services
         run: |
-          sudo docker-compose --env-file /etc/.env -f ./docker-compose.yml up --build -d
+          sudo docker-compose --env-file /etc/.env -f docker/docker-compose.production.yml up --build -d
 
   cleanup:
     runs-on: self-hosted

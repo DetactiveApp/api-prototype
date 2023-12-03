@@ -2,7 +2,7 @@ mod routes;
 mod types;
 mod utils;
 
-use std::net::SocketAddr;
+use std::{env, net::SocketAddr};
 
 use crate::{routes::api, utils::cors};
 use axum::{routing::get, Router};
@@ -14,9 +14,6 @@ async fn root() -> String {
 #[tokio::main]
 async fn main() {
     println!("Detactive API v{}", env!("CARGO_PKG_VERSION"));
-
-    #[cfg(feature = "dev")]
-    dotenv().ok();
     env_logger::init();
 
     let _guard = sentry::init(("https://d10ba764eafebb7720e11aca89b4cb79@o4506285486702592.ingest.sentry.io/4506327435182080", sentry::ClientOptions {

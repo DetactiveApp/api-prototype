@@ -30,7 +30,7 @@ services:
 
   detactive_api:
     build:
-      context: .
+      context: ../
     restart: always
     env_file:
       - /etc/.env
@@ -60,7 +60,8 @@ services:
   pgadmin:
     image: dpage/pgadmin4
     restart: always
-    env_file: /etc/.env
+    env_file:
+      - /etc/.env
     environment:
       - SCRIPT_NAME=/pgadmin
     labels:
