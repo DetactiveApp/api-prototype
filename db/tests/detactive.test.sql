@@ -162,6 +162,14 @@ VALUES (
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
 VALUES (
+    /* uuid */              '27d8e03d-c025-4e7d-9c31-eb38d5e2adc9', 
+    /* step_input_uuid */   '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f9',
+    /* step_output_uuid */  '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f2', 
+    /* title */             'Alles klar'
+);
+
+INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
+VALUES (
     /* uuid */              '27d8e03d-c025-4e7d-9c31-eb38d5e2adc3', 
     /* step_input_uuid */   '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f3', 
     /* step_output_uuid */  '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f4', 
