@@ -60,6 +60,17 @@ VALUES (
 
 INSERT INTO steps (uuid, story_uuid, waypoint_uuid, description, media_type, asset_id, title) 
 VALUES (
+    /* uuid */          '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f9', 
+    /* story_uuid */    '9e125477-3a9e-4d39-ae63-5a09a50b614a', 
+    /* waypoint_uuid */ NULL,
+    /* description */   'Achte auf die Details im Video!',
+    /* media_type */    NULL,
+    /* asset_id */      NULL,
+    /* title */         'Dein Tipp'
+);
+
+INSERT INTO steps (uuid, story_uuid, waypoint_uuid, description, media_type, asset_id, title) 
+VALUES (
     /* uuid */          '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f3', 
     /* story_uuid */    '9e125477-3a9e-4d39-ae63-5a09a50b614a', 
     /* waypoint_uuid */ NULL,
@@ -139,6 +150,14 @@ VALUES (
     /* step_input_uuid */   '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f2',
     /* step_output_uuid */  '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f3', 
     /* title */             'Weiter'
+);
+
+INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
+VALUES (
+    /* uuid */              '27d8e03d-c025-4e7d-9c31-eb38d5e2adc8', 
+    /* step_input_uuid */   '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f2',
+    /* step_output_uuid */  '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f9', 
+    /* title */             'Ich brauche einen Tipp'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
