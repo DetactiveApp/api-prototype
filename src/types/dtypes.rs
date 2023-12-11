@@ -158,20 +158,15 @@ impl DStep {
                 steps.description AS step_description,
                 steps.media_type AS step_media_type,
                 steps.title AS step_title,
-                decisions.uuid AS decision_uuid,
-                decisions.step_input_uuid AS decision_step_input_uuid,
-                decisions.step_output_uuid AS decision_step_output_uuid,
-                decisions.title AS decision_title,
                 waypoints.uuid AS waypoint_uuid,
                 waypoints.place_type AS waypoint_place_type,
                 waypoints.place_override AS waypoint_place_override
             FROM steps
-            JOIN decisions ON steps.uuid = decisions.step_input_uuid
             LEFT JOIN waypoints ON steps.waypoint_uuid = waypoints.uuid
             WHERE steps.uuid = $1;",
-        ) 
+        )
         .bind(step_uuid)
-        .fetch_all(db_pool)
+        .fetch_one(db_pool)
         .await
         .map_err(|_| {
             DError::from(
@@ -180,40 +175,41 @@ impl DStep {
             )
         })?;
 
-        // TODO Split steps, decisions and waypoints to make waypoints and decisions optional
-
-        // Saves all decisions for current step
-        let mut decisions = Vec::new();
-        for row in rows.iter() {
-            let decision = DDecision {
-                uuid: row.get("decision_uuid"),
-                step_input_uuid: row.get("decision_step_input_uuid"),
-                step_output_uuid: row.get("decision_step_output_uuid"),
-                title: row.get("decision_title"),
-            };
-            decisions.push(decision);
-        }
+        let decisions: Vec<DDecision> =
+            sqlx::query("SELECT * FROM decisions WHERE step_input_uuid = $1;")
+                .bind(step_uuid)
+                .fetch_all(db_pool)
+                .await
+                .map_err(|err| DError::from(&err.to_string(), StatusCode::INTERNAL_SERVER_ERROR))?
+                .iter()
+                .map(|row| DDecision {
+                    uuid: row.get("uuid"),
+                    step_input_uuid: row.get("step_input_uuid"),
+                    step_output_uuid: row.get("step_output_uuid"),
+                    title: row.get("title"),
+                })
+                .collect();
 
         let coordinates: Option<DCoord> = near(
-            rows[0].get("waypoint_place_type"),
+            rows.get("waypoint_place_type"),
             user_coordinates.lat,
             user_coordinates.lon,
-            rows[0].get("waypoint_place_override"),
+            rows.get("waypoint_place_override"),
         )
         .await?;
 
-        let src = contentful::url(rows[0].get("step_asset_id")).await?;
+        let src = contentful::url(rows.get("step_asset_id")).await?;
 
-        let waypoint_uuid: Option<Uuid> = rows[0].get("waypoint_uuid");
+        let waypoint_uuid: Option<Uuid> = rows.get("waypoint_uuid");
         let waypoint: Option<DWaypoint> = waypoint_uuid.map(|uuid| DWaypoint { uuid, coordinates });
 
         // Builds DStep
         let step: DStep = DStep {
             uuid: step_uuid,
-            description: rows[0].get("step_description"),
-            media_type: rows[0].get("step_media_type"),
+            description: rows.get("step_description"),
+            media_type: rows.get("step_media_type"),
             src,
-            title: rows[0].get("step_title"),
+            title: rows.get("step_title"),
             decisions,
             waypoint,
         };

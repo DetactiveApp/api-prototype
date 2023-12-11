@@ -1,4 +1,4 @@
-use axum::{middleware, routing::get, Extension, Router};
+use axum::{middleware, routing::get, Router};
 use reqwest::StatusCode;
 use tower_http::add_extension::AddExtensionLayer;
 
@@ -19,7 +19,7 @@ use crate::{
     utils::guard,
 };
 
-async fn moai(Extension(ctx): Extension<ApiContext>) -> &'static str {
+async fn moai() -> &'static str {
     "🗿"
 }
 
