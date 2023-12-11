@@ -12,6 +12,7 @@ pub struct Body {
     lon: f64,
 }
 
+// FORWARD
 pub async fn post_game_next_step(
     Extension(ctx): Extension<ApiContext>,
     Path((story_uuid, step_uuid)): Path<(Uuid, Uuid)>,
@@ -27,7 +28,6 @@ pub async fn post_game_next_step(
     .fetch_one(&ctx.detactive_db)
     .await
     .map_err(|_| {
-        tokio::task::spawn(finish_story(user_uuid, ctx.clone()));
         DError::from("No content.", StatusCode::NO_CONTENT)
     })?
     .get::<Uuid, &str>("game_uuid");

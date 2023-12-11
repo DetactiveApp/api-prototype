@@ -20,7 +20,6 @@ use crate::{
 };
 
 async fn moai(Extension(ctx): Extension<ApiContext>) -> &'static str {
-    println!("{:?}", ctx.user);
     "🗿"
 }
 

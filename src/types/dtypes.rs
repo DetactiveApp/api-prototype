@@ -169,7 +169,7 @@ impl DStep {
             JOIN decisions ON steps.uuid = decisions.step_input_uuid
             LEFT JOIN waypoints ON steps.waypoint_uuid = waypoints.uuid
             WHERE steps.uuid = $1;",
-        )
+        ) 
         .bind(step_uuid)
         .fetch_all(db_pool)
         .await
@@ -180,13 +180,7 @@ impl DStep {
             )
         })?;
 
-        // Checks if necessary Step-Data is contained in DB
-        if rows.is_empty() {
-            return Err(DError::from(
-                format!("Could not find step: {}.", step_uuid).as_str(),
-                StatusCode::INTERNAL_SERVER_ERROR,
-            ));
-        }
+        // TODO Split steps, decisions and waypoints to make waypoints and decisions optional
 
         // Saves all decisions for current step
         let mut decisions = Vec::new();
@@ -207,6 +201,7 @@ impl DStep {
             rows[0].get("waypoint_place_override"),
         )
         .await?;
+
         let src = contentful::url(rows[0].get("step_asset_id")).await?;
 
         let waypoint_uuid: Option<Uuid> = rows[0].get("waypoint_uuid");
