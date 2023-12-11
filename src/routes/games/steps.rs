@@ -20,23 +20,17 @@ pub async fn post_game_next_step(
 ) -> Result<Json<DStep>, DError> {
     let user_uuid: Uuid = ctx.user.unwrap().uuid;
 
-    let rows = sqlx::query(
+    let game_uuid = sqlx::query(
         "SELECT uuid AS game_uuid FROM user_stories WHERE story_uuid = $1 AND user_uuid = $2 AND finished_at IS null AND deleted_at IS null;",
     )
     .bind(story_uuid)
     .bind(user_uuid)
-    .fetch_all(&ctx.detactive_db)
+    .fetch_one(&ctx.detactive_db)
     .await
     .map_err(|err| {
         DError::from(&err.to_string(), StatusCode::INTERNAL_SERVER_ERROR)
-    })?;
-
-    if rows.is_empty() {
-        finish_story(user_uuid, ctx).await?;
-        return Err(DError::from("No Content.", StatusCode::NO_CONTENT));
-    }
-
-    let game_uuid = rows[0].get::<Uuid, &str>("game_uuid");
+    })?
+    .get("game_uuid");
 
     let step = DStep::from_db(
         step_uuid,
@@ -49,12 +43,12 @@ pub async fn post_game_next_step(
     )
     .await?;
 
-    if step
-        .decisions
-        .iter()
-        .any(|decision| decision.step_output_uuid.is_none())
-    {
+    if step.decisions.is_empty() {
         finish_story(user_uuid, ctx).await?;
+        return Err(DError::from(
+            "You have reached the end of the story.",
+            StatusCode::NOT_FOUND,
+        ));
     }
 
     Ok(Json(step))
