@@ -45,10 +45,6 @@ pub async fn post_game_next_step(
 
     if step.decisions.is_empty() {
         finish_story(user_uuid, ctx).await?;
-        return Err(DError::from(
-            "You have reached the end of the story.",
-            StatusCode::NOT_FOUND,
-        ));
     }
 
     Ok(Json(step))
