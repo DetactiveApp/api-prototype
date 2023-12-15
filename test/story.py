@@ -1,7 +1,9 @@
 import requests
 import json
 
-URL = "https://api.detactive.de/v1"
+
+DEV = True
+URL = "http://localhost:3000/v1" if DEV else "https://api.detactive.de/v1"
 USER = "d13a9dfe-cb14-4c95-9a05-ab93eedf2e03"
 STORY = "9e125477-3a9e-4d39-ae63-5a09a50b614a"
 START_COORDS = [27.141910067839408, 88.2623210610715]

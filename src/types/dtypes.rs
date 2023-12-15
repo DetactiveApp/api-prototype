@@ -214,15 +214,31 @@ impl DStep {
             waypoint,
         };
 
-        // Open new step at user story steps
-        sqlx::query("INSERT INTO user_story_steps (user_story_uuid, step_uuid, latitude, longitude) VALUES ($1, $2, $3, $4);")
+        if sqlx::query("SELECT EXISTS(SELECT 1 FROM user_story_steps WHERE user_story_uuid = $1 AND step_uuid = $2);")
+            .bind(game_uuid)
+            .bind(step_uuid)
+            .fetch_one(db_pool)
+            .await
+            .map_err(|err| DError::from(&format!("Failed to check if step was already played: {}", err.to_string()), StatusCode::INTERNAL_SERVER_ERROR))?
+            .get::<bool, usize>(0) {
+                sqlx::query("UPDATE user_story_steps SET latitude = $1, longitude = $2, updated_at = CURRENT_TIMESTAMP, finished_at = null WHERE user_story_uuid = $3 AND step_uuid = $4;")
+                .bind(user_coordinates.lat)
+                .bind(user_coordinates.lon)
+                .bind(game_uuid)
+                .bind(step_uuid)
+                .execute(db_pool)
+                .await
+                .map_err(|err| DError::from(&format!("Failed to update user_story_step: {}", err.to_string()), StatusCode::INTERNAL_SERVER_ERROR))?;
+        } else {
+            sqlx::query("INSERT INTO user_story_steps (user_story_uuid, step_uuid, latitude, longitude) VALUES ($1, $2, $3, $4);")
             .bind(game_uuid)
             .bind(step_uuid)
             .bind(user_coordinates.lat)
             .bind(user_coordinates.lon)
             .execute(db_pool)
             .await
-            .map_err(|_| DError::from("Step already played.", StatusCode::INTERNAL_SERVER_ERROR))?;
+            .map_err(|err| DError::from(&format!("Failed to insert user_story_step: {}", err.to_string()), StatusCode::INTERNAL_SERVER_ERROR))?;
+        }
 
         // Close old user story step with current timestamp
         sqlx::query(
