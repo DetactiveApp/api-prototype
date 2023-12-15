@@ -1,14 +1,9 @@
 use super::latlon::{distance_to_latitude, distance_to_longitude, quad};
+use super::settings::{FALLBACK_RANDOM_RADIUS_M, POI_SEARCH_RADIUS_M};
 use crate::types::{DCoord, DError};
 use rand::{seq::SliceRandom, Rng};
 use reqwest::{self, StatusCode};
 use std::{collections::HashMap, env};
-
-const POI_SEARCH_RADIUS_M: f64 = 10.0;
-// DEFAULT 1000.0
-
-const FALLBACK_RANDOM_RADIUS_M: f64 = 10.0;
-// DEFAULT 10.0
 
 async fn fetch_features(
     lat: f64,
@@ -86,7 +81,8 @@ pub async fn near(
     let mapbox_token = &env::var("MAPBOX_TOKEN").expect("Mapbox access token not found.");
     let tag = tag.unwrap();
     let mut total_features: HashMap<String, DCoord> = HashMap::new();
-    let quad_positions: [[f64; 2]; 4] = quad(lat, lon, POI_SEARCH_RADIUS_M * 0.5);
+
+    let quad_positions: [[f64; 2]; 4] = quad([lat, lon], POI_SEARCH_RADIUS_M);
 
     for position in quad_positions {
         let features: HashMap<String, DCoord> =
