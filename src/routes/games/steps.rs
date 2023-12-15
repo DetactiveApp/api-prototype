@@ -44,13 +44,24 @@ pub async fn post_game_next_step(
     .await?;
 
     if step.decisions.is_empty() {
-        finish_story(user_uuid, ctx).await?;
+        finish_story(user_uuid, game_uuid, ctx).await?;
     }
 
     Ok(Json(step))
 }
 
-async fn finish_story(user_uuid: Uuid, ctx: ApiContext) -> Result<(), DError> {
+async fn finish_story(user_uuid: Uuid, game_uuid: Uuid, ctx: ApiContext) -> Result<(), DError> {
+    sqlx::query("UPDATE user_story_steps SET finished_at = CURRENT_TIMESTAMP WHERE user_story_uuid = $1 AND finished_at IS null;")
+        .bind(game_uuid)
+        .execute(&ctx.detactive_db)
+        .await
+        .map_err(|err| {
+            DError::from(
+                &(String::from("Failed to close last step: ") + &err.to_string()),
+                StatusCode::INTERNAL_SERVER_ERROR,
+            )
+        })?;
+
     sqlx::query(
         "UPDATE user_stories SET finished_at = CURRENT_TIMESTAMP WHERE deleted_at IS null AND finished_at IS null AND user_uuid = $1;",
     )
