@@ -9,6 +9,7 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 ***************************************************/
 
 CREATE TYPE MEDIATYPE AS ENUM ('audio', 'image', 'video');
+CREATE TYPE ENDINGTYPE AS ENUM ( 'success', 'failure');
 
 /***************************************************
 **----------------- CREATE TABLES ----------------**
@@ -22,7 +23,8 @@ CREATE TABLE decisions (
 );
 
 CREATE TABLE users (
-  uuid UUID DEFAULT uuid_generate_v4() PRIMARY KEY
+  uuid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  email VARCHAR(320)
 );
 
 CREATE TABLE user_stories (
@@ -52,7 +54,8 @@ CREATE TABLE steps (
   asset_id VARCHAR(254),
   description VARCHAR(512) NOT NULL,
   media_type MEDIATYPE,
-  title VARCHAR(120) NOT NULL
+  title VARCHAR(120) NOT NULL,
+  ending ENDINGTYPE
 );
 
 CREATE TABLE stories (

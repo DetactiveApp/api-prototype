@@ -36,7 +36,7 @@ VALUES (
     /* place_override */    TRUE
 );
 
-INSERT INTO steps (uuid, story_uuid, waypoint_uuid, description, media_type, asset_id, title) 
+INSERT INTO steps (uuid, story_uuid, waypoint_uuid, description, media_type, asset_id, title, ending) 
 VALUES (
     /* uuid */          '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f1', 
     /* story_uuid */    '9e125477-3a9e-4d39-ae63-5a09a50b614a', 
@@ -44,10 +44,11 @@ VALUES (
     /* description */   'Du hast eine neue Audionachricht von deinem Kollegen erhalten. Höre sie dir an und folge der ersten Anweisung.',
     /* media_type */    'audio',
     /* asset_id */      '6Qkm11eg1tgqu1aJEFExKi',
-    /* title */         'Aufregende Nachricht'
+    /* title */         'Aufregende Nachricht',
+    /* ending */        NULL
 );
 
-INSERT INTO steps (uuid, story_uuid, waypoint_uuid, description, media_type, asset_id, title) 
+INSERT INTO steps (uuid, story_uuid, waypoint_uuid, description, media_type, asset_id, title, ending) 
 VALUES (
     /* uuid */          '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f2', 
     /* story_uuid */    '9e125477-3a9e-4d39-ae63-5a09a50b614a', 
@@ -55,10 +56,11 @@ VALUES (
     /* description */   'Du bist am Tatort angekommen. Sieh dir die Einzelheiten im Video an.',
     /* media_type */    'video',
     /* asset_id */      '3WHnU7SCQdr4jRZ781LVAk',
-    /* title */         'Der Tatort'
+    /* title */         'Der Tatort',
+    /* ending */        NULL
 );
 
-INSERT INTO steps (uuid, story_uuid, waypoint_uuid, description, media_type, asset_id, title) 
+INSERT INTO steps (uuid, story_uuid, waypoint_uuid, description, media_type, asset_id, title, ending) 
 VALUES (
     /* uuid */          '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f9', 
     /* story_uuid */    '9e125477-3a9e-4d39-ae63-5a09a50b614a', 
@@ -66,10 +68,11 @@ VALUES (
     /* description */   'Achte auf die Details im Video!',
     /* media_type */    NULL,
     /* asset_id */      NULL,
-    /* title */         'Dein Tipp'
+    /* title */         'Dein Tipp',
+    /* ending */        NULL
 );
 
-INSERT INTO steps (uuid, story_uuid, waypoint_uuid, description, media_type, asset_id, title) 
+INSERT INTO steps (uuid, story_uuid, waypoint_uuid, description, media_type, asset_id, title, ending) 
 VALUES (
     /* uuid */          '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f3', 
     /* story_uuid */    '9e125477-3a9e-4d39-ae63-5a09a50b614a', 
@@ -77,10 +80,11 @@ VALUES (
     /* description */   'Die Fingerabdrücke vom Tatort sind gesichert und werden ins Labor geschickt. Du hast eine neue Audionachricht von deinem Kollegen erhalten. Höre sie dir an und folge der ersten Anweisung.',
     /* media_type */    'audio',
     /* asset_id */      '3bUfBK9VECS0hBRBKeg2RA',
-    /* title */         'Neuigkeiten'
+    /* title */         'Neuigkeiten',
+    /* ending */        NULL
 );
 
-INSERT INTO steps (uuid, story_uuid, waypoint_uuid, description, media_type, asset_id, title) 
+INSERT INTO steps (uuid, story_uuid, waypoint_uuid, description, media_type, asset_id, title, ending) 
 VALUES (
     /* uuid */          '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f4', 
     /* story_uuid */    '9e125477-3a9e-4d39-ae63-5a09a50b614a', 
@@ -88,10 +92,11 @@ VALUES (
     /* description */   'Untersuche das Fahrzeug gründlich auf mögliche Spuren oder Beweise, die auf den Diebstahl hinweisen könnten. Du kannst dazu ein spezielles DNA-Analysenset verwenden, das in deinem Ermittlungsset enthalten ist. Sei gründlich und achte auf kleinste Details, um keine wichtigen Hinweise zu übersehen!',
     /* media_type */    'video',
     /* asset_id */      '6OL5xzmG5o7olCGSphaYQx',
-    /* title */         'Beweissammlung'
+    /* title */         'Beweissammlung',
+    /* ending */        NULL
 );
 
-INSERT INTO steps (uuid, story_uuid, waypoint_uuid, description, media_type, asset_id, title) 
+INSERT INTO steps (uuid, story_uuid, waypoint_uuid, description, media_type, asset_id, title, ending) 
 VALUES (
     /* uuid */          '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f5', 
     /* story_uuid */    '9e125477-3a9e-4d39-ae63-5a09a50b614a', 
@@ -99,11 +104,12 @@ VALUES (
     /* description */   'Nachdem du die Beweise und Spuren am Tatort und im verdächtigen Fahrzeug gesammelt hast, musst du sie schnell in das Forensiklabor bringen, um sie genauer zu analysieren.',
     /* media_type */    NULL,
     /* asset_id */      NULL,
-    /* title */         'Die Beweisanalyse'
+    /* title */         'Die Beweisanalyse',
+    /* ending */        NULL
 );
 
 
-INSERT INTO steps (uuid, story_uuid, waypoint_uuid, description, media_type, asset_id, title) 
+INSERT INTO steps (uuid, story_uuid, waypoint_uuid, description, media_type, asset_id, title, ending) 
 VALUES (
     /* uuid */          '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f6', 
     /* story_uuid */    '9e125477-3a9e-4d39-ae63-5a09a50b614a', 
@@ -111,10 +117,11 @@ VALUES (
     /* description */   'Das Laborpersonal hat Fingerabdrücke, DNA-Proben und Faserspuren analysiert. Wir haben einen Treffer.',
     /* media_type */    'image',
     /* asset_id */      '74GqGc6raMnMByXTeEG16A',
-    /* title */         'Forensiklabor'
+    /* title */         'Forensiklabor',
+    /* ending */        NULL
 );
 
-INSERT INTO steps (uuid, story_uuid, waypoint_uuid, description, media_type, asset_id, title) 
+INSERT INTO steps (uuid, story_uuid, waypoint_uuid, description, media_type, asset_id, title, ending) 
 VALUES (
     /* uuid */          '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f7', 
     /* story_uuid */    '9e125477-3a9e-4d39-ae63-5a09a50b614a', 
@@ -122,10 +129,11 @@ VALUES (
     /* description */   'Verständige sofort die Polizei und sei innerhalb von 10 Minuten in der Autowerkstatt. Achte auf die Zeit, denn der Täter versucht zu fliehen und muss schnell gefasst werden.',
     /* media_type */    NULL,
     /* asset_id */      NULL,
-    /* title */         'Kunstliebhaber gefunden'
+    /* title */         'Kunstliebhaber gefunden',
+    /* ending */        NULL
 );
 
-INSERT INTO steps (uuid, story_uuid, waypoint_uuid, description, media_type, asset_id, title) 
+INSERT INTO steps (uuid, story_uuid, waypoint_uuid, description, media_type, asset_id, title, ending) 
 VALUES (
     /* uuid */          '7a1d8a9a-2d51-4abe-baa9-b2ee5c13e3f8', 
     /* story_uuid */    '9e125477-3a9e-4d39-ae63-5a09a50b614a', 
@@ -133,7 +141,8 @@ VALUES (
     /* description */   'Du hast es rechtzeitig zum Festnahmeort geschafft. Die Polizei wird den Täter jetzt verhaften.',
     /* media_type */    'image',
     /* asset_id */      '5wRyGrBPwwQtaagIljrXXz',
-    /* title */         'Festnahme'
+    /* title */         'Festnahme',
+    /* ending */        'success'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 

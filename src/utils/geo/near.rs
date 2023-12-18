@@ -1,5 +1,5 @@
-use super::latlon::{distance_to_latitude, distance_to_longitude, quad};
-use super::settings::{FALLBACK_RANDOM_RADIUS_M, POI_SEARCH_RADIUS_M};
+use super::latlon::{distance_to_latitude, distance_to_longitude};
+use super::settings::POI_SEARCH_RADIUS_M;
 use crate::types::{DCoord, DError};
 use rand::{seq::SliceRandom, Rng};
 use reqwest::{self, StatusCode};
@@ -13,7 +13,7 @@ async fn fetch_features(
     let mut features: HashMap<String, DCoord> = HashMap::new();
 
     let url = format!(
-        "https://api.mapbox.com/v4/mapbox.mapbox-streets-v8/tilequery/{lon},{lat}.json?radius=1000&limit=50&layers=poi_label&access_token={mapbox_token}",
+        "https://api.mapbox.com/v4/mapbox.mapbox-streets-v8/tilequery/{lon},{lat}.json?radius={POI_SEARCH_RADIUS_M}&limit=50&layers=poi_label&access_token={mapbox_token}",
         lat = lat,
         lon = lon,
         mapbox_token = mapbox_token
@@ -79,24 +79,10 @@ pub async fn near(
     }
 
     let mapbox_token = &env::var("MAPBOX_TOKEN").expect("Mapbox access token not found.");
-    let tag = tag.unwrap();
-    let mut total_features: HashMap<String, DCoord> = HashMap::new();
-
-    let quad_positions: [[f64; 2]; 4] = quad([lat, lon], POI_SEARCH_RADIUS_M);
-
-    for position in quad_positions {
-        let features: HashMap<String, DCoord> =
-            fetch_features(position[0], position[1], mapbox_token).await?;
-
-        if tag != "random" && features.contains_key(&tag) {
-            return Ok(features.get(&tag).cloned());
-        }
-
-        total_features.extend(features);
-    }
+    let features: HashMap<String, DCoord> = fetch_features(lat, lon, mapbox_token).await?;
 
     let mut rng = rand::thread_rng();
-    let fallback_coord = total_features
+    let fallback_coord = features
         .values()
         .map(|value| value.to_owned())
         .collect::<Vec<DCoord>>()
@@ -104,10 +90,10 @@ pub async fn near(
         .cloned()
         .unwrap_or_else(|| {
             let lat: f64 = lat
-                + (distance_to_latitude(FALLBACK_RANDOM_RADIUS_M)
+                + (distance_to_latitude(POI_SEARCH_RADIUS_M as f64)
                     * if rng.gen_bool(0.5) { -1.0 } else { 1.0 });
             let lon: f64 = lon
-                + (distance_to_longitude(FALLBACK_RANDOM_RADIUS_M, lat)
+                + (distance_to_longitude(POI_SEARCH_RADIUS_M as f64, lat)
                     * if rng.gen_bool(0.5) { -1.0 } else { 1.0 });
             DCoord { lat, lon }
         });

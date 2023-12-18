@@ -6,7 +6,7 @@ use uuid::Uuid;
 
 use crate::utils::{contentful, geo::near};
 
-use super::{DError, MediaType};
+use super::{DError, EndingType, MediaType};
 
 #[derive(Debug, Serialize, Deserialize, Clone, Copy)]
 pub struct DUser {
@@ -143,6 +143,7 @@ pub struct DStep {
     pub title: String,
     pub decisions: Vec<DDecision>,
     pub waypoint: Option<DWaypoint>,
+    pub ending: Option<EndingType>,
 }
 
 impl DStep {
@@ -158,6 +159,7 @@ impl DStep {
                 steps.description AS step_description,
                 steps.media_type AS step_media_type,
                 steps.title AS step_title,
+                steps.ending AS step_ending,
                 waypoints.uuid AS waypoint_uuid,
                 waypoints.place_type AS waypoint_place_type,
                 waypoints.place_override AS waypoint_place_override
@@ -212,6 +214,7 @@ impl DStep {
             title: rows.get("step_title"),
             decisions,
             waypoint,
+            ending: rows.get("step_ending"),
         };
 
         if sqlx::query("SELECT EXISTS(SELECT 1 FROM user_story_steps WHERE user_story_uuid = $1 AND step_uuid = $2);")

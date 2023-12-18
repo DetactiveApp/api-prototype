@@ -14,7 +14,7 @@ pub async fn get_tags(lat: &f64, lon: &f64) -> Result<Vec<String>, DError> {
     let mut location_tags: Vec<String> = Vec::new();
 
     // Filters tags out of the requests for each quad coordinates
-    for coord in latlon::quad([*lat, *lon], POI_SEARCH_RADIUS_M).iter() {
+    for coord in latlon::quad([*lat, *lon], POI_SEARCH_RADIUS_M as f64).iter() {
         let lat: &f64 = coord.first().unwrap();
         let lon: &f64 = coord.get(1).unwrap();
 
