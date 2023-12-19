@@ -2,7 +2,7 @@ INSERT INTO stories (uuid, description, title, asset_id, active)
 VALUES (
     /* uuid */          'c9aaa81b-9b13-44ac-96cf-a8aa7c3a0099', 
     /* description */   'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam.', 
-    /* title */         'Bombenanschlag', 
+    /* title */         'Bombenfund', 
     /* asset_id */      '4Y2KxoTIpnsHgXoUKBBph2',
     /* active */        TRUE
 );
