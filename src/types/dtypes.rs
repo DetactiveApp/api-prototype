@@ -6,10 +6,7 @@ use uuid::Uuid;
 
 use crate::utils::{
     contentful,
-    geo::{
-        angle_between_coords, destination_from_angle, near, POI_SEARCH_ANGLE_DEG,
-        POI_SEARCH_RADIUS_M,
-    },
+    geo::{d_angle, destination_coordinate, near, POI_SEARCH_ANGLE_DEG, POI_SEARCH_RADIUS_M},
 };
 
 use super::{DError, EndingType, MediaType};
@@ -72,7 +69,7 @@ pub struct DWaypoint {
 impl DWaypoint {
     pub async fn from_db(
         step_uuid: Uuid,
-        user_coordinates: DCoord,
+        coordinates: DCoord,
         db_pool: &PgPool,
     ) -> Result<Option<Self>, DError> {
         match sqlx::query(
@@ -92,8 +89,8 @@ impl DWaypoint {
                 uuid: row.get("uuid"),
                 coordinates: near(
                     row.get("place_type"),
-                    user_coordinates.lat,
-                    user_coordinates.lon,
+                    coordinates.lat,
+                    coordinates.lon,
                     row.get("place_override"),
                 )
                 .await?,
@@ -204,11 +201,11 @@ impl DStep {
             .await {
                 Ok(row) => {
                     let mut rng = rand::thread_rng();
-                    let angle = angle_between_coords(
+                    let angle = d_angle(
                         [user_coordinates.lat, user_coordinates.lon],
                         [row.get("latitude"), row.get("longitude")],
-                    ) + rng.gen_range(-POI_SEARCH_ANGLE_DEG..POI_SEARCH_ANGLE_DEG);
-                    let coordinates = destination_from_angle([user_coordinates.lat, user_coordinates.lon], angle, POI_SEARCH_RADIUS_M * 2.0);
+                    ) + (rng.gen_range(-POI_SEARCH_ANGLE_DEG..POI_SEARCH_ANGLE_DEG) * 0.5);
+                    let coordinates = destination_coordinate([user_coordinates.lat, user_coordinates.lon], angle, POI_SEARCH_RADIUS_M);
                     DCoord {
                     lat: coordinates[0],
                     lon: coordinates[1],

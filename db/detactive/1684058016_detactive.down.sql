@@ -29,3 +29,10 @@ DROP TABLE decisions, users, user_stories, user_story_steps, steps, stories, way
 ***************************************************/
 
 DROP TYPE IF EXISTS MEDIATYPE;
+DROP TYPE IF EXISTS ENDINGTYPE;
+
+/***************************************************
+**--------------- REMOVE EXTENSIONS --------------**
+***************************************************/
+
+DROP EXTENSION IF EXISTS "uuid-ossp"
