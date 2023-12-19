@@ -4,7 +4,13 @@ use serde::{Deserialize, Serialize};
 use sqlx::{PgPool, Row};
 use uuid::Uuid;
 
-use crate::utils::{contentful, geo::near};
+use crate::utils::{
+    contentful,
+    geo::{
+        angle_between_coords, destination_from_angle, near, POI_SEARCH_ANGLE_DEG,
+        POI_SEARCH_RADIUS_M,
+    },
+};
 
 use super::{DError, MediaType};
 
@@ -190,18 +196,34 @@ impl DStep {
                 })
                 .collect();
 
-        let coordinates: Option<DCoord> = near(
-            rows.get("waypoint_place_type"),
-            user_coordinates.lat,
-            user_coordinates.lon,
-            rows.get("waypoint_place_override"),
-        )
-        .await?;
+        let coordinates = match sqlx::query("SELECT latitude, longitude FROM user_story_steps WHERE user_story_uuid = $1 and finished_at IS null;")
+            .bind(game_uuid)
+            .fetch_one(db_pool)
+            .await {
+                Ok(row) => {
+                    let mut rng = rand::thread_rng();
+                    let angle = angle_between_coords(
+                        [user_coordinates.lat, user_coordinates.lon],
+                        [row.get("latitude"), row.get("longitude")],
+                    ) + rng.gen_range(-POI_SEARCH_ANGLE_DEG..POI_SEARCH_ANGLE_DEG);
+                    let coordinates = destination_from_angle([user_coordinates.lat, user_coordinates.lon], angle, POI_SEARCH_RADIUS_M * 2.0);
+                    DCoord {
+                    lat: coordinates[0],
+                    lon: coordinates[1],
+                }},
+                _ => DCoord {
+                    lat: user_coordinates.lat,
+                    lon: user_coordinates.lon,
+                },
+            };
 
         let src = contentful::url(rows.get("step_asset_id")).await?;
 
         let waypoint_uuid: Option<Uuid> = rows.get("waypoint_uuid");
-        let waypoint: Option<DWaypoint> = waypoint_uuid.map(|uuid| DWaypoint { uuid, coordinates });
+        let waypoint: Option<DWaypoint> = waypoint_uuid.map(|uuid| DWaypoint {
+            uuid,
+            coordinates: Some(coordinates),
+        });
 
         // Builds DStep
         let step: DStep = DStep {
