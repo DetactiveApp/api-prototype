@@ -10,6 +10,7 @@ pub fn distance_to_longitude(distance_m: f64, latitude: f64) -> f64 {
     longitude_change.to_degrees()
 }
 
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 // Returns 4 corner points of the given centered coords in a given radius.
 pub fn quad(lat: f64, lon: f64, radius_m: f64) -> [[f64; 2]; 4] {
@@ -46,15 +47,19 @@ pub fn destination_from_angle(origin: [f64; 2], angle: f64, distance_m: f64) -> 
 /// Returns 4 corner points of the given centered coords in a given radius.
 pub fn quad(origin: [f64; 2], radius_m: f64) -> [[f64; 2]; 4] {
 >>>>>>> Stashed changes
+=======
+/// Returns 4 corner points of the given centered coords in a given radius.
+pub fn quad(origin: [f64; 2], radius_m: f64) -> [[f64; 2]; 4] {
+>>>>>>> 7d55988e0b2c10cd04b0a5ffbbb6a7036ec17b5d
     // Converts radius in meter to latitude and longitude degrees
-    let d_lan = distance_to_latitude(radius_m);
-    let d_lon = distance_to_longitude(radius_m, lat);
+    let d_lat = distance_to_latitude(radius_m + 1000.0);
+    let d_lon = distance_to_longitude(radius_m + 1000.0, d_lat);
 
     // Quad Mask out of coordinates around the user position
     [
-        [lat + d_lan, lon - d_lon],
-        [lat + d_lan, lon + d_lon],
-        [lat - d_lan, lon + d_lon],
-        [lat - d_lan, lon - d_lon],
+        [origin[0] + d_lat, origin[1] - d_lon],
+        [origin[0] + d_lat, origin[1] + d_lon],
+        [origin[0] - d_lat, origin[1] + d_lon],
+        [origin[0] - d_lat, origin[1] - d_lon],
     ]
 }

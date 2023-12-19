@@ -3,7 +3,7 @@ use std::env;
 
 pub async fn detactive_pool() -> PgPool {
     PgPoolOptions::new()
-        .max_connections(100)
+        .max_connections(10000)
         .connect(&env::var("DETACTIVE_DB").expect("Could not find DETACTIVE_DB."))
         .await
         .expect("Error during detactive-db connection pool initialization.")
