@@ -14,15 +14,8 @@ async fn fetch_features(
 
     let radius = f64::clamp(POI_SEARCH_RADIUS_M * 0.5, 1.0, 1000.0);
     let url = format!(
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-        "https://api.mapbox.com/v4/mapbox.mapbox-streets-v8/tilequery/{lon},{lat}.json?radius=1000&limit=50&layers=poi_label&access_token={mapbox_token}",
-=======
         "https://api.mapbox.com/v4/mapbox.mapbox-streets-v8/tilequery/{lon},{lat}.json?radius={radius}&limit=50&layers=poi_label&access_token={mapbox_token}",
->>>>>>> Stashed changes
-=======
-        "https://api.mapbox.com/v4/mapbox.mapbox-streets-v8/tilequery/{lon},{lat}.json?radius={POI_SEARCH_RADIUS_M}&limit=50&layers=poi_label&access_token={mapbox_token}",
->>>>>>> 7d55988e0b2c10cd04b0a5ffbbb6a7036ec17b5d
+
         lat = lat,
         lon = lon,
         mapbox_token = mapbox_token
@@ -99,24 +92,10 @@ pub async fn near(
         .cloned()
         .unwrap_or_else(|| {
             let lat: f64 = lat
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-                + (distance_to_latitude(FALLBACK_RANDOM_RADIUS_M)
-                    * if rng.gen_bool(0.5) { -1.0 } else { 1.0 });
-            let lon: f64 = lon
-                + (distance_to_longitude(FALLBACK_RANDOM_RADIUS_M, lat)
-=======
                 + (distance_to_latitude(POI_SEARCH_RADIUS_M * 0.5)
                     * if rng.gen_bool(0.5) { -1.0 } else { 1.0 });
             let lon: f64 = lon
                 + (distance_to_longitude(POI_SEARCH_RADIUS_M * 0.5, lat)
->>>>>>> Stashed changes
-=======
-                + (distance_to_latitude(POI_SEARCH_RADIUS_M as f64)
-                    * if rng.gen_bool(0.5) { -1.0 } else { 1.0 });
-            let lon: f64 = lon
-                + (distance_to_longitude(POI_SEARCH_RADIUS_M as f64, lat)
->>>>>>> 7d55988e0b2c10cd04b0a5ffbbb6a7036ec17b5d
                     * if rng.gen_bool(0.5) { -1.0 } else { 1.0 });
             DCoord { lat, lon }
         });
