@@ -90,7 +90,7 @@ pub async fn post_game_start(
                 lat: user_coordinates.lat,
                 lon: user_coordinates.lon,
             },
-            &ctx.detactive_db,
+            &ctx.detactive_db
         )
         .await?,
     ))

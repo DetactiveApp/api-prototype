@@ -26,12 +26,3 @@ To start the development server, just run the following shell:
 | API      | http://localhost:3000/ |
 | Postgres | http://localhost:5432/ |
 | PgAdmin  | http://localhost:5050/ |
-
-=======
-
-## Local Services:
-
-| Service | Hostname + Port        |
-| ------- | ---------------------- |
-| API     | http://localhost:3000/ |
-| PgAdmin | http://localhost:5050/ |

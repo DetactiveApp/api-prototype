@@ -6,7 +6,7 @@ use uuid::Uuid;
 
 use crate::utils::{
     contentful,
-    geo::{d_angle, destination_coordinate, near, POI_SEARCH_ANGLE_DEG, POI_SEARCH_RADIUS_M},
+    geo::{d_angle, near, MAX_POI_SEARCH_RADIUS_M},
 };
 
 use super::{DError, EndingType, MediaType};
@@ -89,9 +89,10 @@ impl DWaypoint {
                 uuid: row.get("uuid"),
                 coordinates: near(
                     row.get("place_type"),
-                    coordinates.lat,
-                    coordinates.lon,
+                    &coordinates,
                     row.get("place_override"),
+                    180.0,
+                    MAX_POI_SEARCH_RADIUS_M,
                 )
                 .await?,
             })),
@@ -205,25 +206,29 @@ impl DStep {
         .await
         {
             Ok(row) => {
-                let mut rng = rand::thread_rng();
-                let angle = d_angle(
-                    [user_coordinates.lat, user_coordinates.lon],
-                    [row.get("latitude"), row.get("longitude")],
-                );
-                let coordinates = destination_coordinate(
-                    [user_coordinates.lat, user_coordinates.lon],
-                    angle,
-                    POI_SEARCH_RADIUS_M * 2.0,
-                );
-                DCoord {
-                    lat: coordinates[0],
-                    lon: coordinates[1],
-                }
+                let origin = DCoord {
+                    lat: row.get("latitude"),
+                    lon: row.get("longitude"),
+                };
+                near(
+                    rows.get("waypoint_place_type"),
+                    &origin,
+                    rows.get("waypoint_place_override"),
+                    d_angle(&origin, &user_coordinates),
+                    MAX_POI_SEARCH_RADIUS_M,
+                )
+                .await
+                .map_err(|_| DError::from("Failed to find waypoint.", StatusCode::NOT_FOUND))?
             }
-            _ => DCoord {
-                lat: user_coordinates.lat,
-                lon: user_coordinates.lon,
-            },
+            _ => near(
+                rows.get("waypoint_place_type"),
+                &user_coordinates,
+                rows.get("waypoint_place_override"),
+                180.0,
+                MAX_POI_SEARCH_RADIUS_M,
+            )
+            .await
+            .map_err(|_| DError::from("Failed to find waypoint.", StatusCode::NOT_FOUND))?,
         };
 
         let src = contentful::url(rows.get("step_asset_id")).await?;
@@ -231,7 +236,7 @@ impl DStep {
         let waypoint_uuid: Option<Uuid> = rows.get("waypoint_uuid");
         let waypoint: Option<DWaypoint> = waypoint_uuid.map(|uuid| DWaypoint {
             uuid,
-            coordinates: Some(coordinates),
+            coordinates: coordinates,
         });
 
         // Builds DStep

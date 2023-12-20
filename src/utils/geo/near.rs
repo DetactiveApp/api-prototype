@@ -1,18 +1,19 @@
-use super::latlon::{distance_to_latitude, distance_to_longitude};
-use super::settings::POI_SEARCH_RADIUS_M;
+use super::{destination_coordinate, MAX_POI_SEARCH_RADIUS_M};
 use crate::types::{DCoord, DError};
 use rand::seq::SliceRandom;
 use reqwest::{self, StatusCode};
 use std::{collections::HashMap, env};
 
 async fn fetch_features(
-    lat: f64,
-    lon: f64,
+    origin: &DCoord,
+    radius: f64,
     mapbox_token: &str,
 ) -> Result<HashMap<String, DCoord>, DError> {
     let mut features: HashMap<String, DCoord> = HashMap::new();
 
-    let radius = f64::clamp(POI_SEARCH_RADIUS_M * 0.5, 1.0, 1000.0);
+    let lat = origin.lat;
+    let lon = origin.lon;
+
     let url = format!(
         "https://api.mapbox.com/v4/mapbox.mapbox-streets-v8/tilequery/{lon},{lat}.json?radius={radius}&limit=50&layers=poi_label&access_token={mapbox_token}",
         lat = lat,
@@ -71,16 +72,20 @@ async fn fetch_features(
 
 pub async fn near(
     tag: Option<String>,
-    lat: f64,
-    lon: f64,
+    origin: &DCoord,
     place_override: Option<bool>,
+    angle: f64,
+    distance: f64,
 ) -> Result<Option<DCoord>, DError> {
     if tag.is_none() || place_override.is_none() {
         return Ok(None);
     }
 
+    let new_origin = destination_coordinate(origin, angle, distance);
+
     let mapbox_token = &env::var("MAPBOX_TOKEN").expect("Mapbox access token not found.");
-    let features: HashMap<String, DCoord> = fetch_features(lat, lon, mapbox_token).await?;
+    let features: HashMap<String, DCoord> =
+        fetch_features(&new_origin, MAX_POI_SEARCH_RADIUS_M, mapbox_token).await?;
 
     let mut rng = rand::thread_rng();
     let fallback_coord = features
@@ -89,11 +94,7 @@ pub async fn near(
         .collect::<Vec<DCoord>>()
         .choose(&mut rng)
         .cloned()
-        .unwrap_or_else(|| {
-            let lat: f64 = lat + (distance_to_latitude(POI_SEARCH_RADIUS_M * 0.5));
-            let lon: f64 = lon + (distance_to_longitude(POI_SEARCH_RADIUS_M * 0.5, lat));
-            DCoord { lat, lon }
-        });
+        .unwrap_or_else(|| new_origin);
 
     Ok(Some(fallback_coord))
 }
