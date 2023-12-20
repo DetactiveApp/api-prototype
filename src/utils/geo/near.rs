@@ -15,7 +15,6 @@ async fn fetch_features(
     let radius = f64::clamp(POI_SEARCH_RADIUS_M * 0.25, 1.0, 1000.0);
     let url = format!(
         "https://api.mapbox.com/v4/mapbox.mapbox-streets-v8/tilequery/{lon},{lat}.json?radius={radius}&limit=50&layers=poi_label&access_token={mapbox_token}",
-
         lat = lat,
         lon = lon,
         mapbox_token = mapbox_token

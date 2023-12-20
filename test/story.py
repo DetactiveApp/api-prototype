@@ -1,17 +1,22 @@
+import matplotlib.pyplot as plt
 import requests
 import json
 
 
 DEV = False
+PLOT_ROUTE = True
 URL = "http://localhost:3000/v1" if DEV else "https://api.detactive.de/v1"
 USER = "a191d39f-c6e1-4314-8c47-4602deec9f7f"
 STORY = "9e125477-3a9e-4d39-ae63-5a09a50b614a"
 START_COORDS = [40.71266044, -74.05703505]
 
+coordinates = []
+
 def print_step(r_json):
     print(f"Step: {r_json['uuid']}")
     print(f"Title: {r_json['title']}")
     if r_json["waypoint"]:
+        coordinates.append([r_json["waypoint"]["coordinates"]["lat"], r_json["waypoint"]["coordinates"]["lon"]])
         print(f"Coords: {r_json['waypoint']['coordinates']['lat']} {r_json['waypoint']['coordinates']['lon']}")
     print("\n")
 
@@ -46,4 +51,8 @@ while True:
         print("DONE")
         break
 
-
+# Plot the coordinates on a map if POLOT_ROUTE is True and connect them with a line but mark the single points
+if PLOT_ROUTE:
+    plt.plot([x[1] for x in coordinates], [x[0] for x in coordinates], 'ro')
+    plt.plot([x[1] for x in coordinates], [x[0] for x in coordinates], 'b-')
+    plt.show()
