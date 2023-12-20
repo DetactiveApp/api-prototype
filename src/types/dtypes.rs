@@ -209,7 +209,7 @@ impl DStep {
                 let angle = d_angle(
                     [user_coordinates.lat, user_coordinates.lon],
                     [row.get("latitude"), row.get("longitude")],
-                ) + (rng.gen_range(-POI_SEARCH_ANGLE_DEG..POI_SEARCH_ANGLE_DEG) * 0.5);
+                );
                 let coordinates = destination_coordinate(
                     [user_coordinates.lat, user_coordinates.lon],
                     angle,

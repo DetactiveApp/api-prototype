@@ -1,7 +1,7 @@
 use super::latlon::{distance_to_latitude, distance_to_longitude};
 use super::settings::POI_SEARCH_RADIUS_M;
 use crate::types::{DCoord, DError};
-use rand::{seq::SliceRandom, Rng};
+use rand::seq::SliceRandom;
 use reqwest::{self, StatusCode};
 use std::{collections::HashMap, env};
 
