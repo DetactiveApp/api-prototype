@@ -195,26 +195,36 @@ impl DStep {
                 })
                 .collect();
 
-        let coordinates = match sqlx::query("SELECT latitude, longitude FROM user_story_steps WHERE user_story_uuid = $1 and finished_at IS null;")
-            .bind(game_uuid)
-            .fetch_one(db_pool)
-            .await {
-                Ok(row) => {
-                    let mut rng = rand::thread_rng();
-                    let angle = d_angle(
-                        [user_coordinates.lat, user_coordinates.lon],
-                        [row.get("latitude"), row.get("longitude")],
-                    ) + (rng.gen_range(-POI_SEARCH_ANGLE_DEG..POI_SEARCH_ANGLE_DEG) * 0.5);
-                    let coordinates = destination_coordinate([user_coordinates.lat, user_coordinates.lon], angle, POI_SEARCH_RADIUS_M);
-                    DCoord {
+        let coordinates = match sqlx::query(
+            "SELECT user_story_steps.latitude, user_story_steps.longitude FROM user_story_steps
+        LEFT JOIN steps ON steps.uuid = user_story_steps.step_uuid
+        WHERE user_story_uuid = $1 AND steps.waypoint_uuid IS NOT NULL;",
+        )
+        .bind(game_uuid)
+        .fetch_one(db_pool)
+        .await
+        {
+            Ok(row) => {
+                let mut rng = rand::thread_rng();
+                let angle = d_angle(
+                    [user_coordinates.lat, user_coordinates.lon],
+                    [row.get("latitude"), row.get("longitude")],
+                ) + (rng.gen_range(-POI_SEARCH_ANGLE_DEG..POI_SEARCH_ANGLE_DEG) * 0.5);
+                let coordinates = destination_coordinate(
+                    [user_coordinates.lat, user_coordinates.lon],
+                    angle,
+                    POI_SEARCH_RADIUS_M,
+                );
+                DCoord {
                     lat: coordinates[0],
                     lon: coordinates[1],
-                }},
-                _ => DCoord {
-                    lat: user_coordinates.lat,
-                    lon: user_coordinates.lon,
-                },
-            };
+                }
+            }
+            _ => DCoord {
+                lat: user_coordinates.lat,
+                lon: user_coordinates.lon,
+            },
+        };
 
         let src = contentful::url(rows.get("step_asset_id")).await?;
 
