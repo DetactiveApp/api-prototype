@@ -2,11 +2,11 @@ import requests
 import json
 
 
-DEV = True
+DEV = False
 URL = "http://localhost:3000/v1" if DEV else "https://api.detactive.de/v1"
-USER = "d13a9dfe-cb14-4c95-9a05-ab93eedf2e03"
+USER = "a191d39f-c6e1-4314-8c47-4602deec9f7f"
 STORY = "9e125477-3a9e-4d39-ae63-5a09a50b614a"
-START_COORDS = [27.141910067839408, 88.2623210610715]
+START_COORDS = [40.71266044, -74.05703505]
 
 def print_step(r_json):
     print(f"Step: {r_json['uuid']}")
