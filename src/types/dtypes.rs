@@ -213,7 +213,7 @@ impl DStep {
                 let coordinates = destination_coordinate(
                     [user_coordinates.lat, user_coordinates.lon],
                     angle,
-                    POI_SEARCH_RADIUS_M,
+                    POI_SEARCH_RADIUS_M * 2.0,
                 );
                 DCoord {
                     lat: coordinates[0],

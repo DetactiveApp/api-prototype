@@ -53,6 +53,7 @@ while True:
 
 # Plot the coordinates on a map if POLOT_ROUTE is True and connect them with a line but mark the single points
 if PLOT_ROUTE:
+    plt.title("Detactive Story WP-Paths")
     plt.plot([x[1] for x in coordinates], [x[0] for x in coordinates], 'ro')
     plt.plot([x[1] for x in coordinates], [x[0] for x in coordinates], 'b-')
     plt.show()

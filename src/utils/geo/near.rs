@@ -12,7 +12,7 @@ async fn fetch_features(
 ) -> Result<HashMap<String, DCoord>, DError> {
     let mut features: HashMap<String, DCoord> = HashMap::new();
 
-    let radius = f64::clamp(POI_SEARCH_RADIUS_M * 0.25, 1.0, 1000.0);
+    let radius = f64::clamp(POI_SEARCH_RADIUS_M * 0.5, 1.0, 1000.0);
     let url = format!(
         "https://api.mapbox.com/v4/mapbox.mapbox-streets-v8/tilequery/{lon},{lat}.json?radius={radius}&limit=50&layers=poi_label&access_token={mapbox_token}",
         lat = lat,
@@ -90,12 +90,8 @@ pub async fn near(
         .choose(&mut rng)
         .cloned()
         .unwrap_or_else(|| {
-            let lat: f64 = lat
-                + (distance_to_latitude(POI_SEARCH_RADIUS_M * 0.5)
-                    * if rng.gen_bool(0.5) { -1.0 } else { 1.0 });
-            let lon: f64 = lon
-                + (distance_to_longitude(POI_SEARCH_RADIUS_M * 0.5, lat)
-                    * if rng.gen_bool(0.5) { -1.0 } else { 1.0 });
+            let lat: f64 = lat + (distance_to_latitude(POI_SEARCH_RADIUS_M * 0.5));
+            let lon: f64 = lon + (distance_to_longitude(POI_SEARCH_RADIUS_M * 0.5, lat));
             DCoord { lat, lon }
         });
 
