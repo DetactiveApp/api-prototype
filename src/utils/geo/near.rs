@@ -1,4 +1,4 @@
-use super::{destination_coordinate, MAX_POI_SEARCH_RADIUS_M};
+use super::{destination_coordinate, MAX_POI_SEARCH_RADIUS_M, MIN_POI_SEARCH_RADIUS_M};
 use crate::types::{DCoord, DError};
 use rand::seq::SliceRandom;
 use reqwest::{self, StatusCode};
@@ -84,8 +84,13 @@ pub async fn near(
     let new_origin = destination_coordinate(origin, angle, distance);
 
     let mapbox_token = &env::var("MAPBOX_TOKEN").expect("Mapbox access token not found.");
-    let features: HashMap<String, DCoord> =
-        fetch_features(&new_origin, MAX_POI_SEARCH_RADIUS_M, mapbox_token).await?;
+    let features: HashMap<String, DCoord> = fetch_features(
+        &new_origin,
+        fastrand::f64() * (MAX_POI_SEARCH_RADIUS_M - MIN_POI_SEARCH_RADIUS_M)
+            + MIN_POI_SEARCH_RADIUS_M,
+        mapbox_token,
+    )
+    .await?;
 
     let mut rng = rand::thread_rng();
     let fallback_coord = features

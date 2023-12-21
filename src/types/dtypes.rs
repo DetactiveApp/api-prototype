@@ -6,7 +6,7 @@ use uuid::Uuid;
 
 use crate::utils::{
     contentful,
-    geo::{d_angle, near, MAX_POI_SEARCH_RADIUS_M},
+    geo::{d_angle, near, MAX_POI_SEARCH_RADIUS_M, MIN_POI_SEARCH_RADIUS_M},
 };
 
 use super::{DError, EndingType, MediaType};
@@ -91,8 +91,9 @@ impl DWaypoint {
                     row.get("place_type"),
                     &coordinates,
                     row.get("place_override"),
-                    180.0,
-                    MAX_POI_SEARCH_RADIUS_M,
+                    fastrand::f64() * 360.0,
+                    fastrand::f64() * (MAX_POI_SEARCH_RADIUS_M - MIN_POI_SEARCH_RADIUS_M)
+                        + MIN_POI_SEARCH_RADIUS_M,
                 )
                 .await?,
             })),
@@ -215,7 +216,8 @@ impl DStep {
                     &origin,
                     rows.get("waypoint_place_override"),
                     d_angle(&origin, &user_coordinates),
-                    MAX_POI_SEARCH_RADIUS_M,
+                    fastrand::f64() * (MAX_POI_SEARCH_RADIUS_M - MIN_POI_SEARCH_RADIUS_M)
+                        + MIN_POI_SEARCH_RADIUS_M,
                 )
                 .await
                 .map_err(|_| DError::from("Failed to find waypoint.", StatusCode::NOT_FOUND))?
@@ -224,8 +226,9 @@ impl DStep {
                 rows.get("waypoint_place_type"),
                 &user_coordinates,
                 rows.get("waypoint_place_override"),
-                180.0,
-                MAX_POI_SEARCH_RADIUS_M,
+                fastrand::f64() * 360.0,
+                fastrand::f64() * (MAX_POI_SEARCH_RADIUS_M - MIN_POI_SEARCH_RADIUS_M)
+                    + MIN_POI_SEARCH_RADIUS_M,
             )
             .await
             .map_err(|_| DError::from("Failed to find waypoint.", StatusCode::NOT_FOUND))?,

@@ -1,4 +1,4 @@
-pub const _MIN_POI_SEARCH_RADIUS_M: f64 = 140.0;
+pub const MIN_POI_SEARCH_RADIUS_M: f64 = 140.0;
 // DEFAULT 140.0
 
 pub const MAX_POI_SEARCH_RADIUS_M: f64 = 500.0;
