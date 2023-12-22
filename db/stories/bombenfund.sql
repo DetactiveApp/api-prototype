@@ -400,6 +400,18 @@ VALUES (
     /* waypoint_uuid */ NULL,
     /* description */   'Lorem ipsum',
     /* media_type */    'audio',
+    /* asset_id */      '5AejHmKxmol8DWcT0At3vS',
+    /* title */         'Lorem ipsum',
+    /* ending */        NULL
+);
+
+INSERT INTO steps (uuid, story_uuid, waypoint_uuid, description, media_type, asset_id, title, ending) 
+VALUES (
+    /* uuid */          '36158640-69d1-43ef-a993-f59a0373fd6d', 
+    /* story_uuid */    'c9aaa81b-9b13-44ac-96cf-a8aa7c3a0099', 
+    /* waypoint_uuid */ NULL,
+    /* description */   'Lorem ipsum',
+    /* media_type */    'image',
     /* asset_id */      '2t1OM77nd5CX6sIw6YCoOx',
     /* title */         'Lorem ipsum',
     /* ending */        NULL
@@ -489,7 +501,7 @@ VALUES (
     /* uuid */              '8bce1c48-9617-46e9-87b7-bc6e1239b5da',
     /* step_input_uuid */   '35708dc7-3c79-471c-aab5-56e7c3d750b6',
     /* step_output_uuid */  '53d78682-c51c-4b81-88ae-276d8413c376',
-    /* title */             'Ich brauche Hilfe'
+    /* title */             'Ich brauche Hilfe beim entschlüsseln'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -497,7 +509,7 @@ VALUES (
     /* uuid */              '0764d7ea-e0db-458b-bdb4-03bb5e7d4e2b',
     /* step_input_uuid */   '35708dc7-3c79-471c-aab5-56e7c3d750b6',
     /* step_output_uuid */  'cb797897-1a92-468c-b3c6-f804c1383466',
-    /* title */             'Ja'
+    /* title */             'Ich brauche keine Hilfe beim entschlüsseln'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -505,7 +517,7 @@ VALUES (
     /* uuid */              '6395aa96-092c-4493-a1dd-5d7fb9a0abf4',
     /* step_input_uuid */   '53d78682-c51c-4b81-88ae-276d8413c376',
     /* step_output_uuid */  'f7f653b5-d88b-4d47-a3a1-22d4432855dc',
-    /* title */             'Brücke'
+    /* title */             'Der Anschlag findet an der Brücke statt'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -513,7 +525,7 @@ VALUES (
     /* uuid */              'c39eaddf-160c-448d-b5c8-c1e64dfaf201',
     /* step_input_uuid */   '53d78682-c51c-4b81-88ae-276d8413c376',
     /* step_output_uuid */  'deb6cf10-05e6-41ba-a312-34659959cc0c',
-    /* title */             'Rathaus'
+    /* title */             'Der Anschlag findet am Rathaus statt'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -521,7 +533,7 @@ VALUES (
     /* uuid */              '5370bb1a-f953-4658-ad4d-39336644025a',
     /* step_input_uuid */   '53d78682-c51c-4b81-88ae-276d8413c376',
     /* step_output_uuid */  'f7f653b5-d88b-4d47-a3a1-22d4432855dc',
-    /* title */             'Industriegebiet'
+    /* title */             'Der Anschlag findet im Industriegebiet statt'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -529,7 +541,7 @@ VALUES (
     /* uuid */              '1182eaeb-48d3-49d5-8808-d417b9b23923',
     /* step_input_uuid */   '53d78682-c51c-4b81-88ae-276d8413c376',
     /* step_output_uuid */  'f7f653b5-d88b-4d47-a3a1-22d4432855dc',
-    /* title */             'Autobahn'
+    /* title */             'Der Anschlag findet an der Autobahn statt'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -537,7 +549,7 @@ VALUES (
     /* uuid */              '62c6ed86-6b94-4c46-b331-3b4fc72afe0f',
     /* step_input_uuid */   '53d78682-c51c-4b81-88ae-276d8413c376',
     /* step_output_uuid */  'f7f653b5-d88b-4d47-a3a1-22d4432855dc',
-    /* title */             'Bank'
+    /* title */             'Der Anschlag findet in der Bank statt'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -545,7 +557,7 @@ VALUES (
     /* uuid */              '3b9b464f-859c-4e73-8192-9ec19a0000cb',
     /* step_input_uuid */   '53d78682-c51c-4b81-88ae-276d8413c376',
     /* step_output_uuid */  'f7f653b5-d88b-4d47-a3a1-22d4432855dc',
-    /* title */             'Museum'
+    /* title */             'Der Anschlag findet im Museum statt'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -553,7 +565,7 @@ VALUES (
     /* uuid */              'f4256e09-13f4-4c72-b6b6-04075ea756f2',
     /* step_input_uuid */   '53d78682-c51c-4b81-88ae-276d8413c376',
     /* step_output_uuid */  'f7f653b5-d88b-4d47-a3a1-22d4432855dc',
-    /* title */             'Schwimmbad'
+    /* title */             'Der Anschlag findet im Schwimmbad statt'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -561,7 +573,7 @@ VALUES (
     /* uuid */              '0c605202-8b9f-4317-98f8-0a29440b9e99',
     /* step_input_uuid */   '53d78682-c51c-4b81-88ae-276d8413c376',
     /* step_output_uuid */  'f7f653b5-d88b-4d47-a3a1-22d4432855dc',
-    /* title */             'Hochhaus'
+    /* title */             'Der Anschlag findet im Hochhaus statt'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -569,7 +581,7 @@ VALUES (
     /* uuid */              'ba51a270-f641-4253-8dec-31fa491d8a0f',
     /* step_input_uuid */   '53d78682-c51c-4b81-88ae-276d8413c376',
     /* step_output_uuid */  'f7f653b5-d88b-4d47-a3a1-22d4432855dc',
-    /* title */             'Oper'
+    /* title */             'Der Anschlag findet in der Oper statt'
 );
 
 
@@ -578,7 +590,7 @@ VALUES (
     /* uuid */              '124b4640-98aa-4250-a710-3f26972145b2',
     /* step_input_uuid */   '53d78682-c51c-4b81-88ae-276d8413c376',
     /* step_output_uuid */  'f7f653b5-d88b-4d47-a3a1-22d4432855dc',
-    /* title */             'Uni'
+    /* title */             'Der Anschlag findet in der Uni statt'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -586,7 +598,7 @@ VALUES (
     /* uuid */              'dcb67bfe-0854-4dd9-9928-904ac83e89b2',
     /* step_input_uuid */   '53d78682-c51c-4b81-88ae-276d8413c376',
     /* step_output_uuid */  'f7f653b5-d88b-4d47-a3a1-22d4432855dc',
-    /* title */             'Fitnesstudio'
+    /* title */             'Der Anschlag findet im Fitnesstudio statt'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -594,7 +606,7 @@ VALUES (
     /* uuid */              '0864b7d0-dd42-4ae8-98fc-62a84212f3ab',
     /* step_input_uuid */   'cb797897-1a92-468c-b3c6-f804c1383466',
     /* step_output_uuid */  'f7f653b5-d88b-4d47-a3a1-22d4432855dc',
-    /* title */             'Brücke'
+    /* title */             'Der Anschlag findet an der Brücke statt'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -602,7 +614,7 @@ VALUES (
     /* uuid */              'dc13e4a2-59a8-4c2e-8446-6b127d91f278',
     /* step_input_uuid */   'cb797897-1a92-468c-b3c6-f804c1383466',
     /* step_output_uuid */  'deb6cf10-05e6-41ba-a312-34659959cc0c',
-    /* title */             'Rathaus'
+    /* title */             'Der Anschlag findet am Rathaus statt'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -610,7 +622,7 @@ VALUES (
     /* uuid */              '827056b4-ad5c-42bc-a147-989cd13478d1',
     /* step_input_uuid */   'cb797897-1a92-468c-b3c6-f804c1383466',
     /* step_output_uuid */  'f7f653b5-d88b-4d47-a3a1-22d4432855dc',
-    /* title */             'Industriegebiet'
+    /* title */             'Der Anschlag findet im Industriegebiet statt'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -618,7 +630,7 @@ VALUES (
     /* uuid */              '11d2aedc-570d-4357-9dcb-3e9bdf44ccb2',
     /* step_input_uuid */   'cb797897-1a92-468c-b3c6-f804c1383466',
     /* step_output_uuid */  'f7f653b5-d88b-4d47-a3a1-22d4432855dc',
-    /* title */             'Autobahn'
+    /* title */             'Der Anschlag findet an der Autobahn statt'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -626,7 +638,7 @@ VALUES (
     /* uuid */              '5db8d9d9-e2c4-4806-ac44-bb94a2e6da98',
     /* step_input_uuid */   'cb797897-1a92-468c-b3c6-f804c1383466',
     /* step_output_uuid */  'f7f653b5-d88b-4d47-a3a1-22d4432855dc',
-    /* title */             'Bank'
+    /* title */             'Der Anschlag findet in der Bank statt'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -634,7 +646,7 @@ VALUES (
     /* uuid */              'd19ae5c0-bec0-4765-9311-208df6f6ac7c',
     /* step_input_uuid */   'cb797897-1a92-468c-b3c6-f804c1383466',
     /* step_output_uuid */  'f7f653b5-d88b-4d47-a3a1-22d4432855dc',
-    /* title */             'Museum'
+    /* title */             'Der Anschlag findet im Museum statt'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -642,7 +654,7 @@ VALUES (
     /* uuid */              '7ffba1b3-9db7-45aa-b101-7d4ae1309dda',
     /* step_input_uuid */   'cb797897-1a92-468c-b3c6-f804c1383466',
     /* step_output_uuid */  'f7f653b5-d88b-4d47-a3a1-22d4432855dc',
-    /* title */             'Schwimmbad'
+    /* title */             'Der Anschlag findet im Schwimmbad statt'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -650,7 +662,7 @@ VALUES (
     /* uuid */              '43a273ff-f55b-477b-ba4c-d3f5d569d621',
     /* step_input_uuid */   'cb797897-1a92-468c-b3c6-f804c1383466',
     /* step_output_uuid */  'f7f653b5-d88b-4d47-a3a1-22d4432855dc',
-    /* title */             'Hochhaus'
+    /* title */             'Der Anschlag findet im Hochhaus statt'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -658,7 +670,7 @@ VALUES (
     /* uuid */              'e4dde383-c242-484c-bdc6-e01a38a32aff',
     /* step_input_uuid */   'cb797897-1a92-468c-b3c6-f804c1383466',
     /* step_output_uuid */  'f7f653b5-d88b-4d47-a3a1-22d4432855dc',
-    /* title */             'Oper'
+    /* title */             'Der Anschlag findet in der Oper statt'
 );
 
 
@@ -667,7 +679,7 @@ VALUES (
     /* uuid */              '42136d85-56be-4697-b36a-eac0ea63c601',
     /* step_input_uuid */   'cb797897-1a92-468c-b3c6-f804c1383466',
     /* step_output_uuid */  'f7f653b5-d88b-4d47-a3a1-22d4432855dc',
-    /* title */             'Uni'
+    /* title */             'Der Anschlag findet in der Uni statt'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -675,7 +687,7 @@ VALUES (
     /* uuid */              '7aa5740a-6658-4cb7-bc2c-9ba719b13e1d',
     /* step_input_uuid */   'cb797897-1a92-468c-b3c6-f804c1383466',
     /* step_output_uuid */  'f7f653b5-d88b-4d47-a3a1-22d4432855dc',
-    /* title */             'Fitnesstudio'
+    /* title */             'Der Anschlag findet im Fitnesstudio statt'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -691,7 +703,7 @@ VALUES (
     /* uuid */              'd939e2ec-57f0-432a-b702-0ac3bd5accf1',
     /* step_input_uuid */   '8fbce97b-6289-43ab-8cb0-719194d52650',
     /* step_output_uuid */  'ce288d71-818b-4f2d-8900-c048e3a5a093',
-    /* title */             'Ich brauche Hilfe'
+    /* title */             'Ich brauche Hilfe beim entschlüsseln des Codes'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -699,7 +711,7 @@ VALUES (
     /* uuid */              'da0c7732-ba26-4e01-9a8f-723b7c076342',
     /* step_input_uuid */   '8fbce97b-6289-43ab-8cb0-719194d52650',
     /* step_output_uuid */  '916946ca-830d-4dc5-baf3-7d8851bdd717',
-    /* title */             'Ja'
+    /* title */             'Ich brauche keine Hilfe beim entschlüsseln des Codes'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -965,7 +977,7 @@ VALUES (
     /* uuid */              'd3c47182-beef-4189-96ab-73269ae7abed',
     /* step_input_uuid */   '2861587e-aa37-4fa0-98d9-ec62f77601e0',
     /* step_output_uuid */  '732dfd3e-fbbe-4481-bea6-101cd54c9af5',
-    /* title */             'Der Täter hat eine Pistole'
+    /* title */             'Mir fällt auf, dass der Täter eine Pistole hat'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -973,7 +985,7 @@ VALUES (
     /* uuid */              '751eb262-0af2-4cca-844c-ef4d058ae069',
     /* step_input_uuid */   '2861587e-aa37-4fa0-98d9-ec62f77601e0',
     /* step_output_uuid */  '732dfd3e-fbbe-4481-bea6-101cd54c9af5',
-    /* title */             'Der Täter telefoniert'
+    /* title */             'Mir fällt auf, dass der Täter telefoniert'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -981,7 +993,7 @@ VALUES (
     /* uuid */              'a96a0ad7-6d4c-4afd-be31-be5cdd509220',
     /* step_input_uuid */   '2861587e-aa37-4fa0-98d9-ec62f77601e0',
     /* step_output_uuid */  '732dfd3e-fbbe-4481-bea6-101cd54c9af5',
-    /* title */             'Ein Komplize steht am Bildrand'
+    /* title */             'Mir fällt auf, dass ein Komplize am Bildrand steht'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -989,7 +1001,7 @@ VALUES (
     /* uuid */              '239f0e48-05b0-4795-be9b-64fc3bebb9f6',
     /* step_input_uuid */   '2861587e-aa37-4fa0-98d9-ec62f77601e0',
     /* step_output_uuid */  'f89ea2c8-a1b5-4ffc-b4cd-71733c068b1a',
-    /* title */             'Der Täter schmeißt eine Zigarette Weg'
+    /* title */             'Mir fällt auf, dass der Täter eine Zigarette weg schmeißt'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -997,7 +1009,7 @@ VALUES (
     /* uuid */              '3d78756f-e7c9-4c7b-a79c-c76a204222aa',
     /* step_input_uuid */   '2861587e-aa37-4fa0-98d9-ec62f77601e0',
     /* step_output_uuid */  '37482099-82c8-4465-aa26-dfc0f4228f1e',
-    /* title */             'Nichts wichtiges'
+    /* title */             'Mir fällt nichts wichtiges auf'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -1054,7 +1066,7 @@ VALUES (
     /* uuid */              'e64bf39e-2607-4226-a957-895743847354',
     /* step_input_uuid */   'd090087a-1d71-4510-9cb6-b8ded7ba7293',
     /* step_output_uuid */  '6a72359f-f41f-4c59-a553-63750dd9f9fd',
-    /* title */             'Person 1'
+    /* title */             'Person 1 ist der Täter'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -1062,7 +1074,7 @@ VALUES (
     /* uuid */              'f258c9b8-9763-40ce-956a-6788b5388575',
     /* step_input_uuid */   'd090087a-1d71-4510-9cb6-b8ded7ba7293',
     /* step_output_uuid */  'c2770352-445b-46ff-9d87-fe2b9591655a',
-    /* title */             'Person 2'
+    /* title */             'Person 2 ist der Täter'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -1070,7 +1082,7 @@ VALUES (
     /* uuid */              'afb94a76-44f9-4357-9b3b-5ec69d959603',
     /* step_input_uuid */   'd090087a-1d71-4510-9cb6-b8ded7ba7293',
     /* step_output_uuid */  'c2770352-445b-46ff-9d87-fe2b9591655a',
-    /* title */             'Person 3'
+    /* title */             'Person 3 ist der Täter'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -1078,7 +1090,7 @@ VALUES (
     /* uuid */              '09de471a-dcb5-4c42-abc4-d2103fb452ad',
     /* step_input_uuid */   'd090087a-1d71-4510-9cb6-b8ded7ba7293',
     /* step_output_uuid */  'c2770352-445b-46ff-9d87-fe2b9591655a',
-    /* title */             'Person 4'
+    /* title */             'Person 4 ist der Täter'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -1094,7 +1106,7 @@ VALUES (
     /* uuid */              'b2674bc5-79f9-4ccc-be2d-017048ef3b54',
     /* step_input_uuid */   'b8e5c48b-2f41-4e1f-b032-07e1ffc93fc7',
     /* step_output_uuid */  '88223449-b032-4833-ac07-d3a01e0f77ed',
-    /* title */             'Ich brauche Hilfe'
+    /* title */             'Mir fällt nichts besonders auf'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -1102,7 +1114,7 @@ VALUES (
     /* uuid */              '2aeb6023-2d43-4b31-9fc4-c19df7472f27',
     /* step_input_uuid */   'b8e5c48b-2f41-4e1f-b032-07e1ffc93fc7',
     /* step_output_uuid */  'd0839282-1ff2-437f-95d5-5a9388136a93',
-    /* title */             'Die Unorndung'
+    /* title */             'Mir fällt die Unordnung auf'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -1110,7 +1122,7 @@ VALUES (
     /* uuid */              '177d2256-103f-4d04-9ced-95909b3da710',
     /* step_input_uuid */   'b8e5c48b-2f41-4e1f-b032-07e1ffc93fc7',
     /* step_output_uuid */  'd0839282-1ff2-437f-95d5-5a9388136a93',
-    /* title */             'Ein Glas mit Lippenstift'
+    /* title */             'Mir fällt ein Glas mit Lippenstift auf'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -1118,7 +1130,7 @@ VALUES (
     /* uuid */              '556a88c7-6e7b-4f70-9d0f-22919d06f115',
     /* step_input_uuid */   'b8e5c48b-2f41-4e1f-b032-07e1ffc93fc7',
     /* step_output_uuid */  'd0839282-1ff2-437f-95d5-5a9388136a93',
-    /* title */             'Das Smartphone'
+    /* title */             'Mir fällt das Smartphone auf'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -1126,7 +1138,7 @@ VALUES (
     /* uuid */              '307aeb37-210b-43ed-849b-b5557059eea9',
     /* step_input_uuid */   'b8e5c48b-2f41-4e1f-b032-07e1ffc93fc7',
     /* step_output_uuid */  '497185e8-b6ee-4acc-8cde-410674938ed3',
-    /* title */             'Die Landkarte'
+    /* title */             'Mir fällt die Landkarte auf'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -1134,7 +1146,7 @@ VALUES (
     /* uuid */              'c688a223-2d17-43f2-85c3-a77bb77f9e6c',
     /* step_input_uuid */   'b8e5c48b-2f41-4e1f-b032-07e1ffc93fc7',
     /* step_output_uuid */  'd0839282-1ff2-437f-95d5-5a9388136a93',
-    /* title */             'Eine Pistole'
+    /* title */             'Mir fällt eine Pistole auf'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -1142,7 +1154,7 @@ VALUES (
     /* uuid */              'a0ed73de-e845-4bc0-86b9-5332276c91bd',
     /* step_input_uuid */   'b8e5c48b-2f41-4e1f-b032-07e1ffc93fc7',
     /* step_output_uuid */  'd0839282-1ff2-437f-95d5-5a9388136a93',
-    /* title */             'Das Familienfoto'
+    /* title */             'Mir fällt das Familienfoto auf' 
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -1150,7 +1162,7 @@ VALUES (
     /* uuid */              '349cdd6a-f4b9-4f0e-89bb-3089728b4f82',
     /* step_input_uuid */   'b8e5c48b-2f41-4e1f-b032-07e1ffc93fc7',
     /* step_output_uuid */  '599bd4db-fd99-4ae5-8556-551bf5893c12',
-    /* title */             'Die Zahlen an der Wand'
+    /* title */             'Mir fallen die Zahlen an der Wand auf'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -1158,7 +1170,7 @@ VALUES (
     /* uuid */              '2867a907-1631-4bde-8f13-5d8012b6cd52',
     /* step_input_uuid */   '88223449-b032-4833-ac07-d3a01e0f77ed',
     /* step_output_uuid */  'fbb27a56-7db7-4650-8177-5496a0f7fd01',
-    /* title */             'Die Unorndung'
+    /* title */             'Mir fällt die Unordnung auf'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -1166,7 +1178,7 @@ VALUES (
     /* uuid */              'f0aefe1a-d16e-41e0-92cf-f024d5029cf1',
     /* step_input_uuid */   '88223449-b032-4833-ac07-d3a01e0f77ed',
     /* step_output_uuid */  'fbb27a56-7db7-4650-8177-5496a0f7fd01',
-    /* title */             'Ein Glas mit Lippenstift'
+    /* title */             'Mir fällt ein Glas mit Lippenstift auf'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -1174,7 +1186,7 @@ VALUES (
     /* uuid */              'a2151866-4da6-47b6-b785-0902cda5527e',
     /* step_input_uuid */   '88223449-b032-4833-ac07-d3a01e0f77ed',
     /* step_output_uuid */  'fbb27a56-7db7-4650-8177-5496a0f7fd01',
-    /* title */             'Das Smartphone'
+    /* title */             'Mir fällt das Smartphone auf'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -1182,7 +1194,7 @@ VALUES (
     /* uuid */              '8493407c-c2a3-423e-b67f-9d3b84b47744',
     /* step_input_uuid */   '88223449-b032-4833-ac07-d3a01e0f77ed',
     /* step_output_uuid */  '497185e8-b6ee-4acc-8cde-410674938ed3',
-    /* title */             'Die Landkarte'
+    /* title */             'Mir fällt die Landkarte auf'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -1190,7 +1202,7 @@ VALUES (
     /* uuid */              '1c00464a-9644-4454-a290-9237cbd2a2c3',
     /* step_input_uuid */   '88223449-b032-4833-ac07-d3a01e0f77ed',
     /* step_output_uuid */  'fbb27a56-7db7-4650-8177-5496a0f7fd01',
-    /* title */             'Eine Pistole'
+    /* title */             'Mir fällt eine Pistole auf'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -1198,7 +1210,7 @@ VALUES (
     /* uuid */              'cb7d12fd-d5d6-406f-bbc4-55f72f433844',
     /* step_input_uuid */   '88223449-b032-4833-ac07-d3a01e0f77ed',
     /* step_output_uuid */  'fbb27a56-7db7-4650-8177-5496a0f7fd01',
-    /* title */             'Das Familienfoto'
+    /* title */             'Mir fällt das Familienfoto auf'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -1206,7 +1218,7 @@ VALUES (
     /* uuid */              '8f3b77f7-ad83-421c-9640-9fddbfb5247c',
     /* step_input_uuid */   '88223449-b032-4833-ac07-d3a01e0f77ed',
     /* step_output_uuid */  'b8e5c48b-2f41-4e1f-b032-07e1ffc93fc7',
-    /* title */             'Die Zahlen an der Wand'
+    /* title */             'Mir fallen die Zahlen an der Wand auf'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -1238,7 +1250,7 @@ VALUES (
     /* uuid */              'bd85fc6f-e683-47f4-a419-3ba24de2495b',
     /* step_input_uuid */   '497185e8-b6ee-4acc-8cde-410674938ed3',
     /* step_output_uuid */  'c2770352-445b-46ff-9d87-fe2b9591655a',
-    /* title */             'Hotel'
+    /* title */             'Der Täter versteckt sich im Hotel'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -1246,7 +1258,7 @@ VALUES (
     /* uuid */              '2ca6020e-8d41-4cff-8ea4-ac81db4084fb',
     /* step_input_uuid */   '497185e8-b6ee-4acc-8cde-410674938ed3',
     /* step_output_uuid */  'c2770352-445b-46ff-9d87-fe2b9591655a',
-    /* title */             'Bibliothek'
+    /* title */             'Der Täter versteckt sich in der Bibliothek'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -1254,7 +1266,7 @@ VALUES (
     /* uuid */              '6f1b06a9-085a-4627-9c6a-dc52ab98c663',
     /* step_input_uuid */   '497185e8-b6ee-4acc-8cde-410674938ed3',
     /* step_output_uuid */  'c2770352-445b-46ff-9d87-fe2b9591655a',
-    /* title */             'Schwimmbad'
+    /* title */             'Der Täter versteckt sich im Schwimmbad'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -1262,7 +1274,7 @@ VALUES (
     /* uuid */              'cedc7067-3c13-4fcd-bbda-6801c1f2cf86',
     /* step_input_uuid */   '497185e8-b6ee-4acc-8cde-410674938ed3',
     /* step_output_uuid */  'c2770352-445b-46ff-9d87-fe2b9591655a',
-    /* title */             'Schule'
+    /* title */             'Der Täter versteckt sich in der Schule'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -1270,7 +1282,7 @@ VALUES (
     /* uuid */              '18706cae-cc32-4ea0-80f4-b1f53a2f49ab',
     /* step_input_uuid */   '497185e8-b6ee-4acc-8cde-410674938ed3',
     /* step_output_uuid */  'de3a467e-3b76-4490-abb8-d0460dabc761',
-    /* title */             'Fabrik'
+    /* title */             'Der Täter versteckt sich in der Fabrik'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -1278,7 +1290,7 @@ VALUES (
     /* uuid */              '171be3e1-23ed-481e-9a63-79463f22d78c',
     /* step_input_uuid */   '497185e8-b6ee-4acc-8cde-410674938ed3',
     /* step_output_uuid */  'c2770352-445b-46ff-9d87-fe2b9591655a',
-    /* title */             'Lagerhalle'
+    /* title */             'Der Täter versteckt sich in der Lagerhalle'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -1299,18 +1311,26 @@ VALUES (
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
 VALUES (
-    /* uuid */              '4ef38c9a-f3ea-40ec-b356-f8466df4a8b9',
+    /* uuid */              '2b5df3ea-745a-4a12-87fc-56878cb0a4c3',
     /* step_input_uuid */   'f4b76e51-13fb-4ebe-a5bd-8a56d13df8d6',
+    /* step_output_uuid */  '36158640-69d1-43ef-a993-f59a0373fd6d',
+    /* title */             'Alles klar'
+);
+
+INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
+VALUES (
+    /* uuid */              '4ef38c9a-f3ea-40ec-b356-f8466df4a8b9',
+    /* step_input_uuid */   '36158640-69d1-43ef-a993-f59a0373fd6d',
     /* step_output_uuid */  'ac618a30-dcdb-46c1-8e74-0fd6299c22de',
-    /* title */             'Ich brauche Hilfe'
+    /* title */             'Ich kenne den Code nicht'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
 VALUES (
     /* uuid */              'cb8fad64-cfcc-4bc3-8b94-f5d6e8acd942',
-    /* step_input_uuid */   'f4b76e51-13fb-4ebe-a5bd-8a56d13df8d6',
+    /* step_input_uuid */   '36158640-69d1-43ef-a993-f59a0373fd6d',
     /* step_output_uuid */  'f4258eff-b283-49ab-9322-45185b29d51f',
-    /* title */             'Ja'
+    /* title */             'Ich kenne den Code'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -1326,7 +1346,7 @@ VALUES (
     /* uuid */              '3fa68c46-a327-4933-b413-6dedc74af100',
     /* step_input_uuid */   'edf819d7-5ddc-4741-bf92-197f111a80b0',
     /* step_output_uuid */  '35846804-45e5-4213-8dd4-1b0f78ad4fcd',
-    /* title */             'Ich brauche Hilfe'
+    /* title */             'Ich kenne den Code nicht'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -1334,7 +1354,7 @@ VALUES (
     /* uuid */              '89fbbc1f-2f02-4e30-ac5a-a21dfdc38c70',
     /* step_input_uuid */   'edf819d7-5ddc-4741-bf92-197f111a80b0',
     /* step_output_uuid */  'f4258eff-b283-49ab-9322-45185b29d51f',
-    /* title */             'Ja'
+    /* title */             'Ich weiß den Code jetzt'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
