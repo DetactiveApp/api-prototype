@@ -1,7 +1,7 @@
 INSERT INTO stories (uuid, description, title, asset_id, active) 
 VALUES (
     /* uuid */          'c9aaa81b-9b13-44ac-96cf-a8aa7c3a0099', 
-    /* description */   'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam.', 
+    /* description */   'Der Geheimdienst ist alarmiert: Es wurden Hinweise gefunden, dass es in deiner Stadt zu einem Bombenanschlag kommen soll. Der einzige Anhaltspunkt ist ein verschlüsseltes Schreiben eines Extremisten. Kannst du den Code knacken, den Anschlag verhindern und die Täter festnehmen?', 
     /* title */         'Bombenfund', 
     /* asset_id */      '4Y2KxoTIpnsHgXoUKBBph2',
     /* active */        TRUE
@@ -110,10 +110,10 @@ VALUES (
     /* uuid */          'f7f653b5-d88b-4d47-a3a1-22d4432855dc', 
     /* story_uuid */    'c9aaa81b-9b13-44ac-96cf-a8aa7c3a0099', 
     /* waypoint_uuid */ NULL,
-    /* description */   'Lorem ipsum dolor sit amet.',
+    /* description */   'Fehlgeschlagen',
     /* media_type */    NULL,
     /* asset_id */      NULL,
-    /* title */         'Lorem ipsum dolor sit amet.',
+    /* title */         'Der Anschlag konnte nicht verhindert werden!',
     /* ending */        'failure'
 );
 
@@ -290,10 +290,10 @@ VALUES (
     /* uuid */          'c2770352-445b-46ff-9d87-fe2b9591655a', 
     /* story_uuid */    'c9aaa81b-9b13-44ac-96cf-a8aa7c3a0099', 
     /* waypoint_uuid */ NULL,
-    /* description */   'Lorem ipsum',
+    /* description */   'Fehgeschlagen',
     /* media_type */    NULL,
     /* asset_id */      NULL,
-    /* title */         'Lorem ipsum',
+    /* title */         'Der Täter bleibt nach dem Anschlag weiter auf der Flucht',
     /* ending */        'failure'
 );
 
@@ -385,7 +385,7 @@ INSERT INTO steps (uuid, story_uuid, waypoint_uuid, description, media_type, ass
 VALUES (
     /* uuid */          'de108962-b8ac-4229-a004-361f2dfae42c', 
     /* story_uuid */    'c9aaa81b-9b13-44ac-96cf-a8aa7c3a0099', 
-    /* waypoint_uuid */ NULL,
+    /* waypoint_uuid */ '2e3f20a1-16bc-4807-a65d-9e3fff0f4854',
     /* description */   'Lorem ipsum',
     /* media_type */    'image',
     /* asset_id */      'WCkq5SkhXbW8Itac9exVO',
@@ -400,7 +400,7 @@ VALUES (
     /* waypoint_uuid */ NULL,
     /* description */   'Lorem ipsum',
     /* media_type */    'audio',
-    /* asset_id */      '5AejHmKxmol8DWcT0At3vS',
+    /* asset_id */      '1WJ0ysKPFeL72yrOOxsbHA',
     /* title */         'Lorem ipsum',
     /* ending */        NULL
 );
@@ -412,7 +412,7 @@ VALUES (
     /* waypoint_uuid */ NULL,
     /* description */   'Lorem ipsum',
     /* media_type */    'image',
-    /* asset_id */      '2t1OM77nd5CX6sIw6YCoOx',
+    /* asset_id */      '5AejHmKxmol8DWcT0At3vS',
     /* title */         'Lorem ipsum',
     /* ending */        NULL
 );
@@ -462,7 +462,7 @@ VALUES (
     /* description */   'Wie ist der Code?',
     /* media_type */    NULL,
     /* asset_id */      NULL,
-    /* title */         'Lorem ipsum',
+    /* title */         'Entscheidung',
     /* ending */        NULL
 );
 
@@ -1311,7 +1311,7 @@ VALUES (
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
 VALUES (
-    /* uuid */              '2b5df3ea-745a-4a12-87fc-56878cb0a4c3',
+    /* uuid */              '9f054edc-c3d2-45cd-a541-f7306855122c',
     /* step_input_uuid */   'f4b76e51-13fb-4ebe-a5bd-8a56d13df8d6',
     /* step_output_uuid */  '36158640-69d1-43ef-a993-f59a0373fd6d',
     /* title */             'Alles klar'

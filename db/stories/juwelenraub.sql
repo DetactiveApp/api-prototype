@@ -1,7 +1,7 @@
 INSERT INTO stories (uuid, description, title, asset_id, active) 
 VALUES (
     /* uuid */          '9d8c90de-a80a-445b-baf5-503470f749d2', 
-    /* description */   'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam.', 
+    /* description */   'Am helllichten Tag wird der ortsansässige Juwelier ausgeraubt. Juwelen eines mittleren sechsstelligen Werts wurden entwendet. Der Täter hat keine Hinweise am Tatort hinterlassen und der Fall scheint aussichtslos, oder etwa doch nicht?', 
     /* title */         'Juwelenraub', 
     /* asset_id */      '6hKqUoagHGNWelf6tMK60T',
     /* active */        TRUE
