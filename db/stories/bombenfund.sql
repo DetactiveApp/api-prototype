@@ -182,7 +182,7 @@ VALUES (
     /* uuid */          '9028ec84-485e-4696-a316-a1bfdd1d9f61', 
     /* story_uuid */    'c9aaa81b-9b13-44ac-96cf-a8aa7c3a0099', 
     /* waypoint_uuid */ NULL,
-    /* description */   'Du konntest die Bome entschärfen!',
+    /* description */   'Du konntest die Bombe entschärfen!',
     /* media_type */    NULL,
     /* asset_id */      NULL,
     /* title */         'Erfolg!',
@@ -206,7 +206,7 @@ VALUES (
     /* uuid */          '995bc2f9-a744-4950-8ae4-4d51eacbf73c', 
     /* story_uuid */    'c9aaa81b-9b13-44ac-96cf-a8aa7c3a0099', 
     /* waypoint_uuid */ NULL,
-    /* description */   'Die Umgebung ist abgesucht. In der Umgebung befidet sich keine weiterer Bombe',
+    /* description */   'Die Umgebung ist abgesucht. In der Umgebung befindet sich keine weitere Bombe',
     /* media_type */    NULL,
     /* asset_id */      NULL,
     /* title */         'Umgebung abgesucht',
@@ -751,7 +751,7 @@ VALUES (
     /* uuid */              '90942ec7-59fe-4c31-91ba-2455720ce1e4',
     /* step_input_uuid */   'ce288d71-818b-4f2d-8900-c048e3a5a093',
     /* step_output_uuid */  '9028ec84-485e-4696-a316-a1bfdd1d9f61',
-    /* title */             '145'
+    /* title */             '645'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -855,7 +855,7 @@ VALUES (
     /* uuid */              'b84f95b0-33a9-4f4b-bb36-120380d17683',
     /* step_input_uuid */   '916946ca-830d-4dc5-baf3-7d8851bdd717',
     /* step_output_uuid */  '9028ec84-485e-4696-a316-a1bfdd1d9f61',
-    /* title */             '145'
+    /* title */             '645'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -944,7 +944,7 @@ VALUES (
     /* uuid */              '4b7ac16f-5db4-4da0-baeb-2c29f1d40871',
     /* step_input_uuid */   '9028ec84-485e-4696-a316-a1bfdd1d9f61',
     /* step_output_uuid */  '995bc2f9-a744-4950-8ae4-4d51eacbf73c',
-    /* title */             'Ich suche in der Umgebung  nach einer weiteren Bombe'
+    /* title */             'Ich suche in der Umgebung nach einer weiteren Bombe'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -960,7 +960,7 @@ VALUES (
     /* uuid */              '85d370cb-58f0-48df-982a-a02374550851',
     /* step_input_uuid */   '995bc2f9-a744-4950-8ae4-4d51eacbf73c',
     /* step_output_uuid */  'f89ea2c8-a1b5-4ffc-b4cd-71733c068b1a',
-    /* title */             'Ich überprüfe die Bome auf DNA'
+    /* title */             'Ich überprüfe die Bombe auf DNA'
 );
 
 
@@ -1017,7 +1017,7 @@ VALUES (
     /* uuid */              'f127ab17-97cb-4ced-8e6d-c4898f36b2bd',
     /* step_input_uuid */   '732dfd3e-fbbe-4481-bea6-101cd54c9af5',
     /* step_output_uuid */  'f89ea2c8-a1b5-4ffc-b4cd-71733c068b1a',
-    /* title */             'Ich überprüfe die Bome auf DNA'
+    /* title */             'Ich überprüfe die Bombe auf DNA'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -1033,7 +1033,7 @@ VALUES (
     /* uuid */              '5c460983-10b9-4c04-ac2e-442a21ff3ead',
     /* step_input_uuid */   '37482099-82c8-4465-aa26-dfc0f4228f1e',
     /* step_output_uuid */  'f89ea2c8-a1b5-4ffc-b4cd-71733c068b1a',
-    /* title */             'Ich überprüfe die Bome auf DNA'
+    /* title */             'Ich überprüfe die Bombe auf DNA'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
