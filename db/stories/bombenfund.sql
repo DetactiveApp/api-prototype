@@ -1065,7 +1065,7 @@ INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title)
 VALUES (
     /* uuid */              'e64bf39e-2607-4226-a957-895743847354',
     /* step_input_uuid */   'd090087a-1d71-4510-9cb6-b8ded7ba7293',
-    /* step_output_uuid */  '6a72359f-f41f-4c59-a553-63750dd9f9fd',
+    /* step_output_uuid */  'c2770352-445b-46ff-9d87-fe2b9591655a',
     /* title */             'Person A ist der Täter'
 );
 
@@ -1081,7 +1081,7 @@ INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title)
 VALUES (
     /* uuid */              'afb94a76-44f9-4357-9b3b-5ec69d959603',
     /* step_input_uuid */   'd090087a-1d71-4510-9cb6-b8ded7ba7293',
-    /* step_output_uuid */  'c2770352-445b-46ff-9d87-fe2b9591655a',
+    /* step_output_uuid */  '6a72359f-f41f-4c59-a553-63750dd9f9fd',
     /* title */             'Person C ist der Täter'
 );
 
