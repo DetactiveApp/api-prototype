@@ -73,9 +73,21 @@ VALUES (
 
 INSERT INTO steps (uuid, story_uuid, waypoint_uuid, description, media_type, asset_id, title, ending) 
 VALUES (
-    /* uuid */          '9289c507-7797-414f-985e-d0cf511a28a2', 
+    /* uuid */          '23b5b555-edea-4db6-8de5-a1e6cc3110e8', 
     /* story_uuid */    '9d8c90de-a80a-445b-baf5-503470f749d2', 
     /* waypoint_uuid */ 'a9c855f3-fd5d-41ee-ba5d-677b59fb0de9',
+    /* description */   'Du bist am Juwelier angekommen.',
+    /* media_type */    NULL,
+    /* asset_id */      NULL,
+    /* title */         'Neuigkeiten',
+    /* ending */        NULL
+);
+
+INSERT INTO steps (uuid, story_uuid, waypoint_uuid, description, media_type, asset_id, title, ending) 
+VALUES (
+    /* uuid */          '9289c507-7797-414f-985e-d0cf511a28a2', 
+    /* story_uuid */    '9d8c90de-a80a-445b-baf5-503470f749d2', 
+    /* waypoint_uuid */ NULL,
     /* description */   'Lorem ipsum',
     /* media_type */    'video',
     /* asset_id */      '3lPsK2FHGZHzrwr4z1Ccui',
@@ -725,6 +737,14 @@ INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title)
 VALUES (
     /* uuid */              'd3a3ed3b-4c18-441e-b336-518fee79b4cf',
     /* step_input_uuid */   'ce159215-1c3e-4142-89cf-dddead5537fb',
+    /* step_output_uuid */  '23b5b555-edea-4db6-8de5-a1e6cc3110e8',
+    /* title */             'Alles klar'
+);
+
+INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
+VALUES (
+    /* uuid */              '5ede6f33-6cbe-4f6a-a072-1f86481ab25b',
+    /* step_input_uuid */   '23b5b555-edea-4db6-8de5-a1e6cc3110e8',
     /* step_output_uuid */  '9289c507-7797-414f-985e-d0cf511a28a2',
     /* title */             'Alles klar'
 );
@@ -862,7 +882,7 @@ VALUES (
     /* uuid */              '0ef1ddd4-e9ab-48d7-bdee-88784dc6f0f6',
     /* step_input_uuid */   '2d2670e7-cf78-4202-a0f2-0b254f2fead7',
     /* step_output_uuid */  '86c25fda-213f-4107-a6f1-6d4d6fff0e81',
-    /* title */             'Die DNA stimmt mit keinen der Abstrichen überein.'
+    /* title */             'Die Fingerabdrücke passen zu Person A'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -870,7 +890,7 @@ VALUES (
     /* uuid */              'a7491455-9e91-4e75-b065-c5030cbe215a',
     /* step_input_uuid */   '2d2670e7-cf78-4202-a0f2-0b254f2fead7',
     /* step_output_uuid */  '2417219a-28d1-464d-8d0a-8f0dc7f82c4d',
-    /* title */             'Die DNA passt zu Person A'
+    /* title */             'Die Fingerabdrücke passen zu Person B'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -878,7 +898,7 @@ VALUES (
     /* uuid */              'd91d3ac7-7a8e-4d82-a766-4f87a668742e',
     /* step_input_uuid */   '2d2670e7-cf78-4202-a0f2-0b254f2fead7',
     /* step_output_uuid */  '2417219a-28d1-464d-8d0a-8f0dc7f82c4d',
-    /* title */             'Die DNA passt zu Person B'
+    /* title */             'Die Fingerabdrücke passen zu Person C'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -886,7 +906,7 @@ VALUES (
     /* uuid */              '5613fe6d-0ae8-4b2b-a3f5-b4d0861839f3',
     /* step_input_uuid */   '2d2670e7-cf78-4202-a0f2-0b254f2fead7',
     /* step_output_uuid */  '2417219a-28d1-464d-8d0a-8f0dc7f82c4d',
-    /* title */             'Die DNA passt zu Person C'
+    /* title */             'Die Fingerabdrücke passen zu Person D'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 

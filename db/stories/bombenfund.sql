@@ -1066,7 +1066,7 @@ VALUES (
     /* uuid */              'e64bf39e-2607-4226-a957-895743847354',
     /* step_input_uuid */   'd090087a-1d71-4510-9cb6-b8ded7ba7293',
     /* step_output_uuid */  '6a72359f-f41f-4c59-a553-63750dd9f9fd',
-    /* title */             'Person 1 ist der Täter'
+    /* title */             'Person A ist der Täter'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -1074,7 +1074,7 @@ VALUES (
     /* uuid */              'f258c9b8-9763-40ce-956a-6788b5388575',
     /* step_input_uuid */   'd090087a-1d71-4510-9cb6-b8ded7ba7293',
     /* step_output_uuid */  'c2770352-445b-46ff-9d87-fe2b9591655a',
-    /* title */             'Person 2 ist der Täter'
+    /* title */             'Person B ist der Täter'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -1082,7 +1082,7 @@ VALUES (
     /* uuid */              'afb94a76-44f9-4357-9b3b-5ec69d959603',
     /* step_input_uuid */   'd090087a-1d71-4510-9cb6-b8ded7ba7293',
     /* step_output_uuid */  'c2770352-445b-46ff-9d87-fe2b9591655a',
-    /* title */             'Person 3 ist der Täter'
+    /* title */             'Person C ist der Täter'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -1090,7 +1090,7 @@ VALUES (
     /* uuid */              '09de471a-dcb5-4c42-abc4-d2103fb452ad',
     /* step_input_uuid */   'd090087a-1d71-4510-9cb6-b8ded7ba7293',
     /* step_output_uuid */  'c2770352-445b-46ff-9d87-fe2b9591655a',
-    /* title */             'Person 4 ist der Täter'
+    /* title */             'Person D ist der Täter'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -1162,7 +1162,7 @@ VALUES (
     /* uuid */              '349cdd6a-f4b9-4f0e-89bb-3089728b4f82',
     /* step_input_uuid */   'b8e5c48b-2f41-4e1f-b032-07e1ffc93fc7',
     /* step_output_uuid */  '599bd4db-fd99-4ae5-8556-551bf5893c12',
-    /* title */             'Mir fallen die Zahlen an der Wand auf'
+    /* title */             'Mir fallen die Zahlen auf'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
@@ -1218,7 +1218,7 @@ VALUES (
     /* uuid */              '8f3b77f7-ad83-421c-9640-9fddbfb5247c',
     /* step_input_uuid */   '88223449-b032-4833-ac07-d3a01e0f77ed',
     /* step_output_uuid */  'b8e5c48b-2f41-4e1f-b032-07e1ffc93fc7',
-    /* title */             'Mir fallen die Zahlen an der Wand auf'
+    /* title */             'Mir fallen die Zahlen auf'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
