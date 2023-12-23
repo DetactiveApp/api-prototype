@@ -38,6 +38,13 @@ VALUES (
 
 INSERT INTO waypoints (uuid, place_type, place_override) 
 VALUES (
+    /* uuid */              '1d3ce25b-1cc1-4c80-9f8c-10dfb6f01cb5', 
+    /* place_type */        'random', 
+    /* place_override */    TRUE
+);
+
+INSERT INTO waypoints (uuid, place_type, place_override) 
+VALUES (
     /* uuid */              '2e3f20a1-16bc-4807-a65d-9e3fff0f4854', 
     /* place_type */        'random', 
     /* place_override */    TRUE
@@ -270,6 +277,18 @@ VALUES (
     /* media_type */    'image',
     /* asset_id */      '2nR8vrK6C7KK6wivwC0rhY',
     /* title */         'Lorem ipsum',
+    /* ending */        NULL
+);
+
+INSERT INTO steps (uuid, story_uuid, waypoint_uuid, description, media_type, asset_id, title, ending) 
+VALUES (
+    /* uuid */          '5fb9c2c6-dbe1-4426-8bb5-2a4d53ec8b2e', 
+    /* story_uuid */    'c9aaa81b-9b13-44ac-96cf-a8aa7c3a0099', 
+    /* waypoint_uuid */ '1d3ce25b-1cc1-4c80-9f8c-10dfb6f01cb5',
+    /* description */   'Du hast die richtige Person identifiziert, gehe zur Adresse des Täters',
+    /* media_type */    NULL,
+    /* asset_id */      NULL,
+    /* title */         'Neuigkeiten',
     /* ending */        NULL
 );
 
@@ -1081,7 +1100,7 @@ INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title)
 VALUES (
     /* uuid */              'afb94a76-44f9-4357-9b3b-5ec69d959603',
     /* step_input_uuid */   'd090087a-1d71-4510-9cb6-b8ded7ba7293',
-    /* step_output_uuid */  '6a72359f-f41f-4c59-a553-63750dd9f9fd',
+    /* step_output_uuid */  '5fb9c2c6-dbe1-4426-8bb5-2a4d53ec8b2e',
     /* title */             'Person C ist der Täter'
 );
 
@@ -1091,6 +1110,14 @@ VALUES (
     /* step_input_uuid */   'd090087a-1d71-4510-9cb6-b8ded7ba7293',
     /* step_output_uuid */  'c2770352-445b-46ff-9d87-fe2b9591655a',
     /* title */             'Person D ist der Täter'
+);
+
+INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
+VALUES (
+    /* uuid */              '456671c6-6fa3-4880-ba4d-32efdbbf013b',
+    /* step_input_uuid */   '5fb9c2c6-dbe1-4426-8bb5-2a4d53ec8b2e',
+    /* step_output_uuid */  '6a72359f-f41f-4c59-a553-63750dd9f9fd',
+    /* title */             'Alles klar'
 );
 
 INSERT INTO decisions (uuid, step_input_uuid, step_output_uuid, title) 
