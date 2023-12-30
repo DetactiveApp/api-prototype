@@ -1,4 +1,4 @@
-use super::{destination_coordinate, MAX_POI_SEARCH_RADIUS_M, MIN_POI_SEARCH_RADIUS_M};
+use super::{destination_coordinate, MAX_POI_SEARCH_RADIUS_M, MIN_POI_SEARCH_RADIUS_M, distance_to_coordinate};
 use crate::types::{DCoord, DError};
 use rand::seq::SliceRandom;
 use reqwest::{self, StatusCode};
@@ -62,7 +62,9 @@ async fn fetch_features(
                 });
 
             if let Some(coord) = feature_coordinates {
-                features.insert(maki.to_string(), coord);
+                if distance_to_coordinate(origin, &coord) > MIN_POI_SEARCH_RADIUS_M {
+                    features.insert(maki.to_string(), coord);
+                }
             }
         }
     }

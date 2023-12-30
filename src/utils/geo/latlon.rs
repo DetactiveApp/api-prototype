@@ -62,7 +62,7 @@ pub fn quad(origin: [f64; 2], radius_m: f64) -> [[f64; 2]; 4] {
 
 // Haversine Formula
 /// Returns the distance in meters
-pub fn distance_to_coordinate(origin: DCoord, destination: DCoord) -> f64 {
+pub fn distance_to_coordinate(origin: &DCoord, destination: &DCoord) -> f64 {
     let lat1 = origin.lat.to_radians();
     let lat2 = destination.lat.to_radians();
     let d_lat = lat2 - lat1;
