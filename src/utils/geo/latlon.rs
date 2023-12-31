@@ -13,10 +13,10 @@ pub fn distance_to_longitude(distance_m: f64, latitude: f64) -> f64 {
 }
 
 pub fn d_angle(origin: &DCoord, destination: &DCoord) -> f64 {
-    let o_lon: f64 = origin.lat.to_radians();
-    let o_lat: f64 = origin.lon.to_radians();
-    let d_lon: f64 = destination.lat.to_radians();
-    let d_lat: f64 = destination.lon.to_radians();
+    let o_lon: f64 = origin.lon.to_radians();
+    let o_lat: f64 = origin.lat.to_radians();
+    let d_lon: f64 = destination.lon.to_radians();
+    let d_lat: f64 = destination.lat.to_radians();
 
     let delta_lon = d_lon - o_lon;
 
