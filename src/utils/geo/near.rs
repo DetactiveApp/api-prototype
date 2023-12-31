@@ -88,7 +88,7 @@ pub async fn near(
     let mapbox_token = &env::var("MAPBOX_TOKEN").expect("Mapbox access token not found.");
     let features: HashMap<String, DCoord> = fetch_features(
         &new_origin,
-        0.25 * fastrand::f64() * (MAX_POI_SEARCH_RADIUS_M - MIN_POI_SEARCH_RADIUS_M)
+        fastrand::f64() * (MAX_POI_SEARCH_RADIUS_M - MIN_POI_SEARCH_RADIUS_M)
             + MIN_POI_SEARCH_RADIUS_M,
         mapbox_token,
     )

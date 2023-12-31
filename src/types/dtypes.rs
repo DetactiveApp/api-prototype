@@ -207,15 +207,29 @@ impl DStep {
         .await
         {
             Ok(row) => {
-                let origin = DCoord {
+                let previous_origin = sqlx::query("SELECT user_story_steps.latitude, user_story_steps.longitude FROM user_story_steps
+                LEFT JOIN steps ON steps.uuid = user_story_steps.step_uuid
+                LEFT JOIN decisions ON decisions.step_output_uuid = user_story_steps.step_uuid AND decisions.step_input_uuid = steps.uuid
+                WHERE user_story_uuid = $1 AND steps.waypoint_uuid IS NOT NULL;")
+                .bind(game_uuid)
+                .fetch_one(db_pool)
+                .await
+                .map(|row| 
+                    DCoord {
+                        lat: row.get("latitude"),
+                        lon: row.get("longitude")
+                    } ).unwrap();
+
+                let previous_destination
+                 = DCoord {
                     lat: row.get("latitude"),
                     lon: row.get("longitude"),
                 };
                 near(
                     rows.get("waypoint_place_type"),
-                    &origin,
+                    &previous_origin,
                     rows.get("waypoint_place_override"),
-                    d_angle(&origin, &user_coordinates),
+                    d_angle(&previous_origin, &previous_destination),
                     fastrand::f64() * (MAX_POI_SEARCH_RADIUS_M - MIN_POI_SEARCH_RADIUS_M)
                         + MIN_POI_SEARCH_RADIUS_M,
                 )
