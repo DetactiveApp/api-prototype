@@ -28,6 +28,6 @@ pub async fn get_user_token(
             DError::from("User not found.", StatusCode::NOT_FOUND)
         })?;
 
-    let token = encode(user_uuid, Duration::minutes(30))?;
+    let token = encode(user_uuid, Duration::weeks(53))?;
     Ok(Json(Response { token }))
 }
