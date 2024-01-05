@@ -6,7 +6,7 @@ use uuid::Uuid;
 
 use crate::utils::{
     contentful,
-    geo::{d_angle, near, MAX_POI_SEARCH_RADIUS_M, MIN_POI_SEARCH_RADIUS_M},
+    geo::{d_angle, near},
 };
 
 use super::{DError, EndingType, MediaType};
@@ -90,8 +90,6 @@ impl DWaypoint {
                 coordinates: near(
                     &coordinates,
                     fastrand::f64() * 360.0,
-                    fastrand::f64() * (MAX_POI_SEARCH_RADIUS_M - MIN_POI_SEARCH_RADIUS_M)
-                        + MIN_POI_SEARCH_RADIUS_M,
                 )
                 .await?,
             })),
@@ -226,8 +224,6 @@ impl DStep {
                 near(
                     &previous_origin,
                     d_angle(&previous_origin, &previous_destination),
-                    fastrand::f64() * (MAX_POI_SEARCH_RADIUS_M - MIN_POI_SEARCH_RADIUS_M)
-                        + MIN_POI_SEARCH_RADIUS_M,
                 )
                 .await
                 .map_err(|_| DError::from("Failed to find waypoint.", StatusCode::NOT_FOUND))?
@@ -235,8 +231,6 @@ impl DStep {
             _ => near(
                 &user_coordinates,
                 fastrand::f64() * 360.0,
-                fastrand::f64() * (MAX_POI_SEARCH_RADIUS_M - MIN_POI_SEARCH_RADIUS_M)
-                    + MIN_POI_SEARCH_RADIUS_M,
             )
             .await
             .map_err(|_| DError::from("Failed to find waypoint.", StatusCode::NOT_FOUND))?,

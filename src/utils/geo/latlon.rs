@@ -2,11 +2,13 @@ use crate::types::DCoord;
 
 pub const EARTH_RADIUS_M: f64 = 6371e3;
 
+#[allow(dead_code)]
 pub fn distance_to_latitude(distance_m: f64) -> f64 {
     let latitude_change = distance_m / EARTH_RADIUS_M;
     latitude_change.to_degrees()
 }
 
+#[allow(dead_code)]
 pub fn distance_to_longitude(distance_m: f64, latitude: f64) -> f64 {
     let longitude_change = distance_m / (EARTH_RADIUS_M * latitude.to_radians().cos());
     longitude_change.to_degrees()
@@ -26,6 +28,7 @@ pub fn d_angle(origin: &DCoord, destination: &DCoord) -> f64 {
     y.atan2(x).to_degrees()
 }
 
+#[allow(dead_code)]
 pub fn destination_coordinate(origin: &DCoord, angle: f64, distance_m: f64) -> DCoord {
     let d_r = distance_m / EARTH_RADIUS_M;
     let o_lat: f64 = origin.lat.to_radians();
@@ -46,6 +49,7 @@ pub fn destination_coordinate(origin: &DCoord, angle: f64, distance_m: f64) -> D
 }
 
 /// Returns 4 corner points of the given centered coords in a given radius.
+#[allow(dead_code)]
 pub fn quad(origin: [f64; 2], radius_m: f64) -> [[f64; 2]; 4] {
     // Converts radius in meter to latitude and longitude degrees
     let d_lat = distance_to_latitude(radius_m + 1000.0);
