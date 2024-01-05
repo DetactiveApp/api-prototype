@@ -6,7 +6,7 @@ use crate::types::ApiContext;
 pub async fn request(Path(path): Path<String>, Extension(ctx): Extension<ApiContext>) -> String {
     match sqlx::query("SELECT redirect_url FROM stickers WHERE deleted_at IS NULL AND id = $1;")
         .bind(&path)
-        .fetch_one(&ctx.company_db)
+        .fetch_one(&ctx.detactive_db)
         .await
     {
         Ok(sticker) => {
