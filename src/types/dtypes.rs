@@ -88,9 +88,7 @@ impl DWaypoint {
             Ok(row) => Ok(Some(DWaypoint {
                 uuid: row.get("uuid"),
                 coordinates: near(
-                    row.get("place_type"),
                     &coordinates,
-                    row.get("place_override"),
                     fastrand::f64() * 360.0,
                     fastrand::f64() * (MAX_POI_SEARCH_RADIUS_M - MIN_POI_SEARCH_RADIUS_M)
                         + MIN_POI_SEARCH_RADIUS_M,
@@ -226,9 +224,7 @@ impl DStep {
                     lon: row.get("longitude"),
                 };
                 near(
-                    rows.get("waypoint_place_type"),
                     &previous_origin,
-                    rows.get("waypoint_place_override"),
                     d_angle(&previous_origin, &previous_destination),
                     fastrand::f64() * (MAX_POI_SEARCH_RADIUS_M - MIN_POI_SEARCH_RADIUS_M)
                         + MIN_POI_SEARCH_RADIUS_M,
@@ -237,9 +233,7 @@ impl DStep {
                 .map_err(|_| DError::from("Failed to find waypoint.", StatusCode::NOT_FOUND))?
             }
             _ => near(
-                rows.get("waypoint_place_type"),
                 &user_coordinates,
-                rows.get("waypoint_place_override"),
                 fastrand::f64() * 360.0,
                 fastrand::f64() * (MAX_POI_SEARCH_RADIUS_M - MIN_POI_SEARCH_RADIUS_M)
                     + MIN_POI_SEARCH_RADIUS_M,
