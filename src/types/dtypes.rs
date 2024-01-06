@@ -9,7 +9,7 @@ use crate::utils::{
     geo::{d_angle, near},
 };
 
-use super::{DError, EndingType, MediaType};
+use super::{DError, EndingType, MediaType, RouteMode};
 
 #[derive(Debug, Serialize, Deserialize, Clone, Copy)]
 pub struct DUser {
@@ -90,6 +90,7 @@ impl DWaypoint {
                 coordinates: near(
                     &coordinates,
                     fastrand::f64() * 360.0,
+                    RouteMode::Track
                 )
                 .await?,
             })),
@@ -224,6 +225,7 @@ impl DStep {
                 near(
                     &previous_origin,
                     d_angle(&previous_origin, &previous_destination),
+                    RouteMode::Track,
                 )
                 .await
                 .map_err(|_| DError::from("Failed to find waypoint.", StatusCode::NOT_FOUND))?
@@ -231,6 +233,7 @@ impl DStep {
             _ => near(
                 &user_coordinates,
                 fastrand::f64() * 360.0,
+                RouteMode::Track
             )
             .await
             .map_err(|_| DError::from("Failed to find waypoint.", StatusCode::NOT_FOUND))?,
