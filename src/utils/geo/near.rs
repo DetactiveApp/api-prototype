@@ -9,12 +9,14 @@ pub async fn near(origin: &DCoord, _angle: f64) -> Result<Option<DCoord>, DError
     let mapbox_token = &env::var("MAPBOX_TOKEN").expect("Mapbox access token not found.");
     let url = format!(
         "https://api.mapbox.com/isochrone/v1/{profile}/{lon},{lat}?contours_minutes={minutes}&access_token={access_token}",
-        profile = "walking",
+        profile = "mapbox/walking",
         lon = origin.lon,
         lat = origin.lat,
         access_token = mapbox_token,
         minutes = MAX_MINUTES_TO_WAYPOINT,
     );
+
+    println!("{:?}", url);
 
     let response = reqwest::get(&url)
         .await
@@ -34,6 +36,7 @@ pub async fn near(origin: &DCoord, _angle: f64) -> Result<Option<DCoord>, DError
         })?;
 
     let mut rng = rand::thread_rng();
+    println!("{:?}", response);
 
     let coordinates: Vec<DCoord> = response
         .get("features")
