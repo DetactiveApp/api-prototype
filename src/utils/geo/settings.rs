@@ -1,5 +1,8 @@
-pub const MAX_MINUTES_TO_WAYPOINT: i64 = 5;
+pub const MIN_MINUTES_TO_WAYPOINT: i64 = 5;
 // DEFAULT 5
+
+pub const MAX_MINUTES_TO_WAYPOINT: i64 = 10;
+// DEFAULT 10
 
 pub const MAX_ANGLE_TO_WAYPOINT: f64 = 15.0;
 // DEFAULT 15.0

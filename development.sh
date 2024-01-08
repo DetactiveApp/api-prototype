@@ -8,5 +8,6 @@ if [ ! "$(docker network ls | grep web)" ];
         echo "Web network already exists... Skipping Step"
 fi
 
+docker system prune --force --all --filter "until=24h"
 docker-compose --env-file .env -f docker/docker-compose.development.yml up --build
 read -p "Press any key to continue." x

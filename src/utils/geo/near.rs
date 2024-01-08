@@ -1,12 +1,12 @@
 use crate::{
     types::{DCoord, DError, RouteMode},
-    utils::geo::{d_angle, MAX_ANGLE_TO_WAYPOINT},
+    utils::geo::{d_angle, MAX_ANGLE_TO_WAYPOINT, MAX_MINUTES_TO_WAYPOINT},
 };
 use rand::seq::SliceRandom;
 use reqwest::{self, StatusCode};
 use std::env::{self};
 
-use super::MAX_MINUTES_TO_WAYPOINT;
+use super::MIN_MINUTES_TO_WAYPOINT;
 
 pub async fn near(
     origin: &DCoord,
@@ -15,12 +15,13 @@ pub async fn near(
 ) -> Result<Option<DCoord>, DError> {
     let mapbox_token = &env::var("MAPBOX_TOKEN").expect("Mapbox access token not found.");
     let url = format!(
-        "https://api.mapbox.com/isochrone/v1/{profile}/{lon},{lat}?contours_minutes={minutes}&access_token={access_token}",
+        "https://api.mapbox.com/isochrone/v1/{profile}/{lon},{lat}?contours_minutes={min_minutes}%2C{max_minutes}&access_token={access_token}",
         profile = "mapbox/walking",
         lon = origin.lon,
         lat = origin.lat,
         access_token = mapbox_token,
-        minutes = MAX_MINUTES_TO_WAYPOINT,
+        min_minutes = MIN_MINUTES_TO_WAYPOINT,
+        max_minutes = MAX_MINUTES_TO_WAYPOINT
     );
 
     let response = reqwest::get(&url)
@@ -56,14 +57,27 @@ pub async fn near(
         })
         .collect();
 
-    let backup_cooordinate = coordinates.choose(&mut rng).cloned();
+    let mut backup_coordinate: Option<DCoord> = coordinates.choose(&mut rng).cloned();
 
     match route_mode {
         RouteMode::Track => {
             coordinates = coordinates
                 .iter()
                 .filter(|destination| {
-                    (angle - d_angle(origin, destination)).abs() % 360.0 < MAX_ANGLE_TO_WAYPOINT
+                    let dest_angle = d_angle(origin, destination);
+                    let angle_diff = (angle - dest_angle + 360.0) % 360.0;
+                    if angle_diff < MAX_ANGLE_TO_WAYPOINT {
+                        true
+                    } else {
+                        if let Some(backup) = &backup_coordinate {
+                            let backup_angle_diff =
+                                (angle - d_angle(origin, &backup) + 360.0) % 360.0;
+                            if angle_diff < backup_angle_diff {
+                                backup_coordinate = Some(*destination).cloned();
+                            }
+                        }
+                        false
+                    }
                 })
                 .cloned()
                 .collect()
@@ -77,7 +91,7 @@ pub async fn near(
     }
 
     if coordinates.is_empty() {
-        return Ok(backup_cooordinate);
+        return Ok(backup_coordinate);
     }
 
     Ok(coordinates.choose(&mut rng).cloned())

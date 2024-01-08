@@ -15,17 +15,16 @@ pub fn distance_to_longitude(distance_m: f64, latitude: f64) -> f64 {
 }
 
 pub fn d_angle(origin: &DCoord, destination: &DCoord) -> f64 {
-    let o_lon: f64 = origin.lon.to_radians();
-    let o_lat: f64 = origin.lat.to_radians();
-    let d_lon: f64 = destination.lon.to_radians();
-    let d_lat: f64 = destination.lat.to_radians();
+    let delta_lat = destination.lat - origin.lat;
+    let delta_lon = destination.lon - origin.lon;
 
-    let delta_lon = d_lon - o_lon;
+    let angle = (delta_lat.atan2(delta_lon).to_degrees() + 360.0) % 360.0;
 
-    let x = d_lat.cos() * delta_lon.sin();
-    let y = o_lat.cos() * d_lat.sin() - o_lat.sin() * d_lat.cos() * delta_lon.cos();
-
-    y.atan2(x).to_degrees()
+    if angle < 0.0 {
+        angle + 360.0
+    } else {
+        angle
+    }
 }
 
 #[allow(dead_code)]

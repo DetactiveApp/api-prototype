@@ -197,7 +197,8 @@ impl DStep {
         let coordinates = match sqlx::query(
             "SELECT user_story_steps.latitude, user_story_steps.longitude FROM user_story_steps
         LEFT JOIN steps ON steps.uuid = user_story_steps.step_uuid
-        WHERE user_story_uuid = $1 AND steps.waypoint_uuid IS NOT NULL;",
+        WHERE user_story_uuid = $1 AND steps.waypoint_uuid IS NOT NULL AND finished_at IS null
+        ORDER BY user_story_steps.finished_at;",
         )
         .bind(game_uuid)
         .fetch_one(db_pool)
@@ -207,7 +208,8 @@ impl DStep {
                 let previous_origin = sqlx::query("SELECT user_story_steps.latitude, user_story_steps.longitude FROM user_story_steps
                 LEFT JOIN steps ON steps.uuid = user_story_steps.step_uuid
                 LEFT JOIN decisions ON decisions.step_output_uuid = user_story_steps.step_uuid AND decisions.step_input_uuid = steps.uuid
-                WHERE user_story_uuid = $1 AND steps.waypoint_uuid IS NOT NULL;")
+                WHERE user_story_uuid = $1 AND steps.waypoint_uuid IS NOT NULL AND finished_at IS NOT null
+                ORDER BY user_story_steps.finished_at;")
                 .bind(game_uuid)
                 .fetch_one(db_pool)
                 .await
@@ -215,13 +217,19 @@ impl DStep {
                     DCoord {
                         lat: row.get("latitude"),
                         lon: row.get("longitude")
-                    } ).unwrap();
+                    } ).unwrap_or(
+                        DCoord {
+                            lat: row.get("latitude"),
+                            lon: row.get("longitude")
+                        }
+                    );
 
                 let previous_destination
                  = DCoord {
                     lat: row.get("latitude"),
                     lon: row.get("longitude"),
                 };
+
                 near(
                     &previous_origin,
                     d_angle(&previous_origin, &previous_destination),
