@@ -1,12 +1,10 @@
 use crate::{
     types::{DCoord, DError, RouteMode},
-    utils::geo::{d_angle, MAX_ANGLE_TO_WAYPOINT, MAX_MINUTES_TO_WAYPOINT},
+    utils::geo::{d_angle, MAX_ANGLE_TO_WAYPOINT},
 };
 use rand::seq::SliceRandom;
 use reqwest::{self, StatusCode};
 use std::env::{self};
-
-use super::MIN_MINUTES_TO_WAYPOINT;
 
 pub async fn near(
     origin: &DCoord,
@@ -15,13 +13,11 @@ pub async fn near(
 ) -> Result<Option<DCoord>, DError> {
     let mapbox_token = &env::var("MAPBOX_TOKEN").expect("Mapbox access token not found.");
     let url = format!(
-        "https://api.mapbox.com/isochrone/v1/{profile}/{lon},{lat}?contours_minutes={min_minutes}%2C6%2C7%2C8%2C9%2C{max_minutes}&denoise=1&generalize=0&access_token={access_token}",
+        "https://api.mapbox.com/isochrone/v1/{profile}/{lon},{lat}?contours_minutes=6%2C7%2C8%2C9&denoise=1&generalize=0&access_token={access_token}",
         profile = "mapbox/walking",
         lon = origin.lon,
         lat = origin.lat,
-        access_token = mapbox_token,
-        min_minutes = MIN_MINUTES_TO_WAYPOINT,
-        max_minutes = MAX_MINUTES_TO_WAYPOINT
+        access_token = mapbox_token
     );
 
     let response = reqwest::get(&url)
