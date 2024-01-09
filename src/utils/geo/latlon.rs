@@ -18,13 +18,7 @@ pub fn d_angle(origin: &DCoord, destination: &DCoord) -> f64 {
     let delta_lat = destination.lat - origin.lat;
     let delta_lon = destination.lon - origin.lon;
 
-    let angle = (delta_lat.atan2(delta_lon).to_degrees() + 360.0) % 360.0;
-
-    if angle < 0.0 {
-        angle + 360.0
-    } else {
-        angle
-    }
+    (delta_lat.atan2(delta_lon).to_degrees() + 360.0) % 360.0
 }
 
 #[allow(dead_code)]
