@@ -41,15 +41,20 @@ pub async fn near(
 
     let mut coordinates: Vec<DCoord> = response
         .get("features")
-        .and_then(|value| value.as_array().unwrap().choose(&mut rng))
-        .and_then(|value| value.get("geometry"))
-        .and_then(|value| value.get("coordinates"))
         .and_then(|value| value.as_array())
         .unwrap()
         .iter()
-        .map(|c| DCoord {
-            lat: c.get(1).unwrap().as_f64().unwrap(),
-            lon: c.get(0).unwrap().as_f64().unwrap(),
+        .flat_map(|value| {
+            value
+                .get("geometry")
+                .and_then(|value| value.get("coordinates"))
+                .and_then(|value| value.as_array())
+                .unwrap()
+                .iter()
+                .map(|c| DCoord {
+                    lat: c.get(1).unwrap().as_f64().unwrap(),
+                    lon: c.get(0).unwrap().as_f64().unwrap(),
+                })
         })
         .collect();
 
