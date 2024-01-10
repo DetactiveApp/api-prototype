@@ -2,7 +2,7 @@ use axum::{
     headers::{authorization::Bearer, Authorization, HeaderMapExt},
     http::Request,
     middleware::Next,
-    response::Response, extract::Host,
+    response::Response,
 };
 use log::error;
 use reqwest::StatusCode;
@@ -12,15 +12,16 @@ use crate::{
     utils::verify,
 };
 
-pub async fn guard<T>(mut request: Request<T>, next: Next<T>, Host(hostname): Host) -> Result<Response, DError> {
+pub async fn guard<T>(mut request: Request<T>, next: Next<T>) -> Result<Response, DError> {
     let token: String = request
         .headers()
         .typed_get::<Authorization<Bearer>>()
         .ok_or({
             DError::from(
-            &format!("Missing Bearer Token: {:?}", hostname),
-            StatusCode::BAD_REQUEST,
-        )})?
+                &format!("Missing Bearer Token: {:?}", request.uri()),
+                StatusCode::BAD_REQUEST,
+            )
+        })?
         .token()
         .to_owned();
 
