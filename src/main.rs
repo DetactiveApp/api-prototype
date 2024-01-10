@@ -8,7 +8,7 @@ use crate::{routes::api, utils::cors};
 use axum::{routing::get, Router};
 
 async fn root() -> String {
-    format!("Detactive API v{}", env!("CARGO_PKG_VERSION"))
+    format!("Detactive API [Prototype] v{}", env!("CARGO_PKG_VERSION"))
 }
 
 #[tokio::main]
