@@ -16,7 +16,14 @@ impl IntoResponse for DError {
 
 impl DError {
     pub fn from(reason: &str, status_code: StatusCode) -> Self {
-        capture_message(reason, Level::Info);
+        Self {
+            status_code,
+            reason: reason.to_string(),
+        }
+    }
+
+    pub fn captured(reason: &str, status_code: StatusCode, capture_level: Level) -> Self {
+        capture_message(reason, capture_level);
         Self {
             status_code,
             reason: reason.to_string(),

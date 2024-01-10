@@ -27,10 +27,13 @@ pub async fn guard<T>(mut request: Request<T>, next: Next<T>) -> Result<Response
 
     let claims: super::jwt::Claims = verify(&token)?;
 
-    let ctx: &ApiContext = request
-        .extensions()
-        .get::<ApiContext>()
-        .ok_or_else(|| DError::from("Internal Server Error.", StatusCode::INTERNAL_SERVER_ERROR))?;
+    let ctx: &ApiContext = request.extensions().get::<ApiContext>().ok_or_else(|| {
+        DError::captured(
+            "Failed to receive api context.",
+            StatusCode::INTERNAL_SERVER_ERROR,
+            sentry::Level::Error,
+        )
+    })?;
 
     sqlx::query("SELECT uuid FROM users WHERE uuid = $1;")
         .bind(claims.sub)
