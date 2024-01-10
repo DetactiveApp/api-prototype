@@ -240,7 +240,7 @@ impl DStep {
             }
             _ => near(
                 &user_coordinates,
-                fastrand::f64() * 360.0,
+                (fastrand::f64() * 360.0 + 360.0)  % 360.0,
                 RouteMode::Track
             )
             .await
