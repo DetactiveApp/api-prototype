@@ -13,11 +13,12 @@ pub async fn near(
 ) -> Result<Option<DCoord>, DError> {
     let mapbox_token = &env::var("MAPBOX_TOKEN").expect("Mapbox access token not found.");
     let url = format!(
-        "https://api.mapbox.com/isochrone/v1/{profile}/{lon},{lat}?contours_minutes=3%2C4%2C5&denoise=1&generalize=0&access_token={access_token}",
+        "https://api.mapbox.com/isochrone/v1/{profile}/{lon},{lat}?contours_minutes=4&denoise=1&generalize=0&exclude={exclude}&access_token={access_token}",
         profile = "mapbox/walking",
         lon = origin.lon,
         lat = origin.lat,
-        access_token = mapbox_token
+        access_token = mapbox_token,
+        exclude = "motorway,toll,ferry,cash_only_tolls"
     );
 
     let response = reqwest::get(&url)
